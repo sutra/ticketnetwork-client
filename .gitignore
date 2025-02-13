@@ -1,0 +1,5 @@
+target/
+.project
+.classpath
+.settings/
+/ticketnetwork-client-rescu/ticketnetwork-client-rescu-impl/src/test/resources/ticketnetwork.properties
