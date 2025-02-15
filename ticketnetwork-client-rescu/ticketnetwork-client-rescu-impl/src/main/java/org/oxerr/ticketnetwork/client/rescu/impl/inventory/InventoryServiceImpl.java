@@ -11,8 +11,9 @@ public class InventoryServiceImpl implements InventoryService {
 		this.inventoryResource = inventoryResource;
 	}
 
-	public void ticketgroups() {
-		this.inventoryResource.ticketgroups();
+	@Override
+	public void getTicketGroups() {
+		this.inventoryResource.getTicketGroups();
 	}
 
 }

@@ -55,7 +55,7 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 
 	protected ClientConfig createClientConfig(JacksonObjectMapperFactory jacksonObjectMapperFactory, String username, String password) {
 		var clientConfig = new ClientConfig();
-		clientConfig.addDefaultParam(HeaderParam.class, "Authorization", username + ":" + password);
+		clientConfig.addDefaultParam(HeaderParam.class, "Authorization", "Basic " + username + ":" + password);
 		clientConfig.setJacksonObjectMapperFactory(jacksonObjectMapperFactory);
 		return clientConfig;
 	}

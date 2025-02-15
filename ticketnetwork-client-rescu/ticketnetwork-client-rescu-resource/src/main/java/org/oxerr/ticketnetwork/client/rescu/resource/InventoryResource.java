@@ -8,6 +8,6 @@ public interface InventoryResource {
 
 	@GET
 	@Path("/ticketgroups")
-	void ticketgroups();
+	void getTicketGroups();
 
 }
