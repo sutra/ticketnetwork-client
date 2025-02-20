@@ -1,14 +1,20 @@
 package org.oxerr.ticketnetwork.client.rescu.impl;
 
+import java.util.Base64;
+
 import org.oxerr.rescu.ext.singleton.RestProxyFactorySingletonImpl;
 import org.oxerr.ticketnetwork.client.TicketNetworkClient;
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
+import org.oxerr.ticketnetwork.client.oauth2.TokenService;
 import org.oxerr.ticketnetwork.client.rescu.impl.inventory.InventoryServiceImpl;
+import org.oxerr.ticketnetwork.client.rescu.impl.oauth2.TokenServiceImpl;
 import org.oxerr.ticketnetwork.client.rescu.resource.InventoryResource;
+import org.oxerr.ticketnetwork.client.rescu.resource.oauth2.TokenResource;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -22,42 +28,87 @@ import si.mazi.rescu.serialization.jackson.JacksonObjectMapperFactory;
 
 public class ResCUTicketNetworkClient implements TicketNetworkClient {
 
+	private static final String KEY_MANAGER_BASE_URL = "https://key-manager.tn-apis.com";
+
 	private static final String DEFAULT_BASE_URL = "https://www.tn-apis.com";
 
 	private final String baseUrl;
 
 	private final IRestProxyFactory restProxyFactory;
 
+	private final TokenService tokenService;
+
 	private final InventoryService inventoryService;
 
-	public ResCUTicketNetworkClient(String username, String password, Interceptor...interceptors) {
-		this(DEFAULT_BASE_URL, username, password, interceptors);
+	public ResCUTicketNetworkClient(
+		String consumerKey,
+		String consumerSecret,
+		Interceptor...interceptors
+	) {
+		this(DEFAULT_BASE_URL, consumerKey, consumerSecret, interceptors);
 	}
 
-	public ResCUTicketNetworkClient(String baseUrl, String username, String password, Interceptor... interceptors) {
+	public ResCUTicketNetworkClient(
+		String baseUrl,
+		String consumerKey,
+		String consumerSecret,
+		Interceptor... interceptors
+	) {
 		this.baseUrl = baseUrl;
-		JacksonObjectMapperFactory jacksonObjectMapperFactory = createJacksonObjectMapperFactory();
-		var clientConfig = createClientConfig(jacksonObjectMapperFactory, username, password);
+		var keyClientConfig = createKeyManagerClientConfig(consumerKey, consumerSecret);
 		this.restProxyFactory = new RestProxyFactorySingletonImpl(new RestProxyFactoryImpl());
-		this.inventoryService = new InventoryServiceImpl(
-			this.restProxyFactory.createProxy(InventoryResource.class, baseUrl, clientConfig, interceptors)
-		);
+		this.tokenService = new TokenServiceImpl(restProxyFactory.createProxy(TokenResource.class, KEY_MANAGER_BASE_URL, keyClientConfig));
+		this.inventoryService = new InventoryServiceImpl(this.restProxyFactory.createProxy(InventoryResource.class, baseUrl, null, interceptors));
+	}
+
+	@Override
+	public TokenService getTokenService() {
+		return tokenService;
 	}
 
 	@Override
 	public InventoryService getInventoryService() {
-		return this.inventoryService;
+		return inventoryService;
 	}
 
 	protected <I> I createProxy(Class<I> restInterface, ClientConfig clientConfig, Interceptor... interceptors) {
 		return this.restProxyFactory.createProxy(restInterface, baseUrl, clientConfig, interceptors);
 	}
 
-	protected ClientConfig createClientConfig(JacksonObjectMapperFactory jacksonObjectMapperFactory, String username, String password) {
+	/**
+	 * Create a {@link ClientConfig} for Key Manager.
+	 *
+	 * @param consumerKey The public key of the application, used to uniquely
+	 * identify the application in the environment. This value does not need to
+	 * be kept secret. Consumer key will be different between Sandbox and
+	 * Production for the same application.
+	 * @param consumerSecret The private key of the application for the
+	 * environment (again, Sandbox and Producation will differ). Used along
+	 * with the consumer key to generate access tokens for the application.
+	 * Treat this information as you would a password. Consumer secret will be
+	 * different between Sandbox and Production for the same application.
+	 * @return a {@link ClientConfig} for Key Manager.
+	 */
+	protected ClientConfig createKeyManagerClientConfig(String consumerKey, String consumerSecret) {
+		var jacksonObjectMapperFactory = createKeyManagerJacksonObjectMapperFactory();
+		var base64EncodedValue = Base64.getEncoder().encodeToString((consumerKey + ":" + consumerSecret).getBytes());
 		var clientConfig = new ClientConfig();
-		clientConfig.addDefaultParam(HeaderParam.class, "Authorization", "Basic " + username + ":" + password);
+		clientConfig.addDefaultParam(HeaderParam.class, "Authorization", "Basic " + base64EncodedValue);
 		clientConfig.setJacksonObjectMapperFactory(jacksonObjectMapperFactory);
 		return clientConfig;
+	}
+
+	protected JacksonObjectMapperFactory createKeyManagerJacksonObjectMapperFactory() {
+		return new DefaultJacksonObjectMapperFactory() {
+
+			@Override
+			public void configureObjectMapper(ObjectMapper objectMapper) {
+				super.configureObjectMapper(objectMapper);
+				objectMapper.setSerializationInclusion(Include.NON_ABSENT);
+				objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+			}
+
+		};
 	}
 
 	protected JacksonObjectMapperFactory createJacksonObjectMapperFactory() {
