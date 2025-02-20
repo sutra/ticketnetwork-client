@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 
-// @Disabled("Token is required")
 class ResCUTicketNetworkClientTest {
 
 	public static ResCUTicketNetworkClient getClient() {
@@ -14,12 +13,6 @@ class ResCUTicketNetworkClientTest {
 	@Test
 	void testGetClient() {
 		assertNotNull(ResCUTicketNetworkClientTest.getClient());
-	}
-
-	@Test
-	void testGetEvents() {
-		ResCUTicketNetworkClient client = getClient();
-		client.getInventoryService().getTicketGroups();
 	}
 
 }

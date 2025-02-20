@@ -1,4 +1,4 @@
-package org.oxerr.ticketnetwork.client.rescu.resource;
+package org.oxerr.ticketnetwork.client.rescu.resource.inventory;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

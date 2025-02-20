@@ -8,7 +8,7 @@ import org.oxerr.ticketnetwork.client.inventory.InventoryService;
 import org.oxerr.ticketnetwork.client.oauth2.TokenService;
 import org.oxerr.ticketnetwork.client.rescu.impl.inventory.InventoryServiceImpl;
 import org.oxerr.ticketnetwork.client.rescu.impl.oauth2.TokenServiceImpl;
-import org.oxerr.ticketnetwork.client.rescu.resource.InventoryResource;
+import org.oxerr.ticketnetwork.client.rescu.resource.inventory.InventoryResource;
 import org.oxerr.ticketnetwork.client.rescu.resource.oauth2.TokenResource;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -45,20 +45,25 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 		String consumerSecret,
 		Interceptor...interceptors
 	) {
-		this(DEFAULT_BASE_URL, consumerKey, consumerSecret, interceptors);
+		this(DEFAULT_BASE_URL, consumerKey, consumerSecret, null, null, interceptors);
 	}
 
 	public ResCUTicketNetworkClient(
 		String baseUrl,
 		String consumerKey,
 		String consumerSecret,
+		String accessToken,
+		String brokerId,
 		Interceptor... interceptors
 	) {
 		this.baseUrl = baseUrl;
-		var keyClientConfig = createKeyManagerClientConfig(consumerKey, consumerSecret);
 		this.restProxyFactory = new RestProxyFactorySingletonImpl(new RestProxyFactoryImpl());
-		this.tokenService = new TokenServiceImpl(restProxyFactory.createProxy(TokenResource.class, KEY_MANAGER_BASE_URL, keyClientConfig));
-		this.inventoryService = new InventoryServiceImpl(this.restProxyFactory.createProxy(InventoryResource.class, baseUrl, null, interceptors));
+
+		var keyManagerClientConfig = createKeyManagerClientConfig(consumerKey, consumerSecret);
+		this.tokenService = new TokenServiceImpl(restProxyFactory.createProxy(TokenResource.class, KEY_MANAGER_BASE_URL, keyManagerClientConfig));
+
+		var clientConfig = createClientConfig(accessToken, brokerId);
+		this.inventoryService = new InventoryServiceImpl(this.restProxyFactory.createProxy(InventoryResource.class, baseUrl, clientConfig, interceptors));
 	}
 
 	@Override
@@ -109,6 +114,15 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 			}
 
 		};
+	}
+
+	protected ClientConfig createClientConfig(String accessToken, String brokerId) {
+		var jacksonObjectMapperFactory = createKeyManagerJacksonObjectMapperFactory();
+		var clientConfig = new ClientConfig();
+		clientConfig.addDefaultParam(HeaderParam.class, "Authorization", "Bearer " + accessToken);
+		clientConfig.addDefaultParam(HeaderParam.class, "X-Identity-Context", "broker-id=" + brokerId);
+		clientConfig.setJacksonObjectMapperFactory(jacksonObjectMapperFactory);
+		return clientConfig;
 	}
 
 	protected JacksonObjectMapperFactory createJacksonObjectMapperFactory() {

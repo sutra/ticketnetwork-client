@@ -1,7 +1,7 @@
 package org.oxerr.ticketnetwork.client.rescu.impl.inventory;
 
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
-import org.oxerr.ticketnetwork.client.rescu.resource.InventoryResource;
+import org.oxerr.ticketnetwork.client.rescu.resource.inventory.InventoryResource;
 
 public class InventoryServiceImpl implements InventoryService {
 

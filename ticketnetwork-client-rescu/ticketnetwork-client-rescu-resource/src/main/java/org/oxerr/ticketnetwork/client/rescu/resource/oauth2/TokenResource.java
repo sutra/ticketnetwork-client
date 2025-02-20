@@ -8,6 +8,10 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 
+/**
+ * The OAuth Token API provides a way to generate a new access token.
+ * See <a href="https://tn-release.s3.amazonaws.com/tn-apis/API+Authorization.pdf">API AUTHORIZATION</a>.
+ */
 @Path("/oauth2")
 public interface TokenResource {
 

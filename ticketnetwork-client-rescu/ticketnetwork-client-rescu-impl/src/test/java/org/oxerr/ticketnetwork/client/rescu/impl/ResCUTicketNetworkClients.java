@@ -8,10 +8,12 @@ public class ResCUTicketNetworkClients {
 
 	public static ResCUTicketNetworkClient getClient() {
 		Properties props = getProps();
-		String baseUrl = props.getProperty("baseUrl");
-		String username = props.getProperty("username");
-		String password = props.getProperty("password");
-		return new ResCUTicketNetworkClient(baseUrl, username, password);
+		String baseUrl = props.getProperty("base_url");
+		String consumerKey = props.getProperty("consumer.key");
+		String consumerSecret = props.getProperty("consumer.secret");
+		String accessToken = props.getProperty("access_token");
+		String brokerId = props.getProperty("broker_id");
+		return new ResCUTicketNetworkClient(baseUrl, consumerKey, consumerSecret, accessToken, brokerId);
 	}
 
 	private static Properties getProps() {
