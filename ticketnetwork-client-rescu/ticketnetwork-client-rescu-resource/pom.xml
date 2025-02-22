@@ -59,9 +59,5 @@
 			<groupId>com.github.mmazi</groupId>
 			<artifactId>rescu</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>io.github.poshjosh</groupId>
-			<artifactId>rate-limiter-annotation</artifactId>
-		</dependency>
 	</dependencies>
 </project>
