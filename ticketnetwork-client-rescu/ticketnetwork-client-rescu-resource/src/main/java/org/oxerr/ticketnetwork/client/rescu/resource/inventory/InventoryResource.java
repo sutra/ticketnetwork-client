@@ -6,6 +6,9 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;
 
+/**
+ * A RESTful API that lets subscribers interact with tickets for brokers.
+ */
 @Path("/inventory/v5")
 public interface InventoryResource {
 
@@ -28,7 +31,7 @@ public interface InventoryResource {
 	 * and a representation of the ticket groups will be included in the response.
 	 * </p>
 	 *
-	 * <h2>Filterable Properties</h2>
+	 * <h3>Filterable Properties</h3>
 	 *
 	 * ticketGroupId, exchangeTicketGroupId, created, updated, onHandDate,
 	 * notes, broadcastChannelId, isInstant, referenceTicketGroupId, isMercury,
@@ -50,7 +53,7 @@ public interface InventoryResource {
 	 * thirdPartyExchangeListings/thirdPartyExchangeListingStatus,
 	 * thirdPartyExchangeListings/checkedAtDateTime, autopricer/isActive
 	 *
-	 * <h2>Sortable Properties</h2>
+	 * <h3>Sortable Properties</h3>
 	 *
 	 * ticketGroupId, created, updated, onHandDate, isInstant,
 	 * referenceTicketGroupId, isShort, purchaseOrderIds, hasQrScreenshots,

@@ -40,11 +40,6 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>ticketnetwork-client-core</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.oxerr.ticketnetwork.client.rescu</groupId>
 			<artifactId>ticketnetwork-client-rescu-resource</artifactId>
 			<version>${project.version}</version>
