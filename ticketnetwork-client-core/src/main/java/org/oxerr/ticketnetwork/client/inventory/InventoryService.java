@@ -19,4 +19,6 @@ public interface InventoryService {
 
 	TicketGroupV4GetModel createTicketGroup(TicketGroupV4PostModel ticketGroup);
 
+	void deleteTicketGroup(Integer ticketGroupId);
+
 }

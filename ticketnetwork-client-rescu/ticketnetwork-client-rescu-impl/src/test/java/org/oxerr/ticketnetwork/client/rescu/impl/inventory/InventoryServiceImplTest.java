@@ -49,4 +49,10 @@ class InventoryServiceImplTest {
 		log.info("created ticket group: {}", created);
 	}
 
+	@Test
+	void testDeleteTicketGroup() {
+		Integer ticketGroupId = 0;
+		inventoryService.deleteTicketGroup(ticketGroupId);
+	}
+
 }

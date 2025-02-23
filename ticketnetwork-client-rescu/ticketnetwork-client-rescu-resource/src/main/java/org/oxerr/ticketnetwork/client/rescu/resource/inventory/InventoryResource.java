@@ -5,9 +5,11 @@ import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
 
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
@@ -119,5 +121,9 @@ public interface InventoryResource {
 	@POST
 	@Path("/ticketgroups")
 	TicketGroupV4GetModel createTicketGroup(TicketGroupV4PostModel ticketGroupV4PostModel);
+
+	@DELETE
+	@Path("/ticketgroups/{ticketGroupId}")
+	void deleteTicketGroup(@PathParam("ticketGroupId") Integer ticketGroupId);
 
 }

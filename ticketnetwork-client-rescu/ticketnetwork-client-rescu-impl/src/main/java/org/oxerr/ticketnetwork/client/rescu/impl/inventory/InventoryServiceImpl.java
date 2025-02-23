@@ -36,4 +36,9 @@ public class InventoryServiceImpl implements InventoryService {
 		return inventoryResource.createTicketGroup(ticketGroup);
 	}
 
+	@Override
+	public void deleteTicketGroup(Integer ticketGroupId) {
+		inventoryResource.deleteTicketGroup(ticketGroupId);
+	}
+
 }
