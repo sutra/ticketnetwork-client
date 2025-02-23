@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import si.mazi.rescu.HttpStatusException;
 
 /**
- * The model used to encapsulate validation errors.
+ * TicketNetwork API exception.
  */
 public class TicketNetworkException extends ValidationErrorsModel implements HttpStatusException {
 
