@@ -1,6 +1,6 @@
 package org.oxerr.ticketnetwork.client.rescu.impl.oauth2;
 
-import org.oxerr.ticketnetwork.client.model.oauth2.Token;
+import org.oxerr.ticketnetwork.client.model.Token;
 import org.oxerr.ticketnetwork.client.oauth2.TokenService;
 import org.oxerr.ticketnetwork.client.rescu.resource.oauth2.TokenResource;
 

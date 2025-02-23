@@ -1,10 +1,7 @@
-package org.oxerr.ticketnetwork.client.model.response.inventory;
+package org.oxerr.ticketnetwork.client.model;
 
 import java.io.Serializable;
 import java.util.List;
-
-import org.oxerr.ticketnetwork.client.model.Link;
-import org.oxerr.ticketnetwork.client.model.TicketGroup;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

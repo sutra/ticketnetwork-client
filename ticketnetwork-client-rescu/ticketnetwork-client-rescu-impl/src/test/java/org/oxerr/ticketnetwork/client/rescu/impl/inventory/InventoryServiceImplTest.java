@@ -4,13 +4,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.oxerr.ticketnetwork.client.model.response.inventory.TicketGroupsV4GetModel;
+import org.oxerr.ticketnetwork.client.inventory.InventoryService;
+import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
+import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
+import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
 import org.oxerr.ticketnetwork.client.rescu.impl.ResCUTicketNetworkClients;
 
 class InventoryServiceImplTest {
 
 	private final Logger log = LogManager.getLogger();
+
+	private static InventoryService inventoryService;
+
+	@BeforeAll
+	static void setUpBeforeClass() {
+		inventoryService = ResCUTicketNetworkClients.getClient().getInventoryService();
+	}
 
 	@Test
 	void testGetTicketGroups() {
@@ -23,12 +34,19 @@ class InventoryServiceImplTest {
 		String filter = null;
 		String orderby = null;
 
-		TicketGroupsV4GetModel ticketGroups = ResCUTicketNetworkClients.getClient().getInventoryService().getTicketGroups(
+		TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(
 			hasEticket, pending, returnTicketsData, perPage, page, skip,
 			filter, orderby
 		);
-		log.info("{}", ticketGroups);
+		log.info("ticket groups: {}", ticketGroups);
 		assertEquals(0, ticketGroups.getCount().intValue());
+	}
+
+	@Test
+	void testCreateTicketGroup() {
+		TicketGroupV4PostModel ticketGroup = new TicketGroupV4PostModel();
+		TicketGroupV4GetModel created =  inventoryService.createTicketGroup(ticketGroup);
+		log.info("created ticket group: {}", created);
 	}
 
 }

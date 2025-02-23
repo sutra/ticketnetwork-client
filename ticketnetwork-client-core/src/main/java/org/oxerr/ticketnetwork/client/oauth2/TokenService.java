@@ -1,6 +1,6 @@
 package org.oxerr.ticketnetwork.client.oauth2;
 
-import org.oxerr.ticketnetwork.client.model.oauth2.Token;
+import org.oxerr.ticketnetwork.client.model.Token;
 
 public interface TokenService {
 

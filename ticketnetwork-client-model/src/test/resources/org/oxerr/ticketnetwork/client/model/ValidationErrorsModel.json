@@ -1,0 +1,25 @@
+{
+	"message": "The request is invalid. Model validation failed.",
+	"validationErrors": {
+		"eventId": {
+			"reasons": [
+				"The EventId field is required."
+			]
+		},
+		"quantity": {
+			"reasons": [
+				"The Quantity field is required."
+			]
+		},
+		"seatingTypeId": {
+			"reasons": [
+				"The SeatingTypeId field is required."
+			]
+		},
+		"unitPrice": {
+			"reasons": [
+				"The UnitPrice field is required."
+			]
+		}
+	}
+}

@@ -1,15 +1,23 @@
 package org.oxerr.ticketnetwork.client.rescu.resource.inventory;
 
-import org.oxerr.ticketnetwork.client.model.response.inventory.TicketGroupsV4GetModel;
+import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
+import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
+import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
 
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.MediaType;
 
 /**
  * A RESTful API that lets subscribers interact with tickets for brokers.
  */
 @Path("/inventory/v5")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public interface InventoryResource {
 
 	/**
@@ -96,5 +104,20 @@ public interface InventoryResource {
 		@QueryParam("$filter") String filter,
 		@QueryParam("$orderby") String orderby
 	);
+
+	/**
+	 * Create a ticket group.
+	 *
+	 * If successful, the HTTP response code will indicate a 201 (Created)
+	 * response, and a representation of the ticket group will be included in
+	 * the response.
+	 *
+	 * @param ticketGroupV4PostModel Object containing details of the ticket
+	 * group to create.
+	 * @return the created ticket group.
+	 */
+	@POST
+	@Path("/ticketgroups")
+	TicketGroupV4GetModel createTicketGroup(TicketGroupV4PostModel ticketGroupV4PostModel);
 
 }

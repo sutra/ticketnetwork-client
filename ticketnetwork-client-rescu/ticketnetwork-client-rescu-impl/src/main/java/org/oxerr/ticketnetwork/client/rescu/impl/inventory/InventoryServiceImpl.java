@@ -1,7 +1,9 @@
 package org.oxerr.ticketnetwork.client.rescu.impl.inventory;
 
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
-import org.oxerr.ticketnetwork.client.model.response.inventory.TicketGroupsV4GetModel;
+import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
+import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
+import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
 import org.oxerr.ticketnetwork.client.rescu.resource.inventory.InventoryResource;
 
 public class InventoryServiceImpl implements InventoryService {
@@ -23,10 +25,15 @@ public class InventoryServiceImpl implements InventoryService {
 		String filter,
 		String orderby
 	) {
-		return this.inventoryResource.getTicketGroups(
+		return inventoryResource.getTicketGroups(
 			hasEticket, pending, returnTicketsData, perPage, page, skip,
 			filter, orderby
 		);
+	}
+
+	@Override
+	public TicketGroupV4GetModel createTicketGroup(TicketGroupV4PostModel ticketGroup) {
+		return inventoryResource.createTicketGroup(ticketGroup);
 	}
 
 }

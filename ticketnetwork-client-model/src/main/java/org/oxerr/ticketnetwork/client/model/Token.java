@@ -1,4 +1,4 @@
-package org.oxerr.ticketnetwork.client.model.oauth2;
+package org.oxerr.ticketnetwork.client.model;
 
 import java.io.Serializable;
 

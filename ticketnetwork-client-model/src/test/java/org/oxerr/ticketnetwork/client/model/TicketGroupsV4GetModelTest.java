@@ -1,4 +1,4 @@
-package org.oxerr.ticketnetwork.client.model.response.inventory;
+package org.oxerr.ticketnetwork.client.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -21,7 +21,7 @@ class TicketGroupsV4GetModelTest {
 
 	@Test
 	void test() throws IOException {
-		try (InputStream src = this.getClass().getResourceAsStream("ticketgroups.json")) {
+		try (InputStream src = this.getClass().getResourceAsStream("TicketGroupsV4GetModel.json")) {
 			TicketGroupsV4GetModel ticketGroupsV4GetModel = objectMapper.readValue(src, TicketGroupsV4GetModel.class);
 			assertEquals(0, ticketGroupsV4GetModel.getTotalCount().intValue());
 			assertEquals(1, ticketGroupsV4GetModel.getPage().intValue());

@@ -1,12 +1,13 @@
 package org.oxerr.ticketnetwork.client.rescu.resource.oauth2;
 
-import org.oxerr.ticketnetwork.client.model.oauth2.Token;
+import org.oxerr.ticketnetwork.client.model.Token;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 
 /**
  * The OAuth Token API provides a way to generate a new access token.
@@ -45,8 +46,8 @@ public interface TokenResource {
 	 */
 	@POST
 	@Path("/token")
-	@Consumes("application/x-www-form-urlencoded")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	Token generateToken(
 		@FormParam("grant_type") String grantType,
 		@FormParam("scope") String scope

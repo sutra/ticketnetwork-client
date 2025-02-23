@@ -1,6 +1,8 @@
 package org.oxerr.ticketnetwork.client.inventory;
 
-import org.oxerr.ticketnetwork.client.model.response.inventory.TicketGroupsV4GetModel;
+import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
+import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
+import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
 
 public interface InventoryService {
 
@@ -14,5 +16,7 @@ public interface InventoryService {
 		String filter,
 		String orderby
 	);
+
+	TicketGroupV4GetModel createTicketGroup(TicketGroupV4PostModel ticketGroup);
 
 }
