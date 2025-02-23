@@ -1,5 +1,7 @@
 package org.oxerr.ticketnetwork.client.rescu.impl.inventory;
 
+import java.io.IOException;
+
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
@@ -24,7 +26,7 @@ public class InventoryServiceImpl implements InventoryService {
 		Integer skip,
 		String filter,
 		String orderby
-	) {
+	) throws IOException {
 		return inventoryResource.getTicketGroups(
 			hasEticket, pending, returnTicketsData, perPage, page, skip,
 			filter, orderby
@@ -32,12 +34,12 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 
 	@Override
-	public TicketGroupV4GetModel createTicketGroup(TicketGroupV4PostModel ticketGroup) {
+	public TicketGroupV4GetModel createTicketGroup(TicketGroupV4PostModel ticketGroup) throws IOException {
 		return inventoryResource.createTicketGroup(ticketGroup);
 	}
 
 	@Override
-	public void deleteTicketGroup(Integer ticketGroupId) {
+	public void deleteTicketGroup(Integer ticketGroupId) throws IOException {
 		inventoryResource.deleteTicketGroup(ticketGroupId);
 	}
 

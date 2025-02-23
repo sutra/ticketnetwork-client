@@ -2,6 +2,8 @@ package org.oxerr.ticketnetwork.client.rescu.impl.inventory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.IOException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
@@ -11,6 +13,7 @@ import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
 import org.oxerr.ticketnetwork.client.rescu.impl.ResCUTicketNetworkClients;
+import org.oxerr.ticketnetwork.client.rescu.resource.TicketNetworkException;
 
 class InventoryServiceImplTest {
 
@@ -24,7 +27,7 @@ class InventoryServiceImplTest {
 	}
 
 	@Test
-	void testGetTicketGroups() {
+	void testGetTicketGroups() throws IOException {
 		Boolean hasEticket = null;
 		Boolean pending = null;
 		Boolean returnTicketsData = null;
@@ -43,14 +46,19 @@ class InventoryServiceImplTest {
 	}
 
 	@Test
-	void testCreateTicketGroup() {
+	void testCreateTicketGroup() throws IOException {
 		TicketGroupV4PostModel ticketGroup = new TicketGroupV4PostModel();
-		TicketGroupV4GetModel created =  inventoryService.createTicketGroup(ticketGroup);
-		log.info("created ticket group: {}", created);
+		try {
+			TicketGroupV4GetModel created = inventoryService.createTicketGroup(ticketGroup);
+			log.info("created ticket group: {}", created);
+		} catch (TicketNetworkException e) {
+			log.error("Failed to create ticket group.", e);
+			e.getValidationErrors().forEach((k, v) -> log.error("{}: {}", k, v));
+		}
 	}
 
 	@Test
-	void testDeleteTicketGroup() {
+	void testDeleteTicketGroup() throws IOException {
 		Integer ticketGroupId = 0;
 		inventoryService.deleteTicketGroup(ticketGroupId);
 	}

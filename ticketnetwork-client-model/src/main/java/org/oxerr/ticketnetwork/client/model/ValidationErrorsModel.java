@@ -3,17 +3,14 @@ package org.oxerr.ticketnetwork.client.model;
 import java.io.Serializable;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * The model used to encapsulate validation errors.
  */
-public class ValidationErrorsModel implements Serializable {
+public class ValidationErrorsModel extends RuntimeException implements Serializable {
 
 	private static final long serialVersionUID = 2025022301L;
-
-	/**
-	 * The top-level error message.
-	 */
-	private String message;
 
 	/**
 	 * The validation errors that apply to specific fields or properties in the
@@ -26,22 +23,25 @@ public class ValidationErrorsModel implements Serializable {
 	 * model. Validation errors that don't apply to a specific field or
 	 * property on the model will be keyed to the empty string.
 	 */
-	private Map<String, ValidationErrorMember> validationErrors;
+	private final Map<String, ValidationErrorMember> validationErrors;
 
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
+	/**
+	 * Constructs a new instance of {@link ValidationErrorsModel}.
+	 *
+	 * @param message The top-level error message.
+	 * @param validationErrors The validation errors that apply to specific
+	 * fields or properties in the request.
+	 */
+	public ValidationErrorsModel(
+		@JsonProperty("message") String message,
+		@JsonProperty("validationErrors") Map<String, ValidationErrorMember> validationErrors
+	) {
+		super(message);
+		this.validationErrors = validationErrors;
 	}
 
 	public Map<String, ValidationErrorMember> getValidationErrors() {
 		return validationErrors;
-	}
-
-	public void setValidationErrors(Map<String, ValidationErrorMember> validationErrors) {
-		this.validationErrors = validationErrors;
 	}
 
 }

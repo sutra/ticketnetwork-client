@@ -1,8 +1,11 @@
 package org.oxerr.ticketnetwork.client.rescu.resource.inventory;
 
+import java.io.IOException;
+
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
+import org.oxerr.ticketnetwork.client.rescu.resource.TicketNetworkException;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -93,6 +96,8 @@ public interface InventoryResource {
 	 * @param orderby The OData sorting string. This parameter cannot currently
 	 * be used with Swagger's "Try it out!".
 	 * @return the ticket groups.
+	 * @throws IOException if an I/O error occurs.
+	 * @throws TicketNetworkException if a business exception occurs.
 	 */
 	@GET
 	@Path("/ticketgroups")
@@ -105,7 +110,7 @@ public interface InventoryResource {
 		@QueryParam("skip") Integer skip,
 		@QueryParam("$filter") String filter,
 		@QueryParam("$orderby") String orderby
-	);
+	) throws IOException, TicketNetworkException;
 
 	/**
 	 * Create a ticket group.
@@ -117,13 +122,24 @@ public interface InventoryResource {
 	 * @param ticketGroupV4PostModel Object containing details of the ticket
 	 * group to create.
 	 * @return the created ticket group.
+	 * @throws IOException if an I/O error occurs.
+	 * @throws TicketNetworkException if a business exception occurs.
 	 */
 	@POST
 	@Path("/ticketgroups")
-	TicketGroupV4GetModel createTicketGroup(TicketGroupV4PostModel ticketGroupV4PostModel);
+	TicketGroupV4GetModel createTicketGroup(TicketGroupV4PostModel ticketGroupV4PostModel)
+		throws IOException, TicketNetworkException;
 
+	/**
+	 * Deletes a single ticket group by ID.
+	 *
+	 * @param ticketGroupId The ticket group ID.
+	 * @throws IOException if an I/O error occurs.
+	 * @throws TicketNetworkException if a business exception occurs.
+	 */
 	@DELETE
 	@Path("/ticketgroups/{ticketGroupId}")
-	void deleteTicketGroup(@PathParam("ticketGroupId") Integer ticketGroupId);
+	void deleteTicketGroup(@PathParam("ticketGroupId") Integer ticketGroupId)
+		throws IOException, TicketNetworkException;
 
 }
