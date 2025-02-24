@@ -3,6 +3,7 @@ package org.oxerr.ticketnetwork.client.rescu.impl.inventory;
 import java.io.IOException;
 
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
+import org.oxerr.ticketnetwork.client.model.SeatingTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
@@ -45,8 +46,13 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 
 	@Override
-	public TicketGroupTypesGetModel getTicketGroupTypes() throws IOException {
-		return inventoryResource.getTicketGroupTypes();
+	public SeatingTypesGetModel getSeatingTypes() throws IOException {
+		return inventoryResource.getSeatingTypes();
+	}
+
+	@Override
+	public TicketGroupTypesGetModel getTypes() throws IOException {
+		return inventoryResource.getTypes();
 	}
 
 }
