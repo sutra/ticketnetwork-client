@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
+import org.oxerr.ticketnetwork.client.model.TicketGroupTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
@@ -61,6 +62,12 @@ class InventoryServiceImplTest {
 	void testDeleteTicketGroup() throws IOException {
 		Integer ticketGroupId = 0;
 		inventoryService.deleteTicketGroup(ticketGroupId);
+	}
+
+	@Test
+	void testGetTicketGroupTypes() throws IOException {
+		TicketGroupTypesGetModel types = inventoryService.getTicketGroupTypes();
+		log.info("ticket group types: {}", types);
 	}
 
 }

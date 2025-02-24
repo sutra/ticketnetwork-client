@@ -2,6 +2,7 @@ package org.oxerr.ticketnetwork.client.rescu.resource.inventory;
 
 import java.io.IOException;
 
+import org.oxerr.ticketnetwork.client.model.TicketGroupTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
@@ -240,5 +241,11 @@ public interface InventoryResource {
 		@PathParam("ticketGroupId") Integer ticketGroupId,
 		JsonPatchOperation... patchOperations
 	) throws IOException, TicketNetworkException;
+
+	@GET
+	@Path("/ticketgroups/types")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	TicketGroupTypesGetModel getTicketGroupTypes() throws IOException, TicketNetworkException;
 
 }

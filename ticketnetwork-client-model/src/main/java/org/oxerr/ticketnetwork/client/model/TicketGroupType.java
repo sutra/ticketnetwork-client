@@ -17,6 +17,11 @@ public class TicketGroupType implements Serializable {
 	 */
 	private String description;
 
+	/**
+	 * Flag indicating whether or not custom notes will appear on websites.
+	 */
+	private Boolean allowsCustomNotes;
+
 	public Integer getId() {
 		return id;
 	}
@@ -31,6 +36,14 @@ public class TicketGroupType implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Boolean getAllowsCustomNotes() {
+		return allowsCustomNotes;
+	}
+
+	public void setAllowsCustomNotes(Boolean allowsCustomNotes) {
+		this.allowsCustomNotes = allowsCustomNotes;
 	}
 
 }

@@ -1,0 +1,54 @@
+{
+	"ticketGroupTypes": [
+		{
+			"id": 1,
+			"description": "Event Ticket",
+			"allowsCustomNotes": false
+		},
+		{
+			"id": 2,
+			"description": "Suite",
+			"allowsCustomNotes": true
+		},
+		{
+			"id": 3,
+			"description": "Parking",
+			"allowsCustomNotes": true
+		},
+		{
+			"id": 4,
+			"description": "Hotel",
+			"allowsCustomNotes": true
+		},
+		{
+			"id": 5,
+			"description": "Package",
+			"allowsCustomNotes": true
+		},
+		{
+			"id": 6,
+			"description": "Backstage Pass",
+			"allowsCustomNotes": true
+		},
+		{
+			"id": 7,
+			"description": "Pit Pass",
+			"allowsCustomNotes": true
+		},
+		{
+			"id": 8,
+			"description": "VIP Pass",
+			"allowsCustomNotes": true
+		},
+		{
+			"id": 9,
+			"description": "Meet/Greet Pass",
+			"allowsCustomNotes": true
+		},
+		{
+			"id": 10,
+			"description": "Pass",
+			"allowsCustomNotes": true
+		}
+	]
+}

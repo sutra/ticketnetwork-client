@@ -2,6 +2,7 @@ package org.oxerr.ticketnetwork.client.inventory;
 
 import java.io.IOException;
 
+import org.oxerr.ticketnetwork.client.model.TicketGroupTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
@@ -22,5 +23,7 @@ public interface InventoryService {
 	TicketGroupV4GetModel createTicketGroup(TicketGroupV4PostModel ticketGroup) throws IOException;
 
 	void deleteTicketGroup(Integer ticketGroupId) throws IOException;
+
+	TicketGroupTypesGetModel getTicketGroupTypes() throws IOException;
 
 }
