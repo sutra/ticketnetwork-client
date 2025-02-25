@@ -5,9 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.oxerr.ticketnetwork.client.rescu.impl.ResCUTicketNetworkClients;
 
+@Disabled("This test requires the access_token.")
 class TokenServiceImplTest {
 
 	private final Logger log = LogManager.getLogger();

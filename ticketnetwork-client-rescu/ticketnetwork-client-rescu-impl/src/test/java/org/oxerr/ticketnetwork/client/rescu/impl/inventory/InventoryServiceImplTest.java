@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
 import org.oxerr.ticketnetwork.client.model.SeatingTypesGetModel;
@@ -17,6 +18,7 @@ import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
 import org.oxerr.ticketnetwork.client.rescu.impl.ResCUTicketNetworkClients;
 import org.oxerr.ticketnetwork.client.rescu.resource.TicketNetworkException;
 
+@Disabled("This test requires the access_token.")
 class InventoryServiceImplTest {
 
 	private final Logger log = LogManager.getLogger();
