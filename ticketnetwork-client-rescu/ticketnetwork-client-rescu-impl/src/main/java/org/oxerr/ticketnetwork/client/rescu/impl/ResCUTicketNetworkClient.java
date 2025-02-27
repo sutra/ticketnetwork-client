@@ -117,7 +117,7 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 	}
 
 	protected ClientConfig createClientConfig(String accessToken, String brokerId) {
-		var jacksonObjectMapperFactory = createKeyManagerJacksonObjectMapperFactory();
+		var jacksonObjectMapperFactory = createJacksonObjectMapperFactory();
 		var clientConfig = new ClientConfig();
 		clientConfig.addDefaultParam(HeaderParam.class, "Authorization", "Bearer " + accessToken);
 		clientConfig.addDefaultParam(HeaderParam.class, "X-Identity-Context", "broker-id=" + brokerId);

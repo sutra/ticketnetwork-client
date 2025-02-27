@@ -3,7 +3,10 @@ package org.oxerr.ticketnetwork.client.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class Money implements Serializable {
+/**
+ * Class to represent a price value and its currency.
+ */
+public class MoneyAmountModel implements Serializable {
 
 	private static final long serialVersionUID = 2025022201L;
 
@@ -16,6 +19,18 @@ public class Money implements Serializable {
 	 * The ISO 4217 currency code of the money amount.
 	 */
 	private String currencyCode;
+
+	public static MoneyAmountModel of(BigDecimal value, String currencyCode) {
+		return new MoneyAmountModel(value, currencyCode);
+	}
+
+	public MoneyAmountModel() {
+	}
+
+	public MoneyAmountModel(BigDecimal value, String currencyCode) {
+		this.value = value;
+		this.currencyCode = currencyCode;
+	}
 
 	public BigDecimal getValue() {
 		return value;
