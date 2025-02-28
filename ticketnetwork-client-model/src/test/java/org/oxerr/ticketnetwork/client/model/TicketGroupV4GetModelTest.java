@@ -17,6 +17,7 @@ class TicketGroupV4GetModelTest {
 	static void setUpBeforeClass() {
 		objectMapper = ObjectMappers.createObjectMapper();
 	}
+
 	@Test
 	void test() throws IOException {
 		try (var src = getClass().getResourceAsStream("TicketGroupV4GetModel.json")) {
