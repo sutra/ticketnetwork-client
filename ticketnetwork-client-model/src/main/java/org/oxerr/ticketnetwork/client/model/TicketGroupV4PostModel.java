@@ -133,7 +133,7 @@ public class TicketGroupV4PostModel implements Serializable {
 	/**
 	 * The reference (external) ticket group ID.
 	 */
-	private Long referenceTicketGroupId;
+	private Integer referenceTicketGroupId;
 
 	/**
 	 * Flag indicating whether this is a short ticket group.
@@ -318,11 +318,11 @@ public class TicketGroupV4PostModel implements Serializable {
 		this.pending = pending;
 	}
 
-	public Long getReferenceTicketGroupId() {
+	public Integer getReferenceTicketGroupId() {
 		return referenceTicketGroupId;
 	}
 
-	public void setReferenceTicketGroupId(Long referenceTicketGroupId) {
+	public void setReferenceTicketGroupId(Integer referenceTicketGroupId) {
 		this.referenceTicketGroupId = referenceTicketGroupId;
 	}
 

@@ -63,7 +63,7 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 		this.tokenService = new TokenServiceImpl(restProxyFactory.createProxy(TokenResource.class, KEY_MANAGER_BASE_URL, keyManagerClientConfig));
 
 		var clientConfig = createClientConfig(accessToken, brokerId);
-		this.inventoryService = new InventoryServiceImpl(this.restProxyFactory.createProxy(InventoryResource.class, baseUrl, clientConfig, interceptors));
+		this.inventoryService = new InventoryServiceImpl(restProxyFactory.createProxy(InventoryResource.class, baseUrl, clientConfig, interceptors));
 	}
 
 	@Override

@@ -69,7 +69,7 @@ class InventoryServiceImplTest {
 		ticketGroup.setSection("BALCON TABLE 11");
 		ticketGroup.setRow("11");
 		ticketGroup.setLowSeat("1");
-		ticketGroup.setReferenceTicketGroupId(1884284108541005882L);
+		ticketGroup.setReferenceTicketGroupId(1);
 
 		try {
 			TicketGroupV4GetModel created = inventoryService.createTicketGroup(ticketGroup);
