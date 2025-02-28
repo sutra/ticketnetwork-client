@@ -82,6 +82,14 @@ class InventoryServiceImplTest {
 		}
 	}
 
+	@Disabled("Call API")
+	@Test
+	void testGetTicketGroup() throws IOException {
+		Integer ticketGroupId = -258482;
+		TicketGroupV4GetModel ticketGroup = inventoryService.getTicketGroup(ticketGroupId);
+		log.info("ticket group: {}", ticketGroup);
+	}
+
 	@Disabled("Delete ticket group")
 	@Test
 	void testDeleteTicketGroup() throws IOException {

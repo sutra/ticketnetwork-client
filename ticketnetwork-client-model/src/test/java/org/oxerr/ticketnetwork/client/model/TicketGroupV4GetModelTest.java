@@ -19,8 +19,16 @@ class TicketGroupV4GetModelTest {
 	}
 
 	@Test
-	void test() throws IOException {
-		try (var src = getClass().getResourceAsStream("TicketGroupV4GetModel.json")) {
+	void testCreateTicketGroupResponse() throws IOException {
+		try (var src = getClass().getResourceAsStream("TicketGroupV4GetModel-createTicketGroup-response.json")) {
+			var ticketGroupV4GetModel = objectMapper.readValue(src, TicketGroupV4GetModel.class);
+			assertNotNull(ticketGroupV4GetModel);
+		}
+	}
+
+	@Test
+	void testGetTicketGroupResponse() throws IOException {
+		try (var src = getClass().getResourceAsStream("TicketGroupV4GetModel-getTicketGroup-response.json")) {
 			var ticketGroupV4GetModel = objectMapper.readValue(src, TicketGroupV4GetModel.class);
 			assertNotNull(ticketGroupV4GetModel);
 		}

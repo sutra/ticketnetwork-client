@@ -144,6 +144,26 @@ public interface InventoryResource {
 		throws IOException, TicketNetworkException;
 
 	/**
+	 * Gets a single ticket group by ID.
+	 *
+	 * <p>
+	 * If successful, the HTTP response code will indicate a 200 (OK) response,
+	 * and a representation of the ticket group will be included in the response.
+	 * </p>
+	 *
+	 * @param ticketGroupId The ticket group ID.
+	 * @return the ticket group.
+	 * @throws IOException if an I/O error occurs.
+	 * @throws TicketNetworkException if a business exception occurs.
+	 */
+	@GET
+	@Path("/ticketgroups/{ticketGroupId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	TicketGroupV4GetModel getTicketGroup(@PathParam("ticketGroupId") Integer ticketGroupId)
+		throws IOException, TicketNetworkException;
+
+	/**
 	 * Deletes a single ticket group by ID.
 	 *
 	 * <p>

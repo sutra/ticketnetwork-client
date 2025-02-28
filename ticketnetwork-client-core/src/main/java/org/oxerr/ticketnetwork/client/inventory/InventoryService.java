@@ -23,6 +23,8 @@ public interface InventoryService {
 
 	TicketGroupV4GetModel createTicketGroup(TicketGroupV4PostModel ticketGroup) throws IOException;
 
+	TicketGroupV4GetModel getTicketGroup(Integer ticketGroupId) throws IOException;
+
 	void deleteTicketGroup(Integer ticketGroupId) throws IOException;
 
 	SeatingTypesGetModel getSeatingTypes() throws IOException;

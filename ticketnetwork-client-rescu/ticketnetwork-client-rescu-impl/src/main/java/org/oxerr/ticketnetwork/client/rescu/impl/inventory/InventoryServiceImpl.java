@@ -41,6 +41,11 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 
 	@Override
+	public TicketGroupV4GetModel getTicketGroup(Integer ticketGroupId) throws IOException {
+		return inventoryResource.getTicketGroup(ticketGroupId);
+	}
+
+	@Override
 	public void deleteTicketGroup(Integer ticketGroupId) throws IOException {
 		inventoryResource.deleteTicketGroup(ticketGroupId);
 	}
