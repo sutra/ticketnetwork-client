@@ -111,6 +111,9 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 				super.configureObjectMapper(objectMapper);
 				objectMapper.setSerializationInclusion(Include.NON_ABSENT);
 				objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+				objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+				objectMapper.configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
+				objectMapper.configure(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, false);
 			}
 
 		};

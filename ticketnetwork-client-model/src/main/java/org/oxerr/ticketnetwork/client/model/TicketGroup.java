@@ -1,7 +1,8 @@
 package org.oxerr.ticketnetwork.client.model;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -28,12 +29,12 @@ public class TicketGroup implements Serializable {
 	/**
 	 * The date and time when the ticket group was created.
 	 */
-	private Instant created;
+	private OffsetDateTime created;
 
 	/**
 	 * The date and time when the ticket group was last updated.
 	 */
-	private Instant updated;
+	private OffsetDateTime updated;
 
 	/**
 	 * Event object.
@@ -59,7 +60,7 @@ public class TicketGroup implements Serializable {
 	/**
 	 * UnitPrice object.
 	 */
-	private UnitPrice unitPrice;
+	private UnitPriceGetModel unitPrice;
 
 	/**
 	 * Indicates whether these tickets are currently on-hand.
@@ -72,7 +73,7 @@ public class TicketGroup implements Serializable {
 	 * this date. The value is a date with no time component. PATCH operations:
 	 * add, replace, test.
 	 */
-	private Instant onHandDate;
+	private LocalDate onHandDate;
 
 	/**
 	 * Indicates whether the tickets are available for instant download.
@@ -236,19 +237,19 @@ public class TicketGroup implements Serializable {
 		this.exchangeTicketGroupId = exchangeTicketGroupId;
 	}
 
-	public Instant getCreated() {
+	public OffsetDateTime getCreated() {
 		return created;
 	}
 
-	public void setCreated(Instant created) {
+	public void setCreated(OffsetDateTime created) {
 		this.created = created;
 	}
 
-	public Instant getUpdated() {
+	public OffsetDateTime getUpdated() {
 		return updated;
 	}
 
-	public void setUpdated(Instant updated) {
+	public void setUpdated(OffsetDateTime updated) {
 		this.updated = updated;
 	}
 
@@ -284,11 +285,11 @@ public class TicketGroup implements Serializable {
 		this.seats = seats;
 	}
 
-	public UnitPrice getUnitPrice() {
+	public UnitPriceGetModel getUnitPrice() {
 		return unitPrice;
 	}
 
-	public void setUnitPrice(UnitPrice unitPrice) {
+	public void setUnitPrice(UnitPriceGetModel unitPrice) {
 		this.unitPrice = unitPrice;
 	}
 
@@ -300,11 +301,11 @@ public class TicketGroup implements Serializable {
 		this.isOnHand = isOnHand;
 	}
 
-	public Instant getOnHandDate() {
+	public LocalDate getOnHandDate() {
 		return onHandDate;
 	}
 
-	public void setOnHandDate(Instant onHandDate) {
+	public void setOnHandDate(LocalDate onHandDate) {
 		this.onHandDate = onHandDate;
 	}
 

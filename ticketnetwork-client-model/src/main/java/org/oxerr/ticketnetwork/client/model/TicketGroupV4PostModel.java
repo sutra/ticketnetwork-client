@@ -58,7 +58,7 @@ public class TicketGroupV4PostModel implements Serializable {
 	/**
 	 * UnitPrice object.
 	 */
-	private UnitPrice unitPrice;
+	private UnitPricePostModel unitPrice;
 
 	/**
 	 * Indicates whether these tickets are currently on-hand.
@@ -214,11 +214,11 @@ public class TicketGroupV4PostModel implements Serializable {
 		this.lowSeat = lowSeat;
 	}
 
-	public UnitPrice getUnitPrice() {
+	public UnitPricePostModel getUnitPrice() {
 		return unitPrice;
 	}
 
-	public void setUnitPrice(UnitPrice unitPrice) {
+	public void setUnitPrice(UnitPricePostModel unitPrice) {
 		this.unitPrice = unitPrice;
 	}
 

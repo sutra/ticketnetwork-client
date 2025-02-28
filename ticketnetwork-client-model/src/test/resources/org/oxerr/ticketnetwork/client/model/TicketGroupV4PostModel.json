@@ -1,0 +1,18 @@
+{
+	"eventId": 6953073,
+	"quantity": 1,
+	"seatingTypeId": 1,
+	"section": "BALCON TABLE 11",
+	"row": "11",
+	"lowSeat": "1",
+	"unitPrice": {
+		"wholesalePrice": 51.75,
+		"retailPrice": 5175,
+		"facePrice": {
+			"value": 5175,
+			"currencyCode": "USD"
+		},
+		"cost": 51.75
+	},
+	"referenceTicketGroupId": 1
+}

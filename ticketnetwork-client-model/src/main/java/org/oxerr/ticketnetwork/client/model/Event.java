@@ -1,7 +1,8 @@
 package org.oxerr.ticketnetwork.client.model;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public class Event implements Serializable {
@@ -21,17 +22,17 @@ public class Event implements Serializable {
 	/**
 	 * The date of the event.
 	 */
-	private Instant date;
+	private OffsetDateTime date;
 
 	/**
 	 * The time of the event. When the value is null, the start Time is TBD.
 	 */
-	private String time;
+	private LocalTime time;
 
 	/**
 	 * The date of the event.
 	 */
-	private Instant dateTime;
+	private OffsetDateTime dateTime;
 
 	/**
 	 * Venue object.
@@ -69,27 +70,27 @@ public class Event implements Serializable {
 		this.name = name;
 	}
 
-	public Instant getDate() {
+	public OffsetDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(Instant date) {
+	public void setDate(OffsetDateTime date) {
 		this.date = date;
 	}
 
-	public String getTime() {
+	public LocalTime getTime() {
 		return time;
 	}
 
-	public void setTime(String time) {
+	public void setTime(LocalTime time) {
 		this.time = time;
 	}
 
-	public Instant getDateTime() {
+	public OffsetDateTime getDateTime() {
 		return dateTime;
 	}
 
-	public void setDateTime(Instant dateTime) {
+	public void setDateTime(OffsetDateTime dateTime) {
 		this.dateTime = dateTime;
 	}
 

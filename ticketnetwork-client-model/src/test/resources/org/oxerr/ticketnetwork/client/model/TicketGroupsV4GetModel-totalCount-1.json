@@ -1,0 +1,168 @@
+{
+	"results": [
+		{
+			"brokerId": 11735,
+			"ticketGroupId": -258482,
+			"exchangeTicketGroupId": null,
+			"created": "2025-02-28T06:04:06.3620075-05:00",
+			"updated": "2025-02-28T06:04:06.3620075-05:00",
+			"event": {
+				"id": 6953073,
+				"name": "Noir Silence",
+				"date": "2026-04-18T00:00:00-04:00",
+				"time": "20:00:00",
+				"dateTime": "2026-04-18T20:00:00-04:00",
+				"venue": {
+					"id": 27759,
+					"name": "Le Club Square Dix30",
+					"address": {
+						"street1": "9200 Boulevard Leduc",
+						"street2": "",
+						"city": "Brossard",
+						"state": "QC",
+						"postalCode": "J4Y 0L1",
+						"countryCode": "CA"
+					}
+				},
+				"categories": [
+					{
+						"id": 982,
+						"description": "CONCERTS-->POP / ROCK"
+					}
+				],
+				"staticMapUrl": "https://d22t3g1yodrpj2.cloudfront.net/LeClubSquareDix30_EndstageTables2_2024-09-30_2024-09-30_0900_09302024_092226_SVGC_tn.png",
+				"venueConfigurationId": 73478
+			},
+			"zone": null,
+			"view": null,
+			"seats": {
+				"section": "BALCON TABLE 11",
+				"row": "11",
+				"standardSection": "Balcony Table 11",
+				"canonicalSection": "Balc$Tbl$11",
+				"levelCode": "Balc Tbl",
+				"seatingType": {
+					"id": 1,
+					"description": "Odd/Even"
+				},
+				"lowSeat": 1,
+				"highSeat": 1,
+				"availableLowSeat": 1,
+				"availableHighSeat": 1
+			},
+			"unitPrice": {
+				"wholesalePrice": {
+					"value": 51.7500,
+					"currencyCode": "USD"
+				},
+				"retailPrice": {
+					"value": 5175.0000,
+					"currencyCode": "USD"
+				},
+				"facePrice": {
+					"currencyCode": "USD",
+					"value": 5175.0000
+				},
+				"cost": {
+					"value": 51.7500,
+					"currencyCode": "USD"
+				},
+				"taxedCost": {
+					"value": 0.0,
+					"currencyCode": "USD"
+				},
+				"msrp": {
+					"value": 0.0,
+					"currencyCode": "USD"
+				}
+			},
+			"isOnHand": true,
+			"onHandDate": "2025-02-28",
+			"isInstant": false,
+			"referenceTicketGroupId": 1,
+			"stockType": {
+				"id": 1,
+				"description": "Standard"
+			},
+			"ticketGroupType": {
+				"id": 1,
+				"description": "Event Ticket"
+			},
+			"splitRule": {
+				"id": 1,
+				"description": "Standard Split Rule"
+			},
+			"quantity": {
+				"total": 1,
+				"available": 1,
+				"held": 0,
+				"sold": 0
+			},
+			"tickets": [],
+			"broadcastChannelIds": "",
+			"notes": {
+				"external": null,
+				"internal": null,
+				"additional": []
+			},
+			"nearTerm": {
+				"nearTermDeliveryMethod": {
+					"id": 0,
+					"description": "Near-Term Special Delivery"
+				},
+				"nearTermDisplay": {
+					"id": 0,
+					"description": "Standard delivery until near-term"
+				}
+			},
+			"orders": null,
+			"lastUpdatedBy": null,
+			"hideSeats": false,
+			"pending": false,
+			"isMercury": false,
+			"isTNPrime": false,
+			"isShort": false,
+			"hasBarcodes": false,
+			"hasPurchaseOrder": false,
+			"purchaseOrderIds": [],
+			"tags": [],
+			"hasQrScreenshots": false,
+			"autopricer": {
+				"isActive": false,
+				"endPrice": null,
+				"percentOfWholesale": null,
+				"startDaysBeforeEvent": null,
+				"endDaysBeforeEvent": null
+			},
+			"thirdPartyExchangeListings": [],
+			"isNatbBroker": false,
+			"_links": [
+				{
+					"href": "https://www.tn-apis.com/inventory/v5/ticketgroups/-258482",
+					"rel": "ea:tickets"
+				},
+				{
+					"href": "https://www.tn-apis.com/inventory/v5/ticketgroups/-258482/etickets",
+					"rel": "etickets"
+				}
+			]
+		}
+	],
+	"totalCount": 1,
+	"page": 1,
+	"count": 1,
+	"_links": [
+		{
+			"href": "https://www.tn-apis.com/inventory/v5/ticketgroups",
+			"rel": "self"
+		},
+		{
+			"href": "https://www.tn-apis.com/inventory/v5/ticketgroups?page=1&perPage=50",
+			"rel": "first"
+		},
+		{
+			"href": "https://www.tn-apis.com/inventory/v5/ticketgroups?page=1&perPage=50",
+			"rel": "last"
+		}
+	]
+}

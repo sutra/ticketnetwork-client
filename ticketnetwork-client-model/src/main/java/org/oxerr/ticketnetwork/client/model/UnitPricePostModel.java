@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 /**
  * Model for unit price for POST requests.
  */
-public class UnitPrice implements Serializable {
+public class UnitPricePostModel implements Serializable {
 
 	private static final long serialVersionUID = 2025022201L;
 

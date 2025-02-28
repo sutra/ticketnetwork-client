@@ -17,7 +17,7 @@ import org.oxerr.ticketnetwork.client.model.TicketGroupTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
-import org.oxerr.ticketnetwork.client.model.UnitPrice;
+import org.oxerr.ticketnetwork.client.model.UnitPricePostModel;
 import org.oxerr.ticketnetwork.client.rescu.impl.ResCUTicketNetworkClients;
 import org.oxerr.ticketnetwork.client.rescu.resource.TicketNetworkException;
 
@@ -52,6 +52,7 @@ class InventoryServiceImplTest {
 		assertEquals(0, ticketGroups.getCount().intValue());
 	}
 
+	@Disabled("Create ticket group")
 	@Test
 	void testCreateTicketGroup() throws IOException {
 		log.info("Creating ticket group...");
@@ -59,7 +60,7 @@ class InventoryServiceImplTest {
 		ticketGroup.setEventId(6953073);
 		ticketGroup.setQuantity(1);
 		ticketGroup.setSeatingTypeId(1); // Odd/Even
-		UnitPrice unitPrice = new UnitPrice();
+		UnitPricePostModel unitPrice = new UnitPricePostModel();
 		unitPrice.setWholesalePrice(new BigDecimal("51.75"));
 		unitPrice.setRetailPrice(new BigDecimal("5175"));
 		MoneyAmountModel faceValue = MoneyAmountModel.of(new BigDecimal("5175"), "USD");
@@ -80,6 +81,7 @@ class InventoryServiceImplTest {
 		}
 	}
 
+	@Disabled("Delete ticket group")
 	@Test
 	void testDeleteTicketGroup() throws IOException {
 		Integer ticketGroupId = 0;
