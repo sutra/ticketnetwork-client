@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class ResCUTicketNetworkClientTest {
 
 	public static ResCUTicketNetworkClient getClient() {
-		return ResCUTicketNetworkClients.getClient();
+		return ResCUTicketNetworkClients.createClient();
 	}
 
 	@Test

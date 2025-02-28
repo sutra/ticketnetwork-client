@@ -6,7 +6,7 @@ import java.util.Properties;
 
 public class ResCUTicketNetworkClients {
 
-	public static ResCUTicketNetworkClient getClient() {
+	public static ResCUTicketNetworkClient createClient() {
 		Properties props = getProps();
 		String baseUrl = props.getProperty("base_url");
 		String consumerKey = props.getProperty("consumer.key");

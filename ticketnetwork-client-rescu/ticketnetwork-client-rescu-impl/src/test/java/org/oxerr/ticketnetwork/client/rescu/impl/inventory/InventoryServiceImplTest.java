@@ -21,7 +21,7 @@ import org.oxerr.ticketnetwork.client.model.UnitPricePostModel;
 import org.oxerr.ticketnetwork.client.rescu.impl.ResCUTicketNetworkClients;
 import org.oxerr.ticketnetwork.client.rescu.resource.TicketNetworkException;
 
-@Disabled("This test requires the access_token.")
+// @Disabled("This test requires the access_token.")
 class InventoryServiceImplTest {
 
 	private final Logger log = LogManager.getLogger();
@@ -30,9 +30,10 @@ class InventoryServiceImplTest {
 
 	@BeforeAll
 	static void setUpBeforeClass() {
-		inventoryService = ResCUTicketNetworkClients.getClient().getInventoryService();
+		inventoryService = ResCUTicketNetworkClients.createClient().getInventoryService();
 	}
 
+	@Disabled("Call API")
 	@Test
 	void testGetTicketGroups() throws IOException {
 		Boolean hasEticket = null;
@@ -88,12 +89,14 @@ class InventoryServiceImplTest {
 		inventoryService.deleteTicketGroup(ticketGroupId);
 	}
 
+	@Disabled("Call API")
 	@Test
 	void testGetSeatingTypes() throws IOException {
 		SeatingTypesGetModel seatingTypes = inventoryService.getSeatingTypes();
 		log.info("seating types: {}", seatingTypes);
 	}
 
+	@Disabled("Call API")
 	@Test
 	void testGetTypes() throws IOException {
 		TicketGroupTypesGetModel types = inventoryService.getTypes();

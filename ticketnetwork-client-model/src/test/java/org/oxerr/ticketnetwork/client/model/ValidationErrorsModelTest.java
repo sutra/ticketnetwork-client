@@ -16,7 +16,7 @@ class ValidationErrorsModelTest {
 
 	@BeforeAll
 	static void setUpBeforeClass() {
-		objectMapper = new ObjectMapper();
+		objectMapper = ObjectMappers.createObjectMapper();
 	}
 
 	@Test
