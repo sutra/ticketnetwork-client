@@ -27,7 +27,7 @@ import com.github.fge.jackson.jsonpointer.JsonPointer;
 import com.github.fge.jsonpatch.JsonPatchOperation;
 import com.github.fge.jsonpatch.ReplaceOperation;
 
-// @Disabled("This test requires the access_token.")
+@Disabled("This test requires the access_token.")
 class InventoryServiceImplTest {
 
 	private final Logger log = LogManager.getLogger();
@@ -103,7 +103,7 @@ class InventoryServiceImplTest {
 		inventoryService.deleteTicketGroup(ticketGroupId);
 	}
 
-	// @Disabled("Call API")
+	@Disabled("Call API")
 	@Test
 	void testUpdateTicketGroup() throws IOException {
 		int ticketGroupId = -258482;
