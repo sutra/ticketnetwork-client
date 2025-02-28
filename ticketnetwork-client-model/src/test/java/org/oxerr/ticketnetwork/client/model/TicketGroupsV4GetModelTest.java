@@ -27,7 +27,7 @@ class TicketGroupsV4GetModelTest {
 
 	@Test
 	void testTotalCount0() throws IOException {
-		try (InputStream src = this.getClass().getResourceAsStream("TicketGroupsV4GetModel-totalCount-0.json")) {
+		try (InputStream src = getClass().getResourceAsStream("TicketGroupsV4GetModel-totalCount-0.json")) {
 			TicketGroupsV4GetModel ticketGroupsV4GetModel = objectMapper.readValue(src, TicketGroupsV4GetModel.class);
 			assertEquals(0, ticketGroupsV4GetModel.getTotalCount().intValue());
 			assertEquals(1, ticketGroupsV4GetModel.getPage().intValue());
@@ -43,7 +43,7 @@ class TicketGroupsV4GetModelTest {
 
 	@Test
 	void testTotalCount1() throws IOException {
-		try (InputStream src = this.getClass().getResourceAsStream("TicketGroupsV4GetModel-totalCount-1.json")) {
+		try (InputStream src = getClass().getResourceAsStream("TicketGroupsV4GetModel-totalCount-1.json")) {
 			TicketGroupsV4GetModel ticketGroupsV4GetModel = objectMapper.readValue(src, TicketGroupsV4GetModel.class);
 
 			TicketGroup ticketGroup = ticketGroupsV4GetModel.getResults().get(0);

@@ -21,7 +21,7 @@ class SeatingTypesGetModelTest {
 
 	@Test
 	void test() throws IOException {
-		try (InputStream src = this.getClass().getResourceAsStream("SeatingTypesGetModel.json")) {
+		try (InputStream src = getClass().getResourceAsStream("SeatingTypesGetModel.json")) {
 			SeatingTypesGetModel seatingTypesGetModel = objectMapper.readValue(src, SeatingTypesGetModel.class);
 			assertEquals(3, seatingTypesGetModel.getSeatingTypes().size());
 

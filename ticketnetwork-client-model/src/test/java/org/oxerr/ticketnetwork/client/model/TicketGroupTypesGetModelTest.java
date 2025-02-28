@@ -23,7 +23,7 @@ class TicketGroupTypesGetModelTest {
 
 	@Test
 	void test() throws IOException {
-		try (InputStream src = this.getClass().getResourceAsStream("TicketGroupTypesGetModel.json")) {
+		try (InputStream src = getClass().getResourceAsStream("TicketGroupTypesGetModel.json")) {
 			TicketGroupTypesGetModel ticketGroupTypesGetModel = objectMapper.readValue(src,
 					TicketGroupTypesGetModel.class);
 			List<TicketGroupType> ticketGroupTypes = ticketGroupTypesGetModel.getTicketGroupTypes();
