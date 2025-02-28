@@ -10,6 +10,8 @@ import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
 import org.oxerr.ticketnetwork.client.rescu.resource.inventory.InventoryResource;
 
+import com.github.fge.jsonpatch.JsonPatchOperation;
+
 public class InventoryServiceImpl implements InventoryService {
 
 	private final InventoryResource inventoryResource;
@@ -36,18 +38,29 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 
 	@Override
-	public TicketGroupV4GetModel createTicketGroup(TicketGroupV4PostModel ticketGroup) throws IOException {
+	public TicketGroupV4GetModel createTicketGroup(
+		TicketGroupV4PostModel ticketGroup
+	) throws IOException {
 		return inventoryResource.createTicketGroup(ticketGroup);
 	}
 
 	@Override
-	public TicketGroupV4GetModel getTicketGroup(Integer ticketGroupId) throws IOException {
+	public TicketGroupV4GetModel getTicketGroup(Integer ticketGroupId)
+		throws IOException {
 		return inventoryResource.getTicketGroup(ticketGroupId);
 	}
 
 	@Override
 	public void deleteTicketGroup(Integer ticketGroupId) throws IOException {
 		inventoryResource.deleteTicketGroup(ticketGroupId);
+	}
+
+	@Override
+	public TicketGroupV4GetModel updateTicketGroup(
+		Integer ticketGroupId,
+		JsonPatchOperation... patchOperations
+	) throws IOException {
+		return inventoryResource.updateTicketGroup(ticketGroupId, patchOperations);
 	}
 
 	@Override

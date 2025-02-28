@@ -109,7 +109,6 @@ public interface InventoryResource {
 	@GET
 	@Path("/ticketgroups")
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	TicketGroupsV4GetModel getTicketGroups(
 		@QueryParam("hasEticket") Boolean hasEticket,
 		@QueryParam("pending") Boolean pending,
@@ -159,7 +158,6 @@ public interface InventoryResource {
 	@GET
 	@Path("/ticketgroups/{ticketGroupId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	TicketGroupV4GetModel getTicketGroup(@PathParam("ticketGroupId") Integer ticketGroupId)
 		throws IOException, TicketNetworkException;
 
@@ -179,7 +177,6 @@ public interface InventoryResource {
 	@DELETE
 	@Path("/ticketgroups/{ticketGroupId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	void deleteTicketGroup(@PathParam("ticketGroupId") Integer ticketGroupId)
 		throws IOException, TicketNetworkException;
 
@@ -257,7 +254,7 @@ public interface InventoryResource {
 	@PATCH
 	@Path("/ticketgroups/{ticketGroupId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON_PATCH_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
 	TicketGroupV4GetModel updateTicketGroup(
 		@PathParam("ticketGroupId") Integer ticketGroupId,
 		JsonPatchOperation... patchOperations
@@ -266,13 +263,11 @@ public interface InventoryResource {
 	@GET
 	@Path("/ticketgroups/seatingtypes")
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	SeatingTypesGetModel getSeatingTypes() throws IOException, TicketNetworkException;
 
 	@GET
 	@Path("/ticketgroups/types")
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	TicketGroupTypesGetModel getTypes() throws IOException, TicketNetworkException;
 
 }

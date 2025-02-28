@@ -21,6 +21,12 @@ import org.oxerr.ticketnetwork.client.model.UnitPricePostModel;
 import org.oxerr.ticketnetwork.client.rescu.impl.ResCUTicketNetworkClients;
 import org.oxerr.ticketnetwork.client.rescu.resource.TicketNetworkException;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.DecimalNode;
+import com.github.fge.jackson.jsonpointer.JsonPointer;
+import com.github.fge.jsonpatch.JsonPatchOperation;
+import com.github.fge.jsonpatch.ReplaceOperation;
+
 // @Disabled("This test requires the access_token.")
 class InventoryServiceImplTest {
 
@@ -95,6 +101,17 @@ class InventoryServiceImplTest {
 	void testDeleteTicketGroup() throws IOException {
 		Integer ticketGroupId = 0;
 		inventoryService.deleteTicketGroup(ticketGroupId);
+	}
+
+	// @Disabled("Call API")
+	@Test
+	void testUpdateTicketGroup() throws IOException {
+		int ticketGroupId = -258482;
+		JsonPatchOperation[] pathOperations = new JsonPatchOperation[1];
+		JsonPointer path = JsonPointer.of("unitPrice", "wholesalePrice", "value");
+		JsonNode value = DecimalNode.valueOf(new BigDecimal("51.76"));
+		pathOperations[0] = new ReplaceOperation(path, value);
+		inventoryService.updateTicketGroup(ticketGroupId, pathOperations);
 	}
 
 	@Disabled("Call API")

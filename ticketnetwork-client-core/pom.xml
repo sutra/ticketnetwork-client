@@ -15,6 +15,10 @@
 	<name>TicketNetwork Client - Core</name>
 	<dependencies>
 		<dependency>
+			<groupId>com.github.java-json-tools</groupId>
+			<artifactId>json-patch</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>ticketnetwork-client-model</artifactId>
 			<version>${project.version}</version>
