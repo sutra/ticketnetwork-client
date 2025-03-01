@@ -6,14 +6,19 @@ import java.util.Properties;
 
 public class ResCUTicketNetworkClients {
 
+	public static ResCUTicketNetworkKeyManagerClient createKeyManagerClient() {
+		Properties props = getProps();
+		String consumerKey = props.getProperty("consumer.key");
+		String consumerSecret = props.getProperty("consumer.secret");
+		return new ResCUTicketNetworkKeyManagerClient(consumerKey, consumerSecret);
+	}
+
 	public static ResCUTicketNetworkClient createClient() {
 		Properties props = getProps();
 		String baseUrl = props.getProperty("base_url");
-		String consumerKey = props.getProperty("consumer.key");
-		String consumerSecret = props.getProperty("consumer.secret");
-		String accessToken = props.getProperty("access_token");
 		Integer brokerId = Integer.parseInt(props.getProperty("broker_id"));
-		return new ResCUTicketNetworkClient(baseUrl, consumerKey, consumerSecret, accessToken, brokerId);
+		String accessToken = props.getProperty("access_token");
+		return new ResCUTicketNetworkClient(baseUrl, brokerId, accessToken);
 	}
 
 	private static Properties getProps() {
