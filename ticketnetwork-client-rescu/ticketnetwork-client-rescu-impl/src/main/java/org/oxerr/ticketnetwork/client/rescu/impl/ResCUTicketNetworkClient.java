@@ -53,7 +53,7 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 		String consumerKey,
 		String consumerSecret,
 		String accessToken,
-		String brokerId,
+		Integer brokerId,
 		Interceptor... interceptors
 	) {
 		this.baseUrl = baseUrl;
@@ -119,7 +119,7 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 		};
 	}
 
-	protected ClientConfig createClientConfig(String accessToken, String brokerId) {
+	protected ClientConfig createClientConfig(String accessToken, Integer brokerId) {
 		var jacksonObjectMapperFactory = createJacksonObjectMapperFactory();
 		var clientConfig = new ClientConfig();
 		clientConfig.addDefaultParam(HeaderParam.class, "Authorization", "Bearer " + accessToken);
