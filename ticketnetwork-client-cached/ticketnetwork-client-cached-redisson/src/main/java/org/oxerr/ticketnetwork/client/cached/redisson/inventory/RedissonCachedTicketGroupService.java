@@ -126,19 +126,34 @@ public class RedissonCachedTicketGroupService
 	}
 
 	@Override
-	protected void createListing(TicketNetworkEvent event, TicketNetworkTicketGroup ticketGroup) throws IOException {
-		TicketGroupV4GetModel ticketGroupV4GetModel = inventoryService.createTicketGroup(ticketGroup.getRequest());
+	protected void createListing(TicketNetworkEvent event, TicketNetworkTicketGroup listing) throws IOException {
+		TicketGroupV4GetModel ticketGroupV4GetModel = inventoryService.createTicketGroup(listing.getRequest());
 
 		// Update ticket group ID in cache
-		TicketNetworkCachedTicketGroup cached = getEventCache(event.getId()).get(ticketGroup.getId());
+		TicketNetworkCachedTicketGroup cached = getEventCache(event.getId()).get(listing.getId());
 		cached.setTicketGroupId(ticketGroupV4GetModel.getTicketGroupId());
 
-		getEventCache(event.getId()).put(ticketGroup.getId(), cached);
+		getEventCache(event.getId()).put(listing.getId(), cached);
 	}
 
 	@Override
-	protected void deleteListing(TicketNetworkEvent event, String listingId,
-			TicketNetworkCachedTicketGroup cachedListing, int priority) throws IOException {
+	protected void updateListing(
+		TicketNetworkEvent event,
+		TicketNetworkTicketGroup listing,
+		TicketNetworkCachedTicketGroup cachedListing,
+		int priority
+	) throws IOException {
+		deleteListing(event, listing.getId(), cachedListing, priority);
+		createListing(event, listing);
+	}
+
+	@Override
+	protected void deleteListing(
+		TicketNetworkEvent event,
+		String listingId,
+		TicketNetworkCachedTicketGroup cachedListing,
+		int priority
+	) throws IOException {
 		if (cachedListing.getTicketGroupId() != null) {
 			inventoryService.deleteTicketGroup(cachedListing.getTicketGroupId());
 		}
