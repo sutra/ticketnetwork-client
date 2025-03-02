@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.oxerr.ticket.inventory.support.Event;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 
-public class TicketNetworkEvent extends Event<String, Integer, TicketGroupV4PostModel, TicketNetworkTicketGroup> {
+public class TicketNetworkEvent extends Event<String, String, TicketGroupV4PostModel, TicketNetworkTicketGroup> {
 
 	private static final long serialVersionUID = 2023031901L;
 

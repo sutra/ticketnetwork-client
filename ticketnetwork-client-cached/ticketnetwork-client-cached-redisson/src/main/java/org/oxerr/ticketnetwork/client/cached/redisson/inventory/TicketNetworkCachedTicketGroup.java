@@ -6,31 +6,60 @@ import org.oxerr.ticket.inventory.support.cached.redisson.CachedListing;
 import org.oxerr.ticket.inventory.support.cached.redisson.Status;
 import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkEvent;
 import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkTicketGroup;
+import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 
 public class TicketNetworkCachedTicketGroup extends CachedListing<TicketGroupV4PostModel> {
 
 	private static final long serialVersionUID = 2024101701L;
 
+	private String id;
+
 	private TicketNetworkCachedEvent event;
 
-	private Integer ticketNetworkEventId;
+	/**
+	 * The local ID of the ticket group.
+	 *
+	 * @see {@link TicketGroupV4GetModel#getTicketGroupId()}
+	 */
+	private Integer ticketGroupId;
 
 	public TicketNetworkCachedTicketGroup() {
 	}
 
-	public TicketNetworkCachedTicketGroup(TicketNetworkEvent event, TicketNetworkTicketGroup ticketGroup, Status status) {
+	public TicketNetworkCachedTicketGroup(
+		TicketNetworkEvent event,
+		TicketNetworkTicketGroup ticketGroup,
+		Status status
+	) {
 		this(new TicketNetworkCachedEvent(event), ticketGroup, status);
 	}
 
-	public TicketNetworkCachedTicketGroup(TicketNetworkCachedEvent event, TicketNetworkTicketGroup ticketGroup, Status status) {
-		this(event, ticketGroup.getRequest(), status);
+	public TicketNetworkCachedTicketGroup(
+		TicketNetworkCachedEvent event,
+		TicketNetworkTicketGroup ticketGroup,
+		Status status
+	) {
+		this(
+			event,
+			ticketGroup.getId(),
+			ticketGroup.getRequest(),
+			ticketGroup.getTicketGroupId(),
+			status
+		);
 	}
 
-	public TicketNetworkCachedTicketGroup(TicketNetworkCachedEvent event, TicketGroupV4PostModel request, Status status) {
+	public TicketNetworkCachedTicketGroup(
+		TicketNetworkCachedEvent event,
+		String id,
+		TicketGroupV4PostModel request,
+		Integer ticketGroupId,
+		Status status
+	) {
 		super(request, status);
+		this.id = id;
 		this.event = event;
-		this.ticketNetworkEventId = event.getTicketNetworkEventId();
+		this.ticketGroupId = ticketGroupId;
 	}
 
 	public TicketNetworkCachedEvent getEvent() {
@@ -41,16 +70,21 @@ public class TicketNetworkCachedTicketGroup extends CachedListing<TicketGroupV4P
 		this.event = event;
 	}
 
-	public Integer getTicketNetworkEventId() {
-		return ticketNetworkEventId;
+	public Integer getTicketGroupId() {
+		return ticketGroupId;
 	}
 
-	public void setTicketNetworkEventId(Integer ticketNetworkEventId) {
-		this.ticketNetworkEventId = ticketNetworkEventId;
+	public void setTicketGroupId(Integer ticketGroupId) {
+		this.ticketGroupId = ticketGroupId;
 	}
 
 	public TicketNetworkTicketGroup toTicketNetworkTicketGroup() {
-		return new TicketNetworkTicketGroup(this.getRequest().getReferenceTicketGroupId(), this.event.getTicketNetworkEventId(), this.getRequest());
+		return new TicketNetworkTicketGroup(
+			id,
+			this.getRequest(),
+			this.event.getTicketNetworkEventId(),
+			ticketGroupId
+		);
 	}
 
 	@Override

@@ -15,11 +15,19 @@ import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkCachedTicket
 import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkEvent;
 import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkTicketGroup;
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
+import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.redisson.api.RedissonClient;
 
 public class RedissonCachedTicketGroupService
-	extends RedissonCachedListingServiceSupport<String, Integer, TicketGroupV4PostModel, TicketNetworkTicketGroup, TicketNetworkEvent, TicketNetworkCachedTicketGroup>
+	extends RedissonCachedListingServiceSupport<
+		String,
+		String,
+		TicketGroupV4PostModel,
+		TicketNetworkTicketGroup,
+		TicketNetworkEvent,
+		TicketNetworkCachedTicketGroup
+	>
 	implements TicketNetworkCachedTicketGroupService {
 
 	private final InventoryService inventoryService;
@@ -68,7 +76,7 @@ public class RedissonCachedTicketGroupService
 		@Nullable TicketNetworkCachedTicketGroup cachedListing
 	) {
 		boolean shouldCreate = super.shouldCreate(event, ticketGroup, cachedListing);
-		return shouldCreate || (cachedListing != null && !Objects.equals(ticketGroup.getTicketNetworkEventId(), cachedListing.getTicketNetworkEventId()));
+		return shouldCreate || (cachedListing != null && !Objects.equals(ticketGroup.getTicketNetworkEventId(), cachedListing.getEvent().getTicketNetworkEventId()));
 	}
 
 	@Override
@@ -78,7 +86,7 @@ public class RedissonCachedTicketGroupService
 		@Nullable TicketNetworkCachedTicketGroup cachedListing
 	) {
 		boolean shouldUpdate = super.shouldUpdate(event, ticketGroup, cachedListing);
-		return shouldUpdate || (cachedListing != null && !Objects.equals(ticketGroup.getTicketNetworkEventId(), cachedListing.getTicketNetworkEventId()));
+		return shouldUpdate || (cachedListing != null && !Objects.equals(ticketGroup.getTicketNetworkEventId(), cachedListing.getEvent().getTicketNetworkEventId()));
 	}
 
 	@Override
@@ -109,26 +117,44 @@ public class RedissonCachedTicketGroupService
 	@Override
 	protected boolean shouldDelete(
 		@Nonnull TicketNetworkEvent event,
-		@Nonnull Set<Integer> inventoryListingIds,
-		@Nonnull Integer ticketGroupId,
+		@Nonnull Set<String> inventoryListingIds,
+		@Nonnull String listingId,
 		@Nonnull TicketNetworkCachedTicketGroup cachedListing
 	) {
-		return super.shouldDelete(event, inventoryListingIds, ticketGroupId, cachedListing)
-			|| !Objects.equals(event.getTicketNetworkEventId(), cachedListing.getTicketNetworkEventId());
+		return super.shouldDelete(event, inventoryListingIds, listingId, cachedListing)
+			|| !Objects.equals(event.getTicketNetworkEventId(), cachedListing.getEvent().getTicketNetworkEventId());
 	}
 
 	@Override
 	protected void createListing(TicketNetworkEvent event, TicketNetworkTicketGroup ticketGroup) throws IOException {
-		this.inventoryService.createTicketGroup(ticketGroup.getRequest());
+		TicketGroupV4GetModel ticketGroupV4GetModel = inventoryService.createTicketGroup(ticketGroup.getRequest());
+
+		// Update ticket group ID in cache
+		TicketNetworkCachedTicketGroup cached = getEventCache(event.getId()).get(ticketGroup.getId());
+		cached.setTicketGroupId(ticketGroupV4GetModel.getTicketGroupId());
+
+		getEventCache(event.getId()).put(ticketGroup.getId(), cached);
 	}
 
 	@Override
-	protected void deleteListing(TicketNetworkEvent event, Integer ticketGroupId) throws IOException {
-		this.inventoryService.deleteTicketGroup(ticketGroupId);
+	protected void deleteListing(TicketNetworkEvent event, String listingId,
+			TicketNetworkCachedTicketGroup cachedListing, int priority) throws IOException {
+		if (cachedListing.getTicketGroupId() != null) {
+			inventoryService.deleteTicketGroup(cachedListing.getTicketGroupId());
+		}
 	}
 
 	@Override
-	protected TicketNetworkCachedTicketGroup toCached(TicketNetworkEvent event, TicketNetworkTicketGroup ticketGroup, Status status) {
+	protected void deleteListing(TicketNetworkEvent event, String listingId) throws IOException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	protected TicketNetworkCachedTicketGroup toCached(
+		TicketNetworkEvent event,
+		TicketNetworkTicketGroup ticketGroup,
+		Status status
+	) {
 		return new TicketNetworkCachedTicketGroup(new TicketNetworkCachedEvent(event), ticketGroup, status);
 	}
 
