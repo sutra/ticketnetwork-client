@@ -3,6 +3,8 @@ package org.oxerr.ticketnetwork.client.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * Model for unit price for POST requests.
  */
@@ -95,6 +97,11 @@ public class UnitPricePostModel implements Serializable {
 
 	public void setMsrp(BigDecimal msrp) {
 		this.msrp = msrp;
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

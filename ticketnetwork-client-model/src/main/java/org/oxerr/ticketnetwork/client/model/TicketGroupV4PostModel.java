@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class TicketGroupV4PostModel implements Serializable {
 
 	private static final long serialVersionUID = 2025022301L;
@@ -348,6 +350,11 @@ public class TicketGroupV4PostModel implements Serializable {
 
 	public void setAutopricer(Autopricer autopricer) {
 		this.autopricer = autopricer;
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

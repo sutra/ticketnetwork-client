@@ -2,6 +2,8 @@ package org.oxerr.ticketnetwork.client.model;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class NearTermDeliveryMethod implements Serializable {
 
 	private static final long serialVersionUID = 2025022201L;
@@ -31,6 +33,11 @@ public class NearTermDeliveryMethod implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

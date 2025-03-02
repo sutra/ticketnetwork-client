@@ -2,6 +2,8 @@ package org.oxerr.ticketnetwork.client.model;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class Order implements Serializable {
 
 	private static final long serialVersionUID = 2025022201L;
@@ -43,6 +45,11 @@ public class Order implements Serializable {
 
 	public void setOrderType(String orderType) {
 		this.orderType = orderType;
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

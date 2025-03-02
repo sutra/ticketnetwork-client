@@ -2,6 +2,8 @@ package org.oxerr.ticketnetwork.client.model;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class Seats implements Serializable {
 
 	private static final long serialVersionUID = 2025022201L;
@@ -143,6 +145,11 @@ public class Seats implements Serializable {
 
 	public void setAvailableHighSeat(Integer availableHighSeat) {
 		this.availableHighSeat = availableHighSeat;
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

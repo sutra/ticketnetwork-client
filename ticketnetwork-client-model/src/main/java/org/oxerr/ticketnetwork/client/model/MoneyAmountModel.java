@@ -3,6 +3,8 @@ package org.oxerr.ticketnetwork.client.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * Class to represent a price value and its currency.
  */
@@ -46,6 +48,11 @@ public class MoneyAmountModel implements Serializable {
 
 	public void setCurrencyCode(String currencyCode) {
 		this.currencyCode = currencyCode;
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

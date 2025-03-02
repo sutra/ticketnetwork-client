@@ -3,6 +3,8 @@ package org.oxerr.ticketnetwork.client.model;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class Notes implements Serializable {
 
 	private static final long serialVersionUID = 2025022201L;
@@ -47,6 +49,11 @@ public class Notes implements Serializable {
 
 	public void setAdditional(List<Note> additional) {
 		this.additional = additional;
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

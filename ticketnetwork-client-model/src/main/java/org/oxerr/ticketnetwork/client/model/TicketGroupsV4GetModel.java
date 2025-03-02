@@ -3,6 +3,8 @@ package org.oxerr.ticketnetwork.client.model;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TicketGroupsV4GetModel implements Serializable {
@@ -75,6 +77,11 @@ public class TicketGroupsV4GetModel implements Serializable {
 
 	public void setLinks(List<Link> links) {
 		this.links = links;
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

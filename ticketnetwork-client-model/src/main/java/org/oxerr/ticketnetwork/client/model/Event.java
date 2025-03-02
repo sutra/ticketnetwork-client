@@ -5,6 +5,8 @@ import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class Event implements Serializable {
 
 	private static final long serialVersionUID = 2025022201L;
@@ -124,6 +126,11 @@ public class Event implements Serializable {
 
 	public void setVenueConfigurationId(Integer venueConfigurationId) {
 		this.venueConfigurationId = venueConfigurationId;
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

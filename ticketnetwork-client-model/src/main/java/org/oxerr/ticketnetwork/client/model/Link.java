@@ -2,6 +2,8 @@ package org.oxerr.ticketnetwork.client.model;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * The HTTP links for the resource; links are used to transition through
  * application states by the client and identify related resources available
@@ -90,6 +92,11 @@ public class Link implements Serializable {
 
 	public void setLength(Long length) {
 		this.length = length;
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

@@ -2,6 +2,8 @@ package org.oxerr.ticketnetwork.client.model;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * Model for unit price for POST requests.
  */
@@ -94,6 +96,11 @@ public class UnitPriceGetModel implements Serializable {
 
 	public void setMsrp(MoneyAmountModel msrp) {
 		this.msrp = msrp;
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

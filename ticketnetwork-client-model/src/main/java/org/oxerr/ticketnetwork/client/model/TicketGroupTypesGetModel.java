@@ -3,6 +3,8 @@ package org.oxerr.ticketnetwork.client.model;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * Meta-entity for GET ticket group types.
  */
@@ -21,6 +23,11 @@ public class TicketGroupTypesGetModel implements Serializable {
 
 	public void setTicketGroupTypes(List<TicketGroupType> ticketGroupTypes) {
 		this.ticketGroupTypes = ticketGroupTypes;
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }
