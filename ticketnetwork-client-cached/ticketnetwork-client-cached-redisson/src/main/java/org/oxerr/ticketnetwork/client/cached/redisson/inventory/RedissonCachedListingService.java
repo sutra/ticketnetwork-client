@@ -33,7 +33,7 @@ public class RedissonCachedListingService
 	private final InventoryService inventoryService;
 
 	/**
-	 * Constructs with default {@link ListingConfiguration} and default {@link RetryConfiguration}.
+	 * Constructs with default {@link ListingConfiguration}.
 	 *
 	 * @param inventoryService the inventory service.
 	 * @param redissonClient the redisson client.
@@ -50,7 +50,7 @@ public class RedissonCachedListingService
 	}
 
 	/**
-	 * Constructs with specified {@link ListingConfiguration} and specified {@link RetryConfiguration}.
+	 * Constructs with specified {@link ListingConfiguration}.
 	 *
 	 * @param inventoryService the inventory service.
 	 * @param redissonClient the redisson client.

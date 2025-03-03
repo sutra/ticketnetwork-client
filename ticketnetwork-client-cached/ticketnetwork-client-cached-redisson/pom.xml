@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>org.oxerr.ticketnetwork.client.cached</groupId>
 		<artifactId>ticketnetwork-client-cached</artifactId>
-		<version>0.0.0-SNAPSHOT</version>
+		<version>0.0.0</version>
 	</parent>
 	<artifactId>ticketnetwork-client-cached-redisson</artifactId>
 	<name>TicketNetwork Client - Cached - Redisson</name>

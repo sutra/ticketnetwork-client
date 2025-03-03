@@ -135,7 +135,7 @@ public class TicketGroupV4PostModel implements Serializable {
 	/**
 	 * The reference (external) ticket group ID.
 	 *
-	 * @apiNote This field does not have to be unique.
+	 * Note: This field does not have to be unique.
 	 */
 	private Integer referenceTicketGroupId;
 

@@ -20,7 +20,7 @@ public class TicketNetworkCachedListing extends CachedListing<TicketGroupV4PostM
 	/**
 	 * The local ID of the ticket group.
 	 *
-	 * @see {@link TicketGroupV4GetModel#getTicketGroupId()}
+	 * @see TicketGroupV4GetModel#getTicketGroupId()
 	 */
 	private Integer ticketGroupId;
 
