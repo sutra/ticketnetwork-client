@@ -5,14 +5,14 @@ import java.util.concurrent.ForkJoinPool;
 
 import org.oxerr.ticketnetwork.client.TicketNetworkClient;
 import org.oxerr.ticketnetwork.client.cached.CachedTicketNetworkClient;
-import org.oxerr.ticketnetwork.client.cached.redisson.inventory.RedissonCachedTicketGroupService;
+import org.oxerr.ticketnetwork.client.cached.redisson.inventory.RedissonCachedListingService;
 import org.redisson.api.RedissonClient;
 
 public class RedissonCachedTicketNetworkClient implements CachedTicketNetworkClient {
 
 	private final TicketNetworkClient ticketNetworkClient;
 
-	private final RedissonCachedTicketGroupService cachedSellerListingService;
+	private final RedissonCachedListingService cachedSellerListingService;
 
 	public RedissonCachedTicketNetworkClient(
 		TicketNetworkClient ticketNetworkClient,
@@ -30,7 +30,7 @@ public class RedissonCachedTicketNetworkClient implements CachedTicketNetworkCli
 	) {
 		this(
 			ticketNetworkClient,
-			new RedissonCachedTicketGroupService(
+			new RedissonCachedListingService(
 				ticketNetworkClient.getInventoryService(),
 				redissonClient,
 				keyPrefix,
@@ -41,7 +41,7 @@ public class RedissonCachedTicketNetworkClient implements CachedTicketNetworkCli
 
 	public RedissonCachedTicketNetworkClient(
 		TicketNetworkClient ticketNetworkClient,
-		RedissonCachedTicketGroupService cachedSellerListingService
+		RedissonCachedListingService cachedSellerListingService
 	) {
 		this.ticketNetworkClient = ticketNetworkClient;
 		this.cachedSellerListingService = cachedSellerListingService;
@@ -53,7 +53,7 @@ public class RedissonCachedTicketNetworkClient implements CachedTicketNetworkCli
 	}
 
 	@Override
-	public RedissonCachedTicketGroupService getCachedListingService() {
+	public RedissonCachedListingService getCachedListingService() {
 		return cachedSellerListingService;
 	}
 

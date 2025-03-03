@@ -7,7 +7,7 @@ import org.oxerr.ticketnetwork.client.model.Event;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 
-public class TicketNetworkTicketGroup extends Listing<String, TicketGroupV4PostModel> {
+public class TicketNetworkListing extends Listing<String, TicketGroupV4PostModel> {
 
 	private static final long serialVersionUID = 2024101701L;
 
@@ -32,23 +32,14 @@ public class TicketNetworkTicketGroup extends Listing<String, TicketGroupV4PostM
 	 */
 	private Integer ticketGroupId;
 
-	public TicketNetworkTicketGroup() {
+	public TicketNetworkListing() {
 	}
 
-	public TicketNetworkTicketGroup(
-		String id,
-		TicketGroupV4PostModel request,
-		Integer ticketNetworkEventId
-	) {
-		this(id, request, ticketNetworkEventId, null);
+	public TicketNetworkListing(String id, Integer ticketNetworkEventId, TicketGroupV4PostModel request) {
+		this(id, ticketNetworkEventId, request, null);
 	}
 
-	public TicketNetworkTicketGroup(
-		String id,
-		TicketGroupV4PostModel request,
-		Integer ticketNetworkEventId,
-		Integer ticketGroupId
-	) {
+	public TicketNetworkListing(String id, Integer ticketNetworkEventId, TicketGroupV4PostModel request, Integer ticketGroupId) {
 		super(id, request);
 		this.ticketNetworkEventId = ticketNetworkEventId;
 		this.referenceTicketGroupId = request.getReferenceTicketGroupId();

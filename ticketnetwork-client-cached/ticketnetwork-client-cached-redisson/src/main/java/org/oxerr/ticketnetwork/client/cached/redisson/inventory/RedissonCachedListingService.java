@@ -11,24 +11,24 @@ import javax.annotation.Nullable;
 import org.oxerr.ticket.inventory.support.cached.redisson.ListingConfiguration;
 import org.oxerr.ticket.inventory.support.cached.redisson.RedissonCachedListingServiceSupport;
 import org.oxerr.ticket.inventory.support.cached.redisson.Status;
-import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkCachedTicketGroupService;
+import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkCachedListingService;
 import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkEvent;
-import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkTicketGroup;
+import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkListing;
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.redisson.api.RedissonClient;
 
-public class RedissonCachedTicketGroupService
+public class RedissonCachedListingService
 	extends RedissonCachedListingServiceSupport<
 		String,
 		String,
 		TicketGroupV4PostModel,
-		TicketNetworkTicketGroup,
+		TicketNetworkListing,
 		TicketNetworkEvent,
-		TicketNetworkCachedTicketGroup
+		TicketNetworkCachedListing
 	>
-	implements TicketNetworkCachedTicketGroupService {
+	implements TicketNetworkCachedListingService {
 
 	private final InventoryService inventoryService;
 
@@ -40,7 +40,7 @@ public class RedissonCachedTicketGroupService
 	 * @param keyPrefix the key prefix for the cache.
 	 * @param executor the executor.
 	 */
-	public RedissonCachedTicketGroupService(
+	public RedissonCachedListingService(
 		InventoryService inventoryService,
 		RedissonClient redissonClient,
 		String keyPrefix,
@@ -58,7 +58,7 @@ public class RedissonCachedTicketGroupService
 	 * @param executor the executor.
 	 * @param listingConfiguration the listing configuration.
 	 */
-	public RedissonCachedTicketGroupService(
+	public RedissonCachedListingService(
 		InventoryService inventoryService,
 		RedissonClient redissonClient,
 		String keyPrefix,
@@ -72,8 +72,8 @@ public class RedissonCachedTicketGroupService
 	@Override
 	protected boolean shouldCreate(
 		@Nonnull TicketNetworkEvent event,
-		@Nonnull TicketNetworkTicketGroup ticketGroup,
-		@Nullable TicketNetworkCachedTicketGroup cachedListing
+		@Nonnull TicketNetworkListing ticketGroup,
+		@Nullable TicketNetworkCachedListing cachedListing
 	) {
 		boolean shouldCreate = super.shouldCreate(event, ticketGroup, cachedListing);
 		return shouldCreate || (cachedListing != null && !Objects.equals(ticketGroup.getTicketNetworkEventId(), cachedListing.getEvent().getTicketNetworkEventId()));
@@ -82,8 +82,8 @@ public class RedissonCachedTicketGroupService
 	@Override
 	protected boolean shouldUpdate(
 		@Nonnull TicketNetworkEvent event,
-		@Nonnull TicketNetworkTicketGroup ticketGroup,
-		@Nullable TicketNetworkCachedTicketGroup cachedListing
+		@Nonnull TicketNetworkListing ticketGroup,
+		@Nullable TicketNetworkCachedListing cachedListing
 	) {
 		boolean shouldUpdate = super.shouldUpdate(event, ticketGroup, cachedListing);
 		return shouldUpdate || (cachedListing != null && !Objects.equals(ticketGroup.getTicketNetworkEventId(), cachedListing.getEvent().getTicketNetworkEventId()));
@@ -92,8 +92,8 @@ public class RedissonCachedTicketGroupService
 	@Override
 	protected int getPriority(
 		@Nonnull TicketNetworkEvent event,
-		@Nullable TicketNetworkTicketGroup ticketGroup,
-		@Nullable TicketNetworkCachedTicketGroup cachedListing
+		@Nullable TicketNetworkListing ticketGroup,
+		@Nullable TicketNetworkCachedListing cachedListing
 	) {
 		if (ticketGroup == null || cachedListing == null) {
 			return 0;
@@ -119,18 +119,18 @@ public class RedissonCachedTicketGroupService
 		@Nonnull TicketNetworkEvent event,
 		@Nonnull Set<String> inventoryListingIds,
 		@Nonnull String listingId,
-		@Nonnull TicketNetworkCachedTicketGroup cachedListing
+		@Nonnull TicketNetworkCachedListing cachedListing
 	) {
 		return super.shouldDelete(event, inventoryListingIds, listingId, cachedListing)
 			|| !Objects.equals(event.getTicketNetworkEventId(), cachedListing.getEvent().getTicketNetworkEventId());
 	}
 
 	@Override
-	protected void createListing(TicketNetworkEvent event, TicketNetworkTicketGroup listing) throws IOException {
+	protected void createListing(TicketNetworkEvent event, TicketNetworkListing listing) throws IOException {
 		TicketGroupV4GetModel ticketGroupV4GetModel = inventoryService.createTicketGroup(listing.getRequest());
 
 		// Update ticket group ID in cache
-		TicketNetworkCachedTicketGroup cached = getEventCache(event.getId()).get(listing.getId());
+		TicketNetworkCachedListing cached = getEventCache(event.getId()).get(listing.getId());
 		cached.setTicketGroupId(ticketGroupV4GetModel.getTicketGroupId());
 
 		getEventCache(event.getId()).put(listing.getId(), cached);
@@ -139,8 +139,8 @@ public class RedissonCachedTicketGroupService
 	@Override
 	protected void updateListing(
 		TicketNetworkEvent event,
-		TicketNetworkTicketGroup listing,
-		TicketNetworkCachedTicketGroup cachedListing,
+		TicketNetworkListing listing,
+		TicketNetworkCachedListing cachedListing,
 		int priority
 	) throws IOException {
 		deleteListing(event, listing.getId(), cachedListing, priority);
@@ -151,7 +151,7 @@ public class RedissonCachedTicketGroupService
 	protected void deleteListing(
 		TicketNetworkEvent event,
 		String listingId,
-		TicketNetworkCachedTicketGroup cachedListing,
+		TicketNetworkCachedListing cachedListing,
 		int priority
 	) throws IOException {
 		if (cachedListing.getTicketGroupId() != null) {
@@ -165,12 +165,12 @@ public class RedissonCachedTicketGroupService
 	}
 
 	@Override
-	protected TicketNetworkCachedTicketGroup toCached(
+	protected TicketNetworkCachedListing toCached(
 		TicketNetworkEvent event,
-		TicketNetworkTicketGroup ticketGroup,
+		TicketNetworkListing ticketGroup,
 		Status status
 	) {
-		return new TicketNetworkCachedTicketGroup(new TicketNetworkCachedEvent(event), ticketGroup, status);
+		return new TicketNetworkCachedListing(new TicketNetworkCachedEvent(event), ticketGroup, status);
 	}
 
 }
