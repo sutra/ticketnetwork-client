@@ -14,21 +14,21 @@ public class TicketNetworkListing extends Listing<String, TicketGroupV4PostModel
 	/**
 	 * The ID of the ticket network event.
 	 *
-	 * @see {@link Event#getId()}
+	 * @see Event#getId()
 	 */
 	private Integer ticketNetworkEventId;
 
 	/**
 	 * The reference (external) ticket group ID.
 	 *
-	 * @see {@link TicketGroupV4PostModel#getReferenceTicketGroupId()}
+	 * @see TicketGroupV4PostModel#getReferenceTicketGroupId()
 	 */
 	private Integer referenceTicketGroupId;
 
 	/**
 	 * The local ID of the ticket group.
 	 *
-	 * @see {@link TicketGroupV4GetModel#getTicketGroupId()}
+	 * @see TicketGroupV4GetModel#getTicketGroupId()
 	 */
 	private Integer ticketGroupId;
 
