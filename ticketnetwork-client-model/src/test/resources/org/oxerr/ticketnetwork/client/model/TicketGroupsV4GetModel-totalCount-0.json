@@ -1,0 +1,20 @@
+{
+	"results": [],
+	"totalCount": 0,
+	"page": 1,
+	"count": 0,
+	"_links": [
+		{
+			"href": "https://www.tn-apis.com/inventory/v5/ticketgroups",
+			"rel": "self"
+		},
+		{
+			"href": "https://www.tn-apis.com/inventory/v5/ticketgroups?page=1&perPage=50",
+			"rel": "first"
+		},
+		{
+			"href": "https://www.tn-apis.com/inventory/v5/ticketgroups?page=0&perPage=50",
+			"rel": "last"
+		}
+	]
+}

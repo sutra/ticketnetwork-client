@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>org.oxerr</groupId>
 		<artifactId>oxerr-parent</artifactId>
-		<version>2.2.1</version>
+		<version>2.2.3</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.oxerr.ticketnetwork.client</groupId>
@@ -19,7 +19,7 @@
 		TicketNetwork Client - TicketNetwork API Client Library for Java.
 	</description>
 	<packaging>pom</packaging>
-	<version>0.0.0-SNAPSHOT</version>
+	<version>0.0.0</version>
 	<url>https://www.oxerr.org/ticketnetwork-client</url>
 	<inceptionYear>2025</inceptionYear>
 	<properties>
@@ -27,7 +27,7 @@
 		<maven.compiler.target>11</maven.compiler.target>
 		<log4j.version>2.20.0</log4j.version>
 		<rescu-ext.version>[1.1.0,)</rescu-ext.version>
-		<ticket-inventory-support.version>[5.4.0,)</ticket-inventory-support.version>
+		<ticket-inventory-support.version>[5.6.0,)</ticket-inventory-support.version>
 	</properties>
 	<modules>
 		<module>ticketnetwork-client-model</module>
@@ -104,7 +104,7 @@
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-api</artifactId>
-				<version>5.12.0-M1</version>
+				<version>5.12.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.oxerr.rescu.ext</groupId>
@@ -129,12 +129,17 @@
 			<dependency>
 				<groupId>org.redisson</groupId>
 				<artifactId>redisson</artifactId>
-				<version>3.44.0</version>
+				<version>3.45.0</version>
 			</dependency>
 			<dependency>
 				<groupId>com.evanlennick</groupId>
 				<artifactId>retry4j</artifactId>
 				<version>0.15.0</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>2.18.2</version>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
@@ -150,6 +155,11 @@
 			</dependency>
 
 			<dependency>
+				<groupId>com.github.java-json-tools</groupId>
+				<artifactId>json-patch</artifactId>
+				<version>1.13</version>
+			</dependency>
+			<dependency>
 				<groupId>com.github.mmazi</groupId>
 				<artifactId>rescu</artifactId>
 				<version>3.0</version>
@@ -160,15 +170,9 @@
 				<version>3.0.2</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.poshjosh</groupId>
-				<artifactId>rate-limiter-annotation</artifactId>
-				<version>0.8.0</version>
-			</dependency>
-
-			<dependency>
 				<groupId>nl.jqno.equalsverifier</groupId>
 				<artifactId>equalsverifier</artifactId>
-				<version>3.18.2</version>
+				<version>3.19.1</version>
 			</dependency>
 
 		</dependencies>
@@ -188,4 +192,34 @@
 			<url>scp://oxerr.org/usr/local/www/ticketnetwork-client/</url>
 		</site>
 	</distributionManagement>
+	<profiles>
+		<profile>
+			<id>test</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-api</artifactId>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-core</artifactId>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-slf4j2-impl</artifactId>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.junit.jupiter</groupId>
+					<artifactId>junit-jupiter-api</artifactId>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 </project>

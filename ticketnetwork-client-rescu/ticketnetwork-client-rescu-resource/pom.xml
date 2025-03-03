@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>org.oxerr.ticketnetwork.client.rescu</groupId>
 		<artifactId>ticketnetwork-client-rescu</artifactId>
-		<version>0.0.0-SNAPSHOT</version>
+		<version>0.0.0</version>
 	</parent>
 	<artifactId>ticketnetwork-client-rescu-resource</artifactId>
 	<name>TicketNetwork Client - ResCU - Resource</name>
@@ -17,26 +17,6 @@
 		<dependency>
 			<groupId>jakarta.ws.rs</groupId>
 			<artifactId>jakarta.ws.rs-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j2-impl</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.oxerr.rescu.ext</groupId>
@@ -47,21 +27,13 @@
 			<artifactId>ticketnetwork-client-model</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-
-		<!-- Java 8 Date/time -->
 		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-jsr310</artifactId>
-			<scope>test</scope>
+			<groupId>com.github.java-json-tools</groupId>
+			<artifactId>json-patch</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.github.mmazi</groupId>
 			<artifactId>rescu</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.github.poshjosh</groupId>
-			<artifactId>rate-limiter-annotation</artifactId>
 		</dependency>
 	</dependencies>
 </project>

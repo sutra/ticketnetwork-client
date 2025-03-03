@@ -1,0 +1,16 @@
+{
+	"seatingTypes": [
+		{
+			"id": 1,
+			"description": "Odd/Even"
+		},
+		{
+			"id": 2,
+			"description": "Consecutive"
+		},
+		{
+			"id": 3,
+			"description": "General Admission"
+		}
+	]
+}

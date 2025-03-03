@@ -1,0 +1,75 @@
+package org.oxerr.ticketnetwork.client.cached.redisson.inventory;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.oxerr.ticket.inventory.support.cached.redisson.CachedListing;
+import org.oxerr.ticket.inventory.support.cached.redisson.Status;
+import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkEvent;
+import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkListing;
+import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
+import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
+
+public class TicketNetworkCachedListing extends CachedListing<TicketGroupV4PostModel> {
+
+	private static final long serialVersionUID = 2024101701L;
+
+	private String id;
+
+	private TicketNetworkCachedEvent event;
+
+	/**
+	 * The local ID of the ticket group.
+	 *
+	 * @see TicketGroupV4GetModel#getTicketGroupId()
+	 */
+	private Integer ticketGroupId;
+
+	public TicketNetworkCachedListing() {
+	}
+
+	public TicketNetworkCachedListing(TicketNetworkEvent event, TicketNetworkListing listing, Status status) {
+		this(new TicketNetworkCachedEvent(event), listing, status);
+	}
+
+	public TicketNetworkCachedListing(TicketNetworkCachedEvent event, TicketNetworkListing listing, Status status) {
+		this(event, listing.getRequest(), listing.getId(), listing.getTicketGroupId(), status);
+	}
+
+	public TicketNetworkCachedListing(TicketNetworkCachedEvent event, TicketGroupV4PostModel request, String id, Integer ticketGroupId, Status status) {
+		super(request, status);
+		this.event = event;
+		this.id = id;
+		this.ticketGroupId = ticketGroupId;
+	}
+
+	public TicketNetworkCachedEvent getEvent() {
+		return event;
+	}
+
+	public void setEvent(TicketNetworkCachedEvent event) {
+		this.event = event;
+	}
+
+	public Integer getTicketGroupId() {
+		return ticketGroupId;
+	}
+
+	public void setTicketGroupId(Integer ticketGroupId) {
+		this.ticketGroupId = ticketGroupId;
+	}
+
+	public TicketNetworkListing toTicketNetworkTicketGroup() {
+		return new TicketNetworkListing(id, this.event.getTicketNetworkEventId(), this.getRequest(), ticketGroupId);
+	}
+
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return EqualsBuilder.reflectionEquals(this, obj);
+	}
+
+}
