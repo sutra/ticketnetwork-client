@@ -3,6 +3,8 @@ package org.oxerr.ticketnetwork.client.model;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -44,6 +46,23 @@ public class ValidationErrorsModel extends RuntimeException implements Serializa
 
 	public Map<String, ValidationErrorMember> getValidationErrors() {
 		return validationErrors;
+	}
+
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof ValidationErrorsModel)) {
+			return false;
+		}
+		ValidationErrorsModel rhs = (ValidationErrorsModel) obj;
+		return EqualsBuilder.reflectionEquals(this, rhs);
 	}
 
 	@Override

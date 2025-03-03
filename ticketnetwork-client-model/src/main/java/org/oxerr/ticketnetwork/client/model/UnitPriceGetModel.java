@@ -2,6 +2,8 @@ package org.oxerr.ticketnetwork.client.model;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
@@ -96,6 +98,23 @@ public class UnitPriceGetModel implements Serializable {
 
 	public void setMsrp(MoneyAmountModel msrp) {
 		this.msrp = msrp;
+	}
+
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof UnitPriceGetModel)) {
+			return false;
+		}
+		UnitPriceGetModel rhs = (UnitPriceGetModel) obj;
+		return EqualsBuilder.reflectionEquals(this, rhs);
 	}
 
 	@Override

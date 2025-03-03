@@ -2,6 +2,8 @@ package org.oxerr.ticketnetwork.client.model;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Token implements Serializable {
@@ -58,6 +60,23 @@ public class Token implements Serializable {
 
 	public void setExpiresIn(int expiresIn) {
 		this.expiresIn = expiresIn;
+	}
+
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Token)) {
+			return false;
+		}
+		Token rhs = (Token) obj;
+		return EqualsBuilder.reflectionEquals(this, rhs);
 	}
 
 	@Override

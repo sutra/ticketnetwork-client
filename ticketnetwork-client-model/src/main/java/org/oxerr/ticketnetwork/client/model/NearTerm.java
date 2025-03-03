@@ -2,6 +2,8 @@ package org.oxerr.ticketnetwork.client.model;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class NearTerm implements Serializable {
@@ -34,6 +36,23 @@ public class NearTerm implements Serializable {
 
 	public void setNearTermDisplay(NearTermDisplay nearTermDisplay) {
 		this.nearTermDisplay = nearTermDisplay;
+	}
+
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof NearTerm)) {
+			return false;
+		}
+		NearTerm rhs = (NearTerm) obj;
+		return EqualsBuilder.reflectionEquals(this, rhs);
 	}
 
 	@Override

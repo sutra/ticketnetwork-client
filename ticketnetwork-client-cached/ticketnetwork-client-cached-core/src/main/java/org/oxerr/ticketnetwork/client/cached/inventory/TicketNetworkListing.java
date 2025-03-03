@@ -4,7 +4,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.oxerr.ticket.inventory.support.Listing;
 import org.oxerr.ticketnetwork.client.model.Event;
-import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
+import org.oxerr.ticketnetwork.client.model.TicketGroup;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 
 public class TicketNetworkListing extends Listing<String, TicketGroupV4PostModel> {
@@ -28,7 +28,7 @@ public class TicketNetworkListing extends Listing<String, TicketGroupV4PostModel
 	/**
 	 * The local ID of the ticket group.
 	 *
-	 * @see TicketGroupV4GetModel#getTicketGroupId()
+	 * @see TicketGroup#getTicketGroupId()
 	 */
 	private Integer ticketGroupId;
 

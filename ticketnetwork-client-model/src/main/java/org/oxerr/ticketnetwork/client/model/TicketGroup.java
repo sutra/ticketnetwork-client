@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -517,6 +519,23 @@ public class TicketGroup implements Serializable {
 
 	public void setLinks(List<Link> links) {
 		this.links = links;
+	}
+
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof TicketGroup)) {
+			return false;
+		}
+		TicketGroup rhs = (TicketGroup) obj;
+		return EqualsBuilder.reflectionEquals(this, rhs);
 	}
 
 	@Override
