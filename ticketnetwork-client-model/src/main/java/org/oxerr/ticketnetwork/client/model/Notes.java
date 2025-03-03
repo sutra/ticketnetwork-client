@@ -3,6 +3,8 @@ package org.oxerr.ticketnetwork.client.model;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Notes implements Serializable {
@@ -49,6 +51,23 @@ public class Notes implements Serializable {
 
 	public void setAdditional(List<Note> additional) {
 		this.additional = additional;
+	}
+
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Notes)) {
+			return false;
+		}
+		Notes rhs = (Notes) obj;
+		return EqualsBuilder.reflectionEquals(this, rhs);
 	}
 
 	@Override

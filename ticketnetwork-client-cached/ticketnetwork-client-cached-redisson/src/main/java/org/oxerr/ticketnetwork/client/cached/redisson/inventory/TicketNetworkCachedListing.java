@@ -2,6 +2,7 @@ package org.oxerr.ticketnetwork.client.cached.redisson.inventory;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.oxerr.ticket.inventory.support.cached.redisson.CachedListing;
 import org.oxerr.ticket.inventory.support.cached.redisson.Status;
 import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkEvent;
@@ -64,12 +65,24 @@ public class TicketNetworkCachedListing extends CachedListing<TicketGroupV4PostM
 
 	@Override
 	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this);
+		return HashCodeBuilder.reflectionHashCode(this, "ticketGroupId");
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		return EqualsBuilder.reflectionEquals(this, obj);
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof TicketNetworkCachedListing)) {
+			return false;
+		}
+		TicketNetworkCachedListing rhs = (TicketNetworkCachedListing) obj;
+		return EqualsBuilder.reflectionEquals(this, rhs, "ticketGroupId");
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

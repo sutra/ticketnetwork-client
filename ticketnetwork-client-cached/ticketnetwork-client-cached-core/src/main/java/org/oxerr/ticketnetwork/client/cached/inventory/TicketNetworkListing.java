@@ -2,9 +2,10 @@ package org.oxerr.ticketnetwork.client.cached.inventory;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.oxerr.ticket.inventory.support.Listing;
 import org.oxerr.ticketnetwork.client.model.Event;
-import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
+import org.oxerr.ticketnetwork.client.model.TicketGroup;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 
 public class TicketNetworkListing extends Listing<String, TicketGroupV4PostModel> {
@@ -28,7 +29,7 @@ public class TicketNetworkListing extends Listing<String, TicketGroupV4PostModel
 	/**
 	 * The local ID of the ticket group.
 	 *
-	 * @see TicketGroupV4GetModel#getTicketGroupId()
+	 * @see TicketGroup#getTicketGroupId()
 	 */
 	private Integer ticketGroupId;
 
@@ -72,12 +73,24 @@ public class TicketNetworkListing extends Listing<String, TicketGroupV4PostModel
 
 	@Override
 	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this);
+		return HashCodeBuilder.reflectionHashCode(this, "ticketGroupId");
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		return EqualsBuilder.reflectionEquals(this, obj);
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof TicketNetworkListing)) {
+			return false;
+		}
+		TicketNetworkListing rhs = (TicketNetworkListing) obj;
+		return EqualsBuilder.reflectionEquals(this, rhs, "ticketGroupId");
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

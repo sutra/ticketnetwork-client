@@ -2,6 +2,8 @@ package org.oxerr.ticketnetwork.client.model;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Seats implements Serializable {
@@ -145,6 +147,23 @@ public class Seats implements Serializable {
 
 	public void setAvailableHighSeat(Integer availableHighSeat) {
 		this.availableHighSeat = availableHighSeat;
+	}
+
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Seats)) {
+			return false;
+		}
+		Seats rhs = (Seats) obj;
+		return EqualsBuilder.reflectionEquals(this, rhs);
 	}
 
 	@Override

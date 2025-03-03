@@ -5,6 +5,8 @@ import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Event implements Serializable {
@@ -126,6 +128,23 @@ public class Event implements Serializable {
 
 	public void setVenueConfigurationId(Integer venueConfigurationId) {
 		this.venueConfigurationId = venueConfigurationId;
+	}
+
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Event)) {
+			return false;
+		}
+		Event rhs = (Event) obj;
+		return EqualsBuilder.reflectionEquals(this, rhs);
 	}
 
 	@Override
