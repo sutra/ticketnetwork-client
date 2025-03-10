@@ -69,7 +69,9 @@ public class ValidationErrorsModel extends RuntimeException implements Serializa
 
 	@Override
 	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
+		return new ToStringBuilder(this)
+			.append("validationErrors", validationErrors)
+			.toString();
 	}
 
 }
