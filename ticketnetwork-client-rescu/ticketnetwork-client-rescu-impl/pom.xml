@@ -15,6 +15,10 @@
 	<name>TicketNetwork Client - ResCU - Implementation</name>
 	<dependencies>
 		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.oxerr.rescu.ext</groupId>
 			<artifactId>rescu-ext-singleton</artifactId>
 		</dependency>

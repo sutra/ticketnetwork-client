@@ -17,6 +17,7 @@ import si.mazi.rescu.ClientConfig;
 import si.mazi.rescu.IRestProxyFactory;
 import si.mazi.rescu.Interceptor;
 import si.mazi.rescu.RestProxyFactoryImpl;
+import si.mazi.rescu.clients.HttpConnectionType;
 import si.mazi.rescu.serialization.jackson.DefaultJacksonObjectMapperFactory;
 import si.mazi.rescu.serialization.jackson.JacksonObjectMapperFactory;
 
@@ -64,6 +65,7 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 	protected ClientConfig createClientConfig(String accessToken, Integer brokerId) {
 		var jacksonObjectMapperFactory = createJacksonObjectMapperFactory();
 		var clientConfig = new ClientConfig();
+		clientConfig.setConnectionType(HttpConnectionType.apache);
 		clientConfig.addDefaultParam(HeaderParam.class, "Authorization", "Bearer " + accessToken);
 		clientConfig.addDefaultParam(HeaderParam.class, "X-Identity-Context", "broker-id=" + brokerId);
 		clientConfig.setJacksonObjectMapperFactory(jacksonObjectMapperFactory);
