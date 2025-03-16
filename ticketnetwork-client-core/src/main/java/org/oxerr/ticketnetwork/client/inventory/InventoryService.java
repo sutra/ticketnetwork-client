@@ -37,8 +37,8 @@ public interface InventoryService {
 
 	TicketGroupV4GetModel updateTicketGroup(
 		Integer ticketGroupId,
-		TicketGroupV4PostModel ticketGroup,
-		TicketGroupV4PostModel oldTicketGroup
+		TicketGroupV4PostModel source,
+		TicketGroupV4PostModel target
 	) throws IOException;
 
 	SeatingTypesGetModel getSeatingTypes() throws IOException;

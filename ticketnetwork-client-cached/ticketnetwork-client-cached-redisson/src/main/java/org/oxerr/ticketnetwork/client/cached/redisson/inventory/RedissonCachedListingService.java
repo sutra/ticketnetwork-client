@@ -143,8 +143,10 @@ public class RedissonCachedListingService
 		TicketNetworkCachedListing cachedListing,
 		int priority
 	) throws IOException {
-		deleteListing(event, listing.getId(), cachedListing, priority);
-		createListing(event, listing);
+		Integer ticketGroupId = cachedListing.getTicketGroupId();
+		TicketGroupV4PostModel source = cachedListing.getRequest();
+		TicketGroupV4PostModel target = listing.getRequest();
+		inventoryService.updateTicketGroup(ticketGroupId, source, target);
 	}
 
 	@Override
