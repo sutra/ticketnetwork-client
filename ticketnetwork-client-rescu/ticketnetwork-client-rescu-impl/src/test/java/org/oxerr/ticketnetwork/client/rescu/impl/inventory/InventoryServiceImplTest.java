@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,6 +25,7 @@ import org.oxerr.ticketnetwork.client.rescu.resource.TicketNetworkException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.DecimalNode;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
+import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchOperation;
 import com.github.fge.jsonpatch.ReplaceOperation;
 
@@ -112,7 +114,8 @@ class InventoryServiceImplTest {
 		JsonPointer path = JsonPointer.of("unitPrice", "wholesalePrice", "value");
 		JsonNode value = DecimalNode.valueOf(new BigDecimal("51.76"));
 		pathOperations[0] = new ReplaceOperation(path, value);
-		inventoryService.updateTicketGroup(ticketGroupId, pathOperations);
+		JsonPatch patch = new JsonPatch(Arrays.asList(pathOperations));
+		inventoryService.updateTicketGroup(ticketGroupId, patch);
 	}
 
 	@Disabled("Call API")

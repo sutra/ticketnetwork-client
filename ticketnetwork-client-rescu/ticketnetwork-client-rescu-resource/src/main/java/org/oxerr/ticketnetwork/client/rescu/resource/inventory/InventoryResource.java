@@ -9,7 +9,7 @@ import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
 import org.oxerr.ticketnetwork.client.rescu.resource.TicketNetworkException;
 
-import com.github.fge.jsonpatch.JsonPatchOperation;
+import com.github.fge.jsonpatch.JsonPatch;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -257,7 +257,7 @@ public interface InventoryResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	TicketGroupV4GetModel updateTicketGroup(
 		@PathParam("ticketGroupId") Integer ticketGroupId,
-		JsonPatchOperation... patchOperations
+		JsonPatch patchOperations
 	) throws IOException, TicketNetworkException;
 
 	@GET

@@ -8,7 +8,7 @@ import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
 
-import com.github.fge.jsonpatch.JsonPatchOperation;
+import com.github.fge.jsonpatch.JsonPatch;
 
 public interface InventoryService {
 
@@ -32,7 +32,13 @@ public interface InventoryService {
 
 	TicketGroupV4GetModel updateTicketGroup(
 		Integer ticketGroupId,
-		JsonPatchOperation... patchOperations
+		JsonPatch patch
+	) throws IOException;
+
+	TicketGroupV4GetModel updateTicketGroup(
+		Integer ticketGroupId,
+		TicketGroupV4PostModel ticketGroup,
+		TicketGroupV4PostModel oldTicketGroup
 	) throws IOException;
 
 	SeatingTypesGetModel getSeatingTypes() throws IOException;
