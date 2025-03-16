@@ -144,9 +144,9 @@ public class RedissonCachedListingService
 		int priority
 	) throws IOException {
 		Integer ticketGroupId = cachedListing.getTicketGroupId();
-		TicketGroupV4PostModel source = cachedListing.getRequest();
 		TicketGroupV4PostModel target = listing.getRequest();
-		inventoryService.updateTicketGroup(ticketGroupId, source, target);
+		TicketGroupV4PostModel source = cachedListing.getRequest();
+		inventoryService.updateTicketGroup(ticketGroupId, target, source);
 	}
 
 	@Override

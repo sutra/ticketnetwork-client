@@ -76,8 +76,8 @@ public class InventoryServiceImpl implements InventoryService {
 	@Override
 	public TicketGroupV4GetModel updateTicketGroup(
 		Integer ticketGroupId,
-		TicketGroupV4PostModel source,
-		TicketGroupV4PostModel target
+		TicketGroupV4PostModel target,
+		TicketGroupV4PostModel source
 	) throws IOException {
 		// Convert to JsonNode
 		JsonNode sourceNode = objectMapper.valueToTree(source);
