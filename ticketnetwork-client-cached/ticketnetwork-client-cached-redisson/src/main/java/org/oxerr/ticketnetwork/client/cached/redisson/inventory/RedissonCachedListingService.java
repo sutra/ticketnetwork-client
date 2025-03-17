@@ -137,11 +137,10 @@ public class RedissonCachedListingService
 		try {
 			ticketGroupV4GetModel = inventoryService.createTicketGroup(listing.getRequest());
 		} catch (ValidationErrorsModel e) {
-			log.error("Failed to create ticket group: {}.", listing.getRequest());
 			var filter = String.format("event/id eq %d and seats/section eq '%s' and seats/row eq '%s'",
 				event.getTicketNetworkEventId(), listing.getRequest().getSection(), listing.getRequest().getRow());
 			TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(null, null, null, null, null, null, filter, null);
-			ticketGroups.getResults().forEach(tg -> log.error("ticket group: {} {}", tg.getTicketGroupId(), tg.getReferenceTicketGroupId()));
+			log.error("Filter: {}, ticket group count: {}", filter, ticketGroups.getTotalCount());
 			throw e;
 		}
 
