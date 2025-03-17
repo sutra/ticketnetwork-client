@@ -50,7 +50,7 @@ class InventoryServiceImplTest {
 		Integer perPage = null;
 		Integer page = null;
 		Integer skip = null;
-		String filter = null;
+		String filter = "event/id eq 6562663 and seats/section eq '105' and seats/row eq 'W'";
 		String orderby = null;
 
 		TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(

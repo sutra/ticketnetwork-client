@@ -8,6 +8,8 @@ import java.util.concurrent.Executor;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.oxerr.ticket.inventory.support.cached.redisson.ListingConfiguration;
 import org.oxerr.ticket.inventory.support.cached.redisson.RedissonCachedListingServiceSupport;
 import org.oxerr.ticket.inventory.support.cached.redisson.Status;
@@ -17,6 +19,8 @@ import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkListing;
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
+import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
+import org.oxerr.ticketnetwork.client.model.ValidationErrorsModel;
 import org.redisson.api.RedissonClient;
 
 public class RedissonCachedListingService
@@ -29,6 +33,8 @@ public class RedissonCachedListingService
 		TicketNetworkCachedListing
 	>
 	implements TicketNetworkCachedListingService {
+
+	private final Logger log = LogManager.getLogger();
 
 	private final InventoryService inventoryService;
 
@@ -127,7 +133,17 @@ public class RedissonCachedListingService
 
 	@Override
 	protected void createListing(TicketNetworkEvent event, TicketNetworkListing listing) throws IOException {
-		TicketGroupV4GetModel ticketGroupV4GetModel = inventoryService.createTicketGroup(listing.getRequest());
+		TicketGroupV4GetModel ticketGroupV4GetModel;
+		try {
+			ticketGroupV4GetModel = inventoryService.createTicketGroup(listing.getRequest());
+		} catch (ValidationErrorsModel e) {
+			log.error("Failed to create ticket group: {}.", listing.getRequest());
+			var filter = String.format("event/id eq %d and seats/section eq '%s' and seats/row eq '%s'",
+				event.getTicketNetworkEventId(), listing.getRequest().getSection(), listing.getRequest().getRow());
+			TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(null, null, null, null, null, null, filter, null);
+			ticketGroups.getResults().forEach(tg -> log.error("ticket group: {} {}", tg.getTicketGroupId(), tg.getReferenceTicketGroupId()));
+			throw e;
+		}
 
 		// Update ticket group ID in cache
 		TicketNetworkCachedListing cached = getEventCache(event.getId()).get(listing.getId());
