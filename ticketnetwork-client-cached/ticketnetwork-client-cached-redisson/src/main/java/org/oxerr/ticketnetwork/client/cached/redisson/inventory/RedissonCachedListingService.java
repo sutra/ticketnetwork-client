@@ -18,7 +18,6 @@ import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkEvent;
 import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkListing;
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
 import org.oxerr.ticketnetwork.client.model.TicketGroup;
-import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
 import org.oxerr.ticketnetwork.client.model.ValidationErrorsModel;
@@ -134,38 +133,39 @@ public class RedissonCachedListingService
 
 	@Override
 	protected void createListing(TicketNetworkEvent event, TicketNetworkListing listing) throws IOException {
-		TicketGroupV4GetModel ticketGroupV4GetModel;
+		TicketGroup ticketGroup;
+
 		try {
-			ticketGroupV4GetModel = inventoryService.createTicketGroup(listing.getRequest());
+			ticketGroup = inventoryService.createTicketGroup(listing.getRequest());
 		} catch (ValidationErrorsModel e) {
-			var filter = String.format("event/id eq %d and seats/section eq '%s' and seats/row eq '%s'",
-				event.getTicketNetworkEventId(), listing.getRequest().getSection(), listing.getRequest().getRow());
-			TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(null, null, null, null, null, null, filter, null);
-			log.error("Filter: {}, ticket group count: {}", filter, ticketGroups.getTotalCount());
-			if (ticketGroups.getTotalCount() > 0) {
-				TicketGroup existing = ticketGroups.getResults().get(0);
-				log.error("Listing request: event/id={}, seats/section={}, seats/row={}, seats/lowSeat={}, unitPrice/retailPrice={}, referenceTicketGroupId={}; "
-						+ "existing ticket group: event/id={}, seats/section={}, seats/row={}, seats/lowSeat={}, unitPrice/retailPrice={}, referenceTicketGroupId={}.",
-					listing.getRequest().getEventId(),
-					listing.getRequest().getSection(),
-					listing.getRequest().getRow(),
-					listing.getRequest().getLowSeat(),
-					listing.getRequest().getUnitPrice().getRetailPrice(),
-					existing.getReferenceTicketGroupId(),
-					existing.getEvent().getId(),
-					existing.getSeats().getSection(),
-					existing.getSeats().getRow(),
-					existing.getSeats().getLowSeat(),
-					existing.getUnitPrice().getRetailPrice(),
-					existing.getReferenceTicketGroupId()
-				);
+			if (e.getValidationErrors().get("lowSeat") != null
+				&& e.getValidationErrors().get("lowSeat").getReasons()
+					.contains("A ticket group already exists with the provided event ID, section, and row with overlapping seats.")) {
+
+				var filter = String.format("event/id eq %d and seats/section eq '%s' and seats/row eq '%s'",
+					event.getTicketNetworkEventId(), listing.getRequest().getSection(), listing.getRequest().getRow());
+
+				TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(null, null, null, null, null, null, filter, null);
+				log.info("Filter: {}, ticket group count: {}", filter, ticketGroups.getTotalCount());
+
+				if (ticketGroups.getTotalCount() > 0) {
+					TicketGroup existing = ticketGroups.getResults().get(0);
+					if (existing.getReferenceTicketGroupId().equals(listing.getRequest().getReferenceTicketGroupId())) {
+						ticketGroup = existing;
+					} else {
+						throw e;
+					}
+				} else {
+					throw e;
+				}
+			} else {
+				throw e;
 			}
-			throw e;
 		}
 
 		// Update ticket group ID in cache
 		TicketNetworkCachedListing cached = getEventCache(event.getId()).get(listing.getId());
-		cached.setTicketGroupId(ticketGroupV4GetModel.getTicketGroupId());
+		cached.setTicketGroupId(ticketGroup.getTicketGroupId());
 
 		getEventCache(event.getId()).put(listing.getId(), cached);
 	}
