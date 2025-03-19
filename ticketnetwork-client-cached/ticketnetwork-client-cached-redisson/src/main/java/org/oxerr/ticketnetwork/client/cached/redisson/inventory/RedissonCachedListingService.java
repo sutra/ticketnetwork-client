@@ -8,6 +8,7 @@ import java.util.concurrent.Executor;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.oxerr.ticket.inventory.support.cached.redisson.ListingConfiguration;
@@ -17,6 +18,7 @@ import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkCachedListin
 import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkEvent;
 import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkListing;
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
+import org.oxerr.ticketnetwork.client.model.TicketGroup;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
@@ -141,6 +143,12 @@ public class RedissonCachedListingService
 				event.getTicketNetworkEventId(), listing.getRequest().getSection(), listing.getRequest().getRow());
 			TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(null, null, null, null, null, null, filter, null);
 			log.error("Filter: {}, ticket group count: {}", filter, ticketGroups.getTotalCount());
+			if (ticketGroups.getTotalCount() > 0) {
+				TicketGroup existing = ticketGroups.getResults().get(0);
+				log.error("Listing request: {}, existing ticket group: {}",
+					() -> ToStringBuilder.reflectionToString(listing.getRequest()),
+					() -> ToStringBuilder.reflectionToString(existing));
+			}
 			throw e;
 		}
 
