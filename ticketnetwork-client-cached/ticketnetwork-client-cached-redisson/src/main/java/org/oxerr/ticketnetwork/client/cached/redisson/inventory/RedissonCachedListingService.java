@@ -8,7 +8,6 @@ import java.util.concurrent.Executor;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.oxerr.ticket.inventory.support.cached.redisson.ListingConfiguration;
@@ -145,9 +144,21 @@ public class RedissonCachedListingService
 			log.error("Filter: {}, ticket group count: {}", filter, ticketGroups.getTotalCount());
 			if (ticketGroups.getTotalCount() > 0) {
 				TicketGroup existing = ticketGroups.getResults().get(0);
-				log.error("Listing request: {}, existing ticket group: {}",
-					() -> ToStringBuilder.reflectionToString(listing.getRequest()),
-					() -> ToStringBuilder.reflectionToString(existing));
+				log.error("Listing request: event/id={}, seats/section={}, seats/row={}, seats/lowSeat={}, unitPrice/retailPrice={}, referenceTicketGroupId={}; "
+						+ "existing ticket group: event/id={}, seats/section={}, seats/row={}, seats/lowSeat={}, unitPrice/retailPrice={}, referenceTicketGroupId={}.",
+					listing.getRequest().getEventId(),
+					listing.getRequest().getSection(),
+					listing.getRequest().getRow(),
+					listing.getRequest().getLowSeat(),
+					listing.getRequest().getUnitPrice().getRetailPrice(),
+					existing.getReferenceTicketGroupId(),
+					existing.getEvent().getId(),
+					existing.getSeats().getSection(),
+					existing.getSeats().getRow(),
+					existing.getSeats().getLowSeat(),
+					existing.getUnitPrice().getRetailPrice(),
+					existing.getReferenceTicketGroupId()
+				);
 			}
 			throw e;
 		}
