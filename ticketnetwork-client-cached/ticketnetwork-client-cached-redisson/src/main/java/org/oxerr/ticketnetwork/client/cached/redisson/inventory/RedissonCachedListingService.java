@@ -17,6 +17,7 @@ import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkCachedListin
 import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkEvent;
 import org.oxerr.ticketnetwork.client.cached.inventory.TicketNetworkListing;
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
+import org.oxerr.ticketnetwork.client.inventory.TicketGroupQuery;
 import org.oxerr.ticketnetwork.client.model.TicketGroup;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
@@ -145,7 +146,9 @@ public class RedissonCachedListingService
 				var filter = String.format("event/id eq %d and seats/section eq '%s' and seats/row eq '%s'",
 					event.getMarketplaceEventId(), listing.getRequest().getSection(), listing.getRequest().getRow());
 
-				TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(null, null, null, null, null, null, filter, null);
+				TicketGroupQuery q = new TicketGroupQuery();
+				q.setFilter(filter);
+				TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(q);
 				log.info("Filter: {}, ticket group count: {}", filter, ticketGroups.getTotalCount());
 
 				if (ticketGroups.getTotalCount() > 0) {

@@ -2,7 +2,9 @@ package org.oxerr.ticketnetwork.client.rescu.impl.inventory;
 
 import java.io.IOException;
 
+import org.oxerr.ticketnetwork.client.inventory.AllTicketGroupQuery;
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
+import org.oxerr.ticketnetwork.client.inventory.TicketGroupQuery;
 import org.oxerr.ticketnetwork.client.model.SeatingTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
@@ -31,19 +33,16 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 
 	@Override
-	public TicketGroupsV4GetModel getTicketGroups(
-		Boolean hasEticket,
-		Boolean pending,
-		Boolean returnTicketsData,
-		Integer perPage,
-		Integer page,
-		Integer skip,
-		String filter,
-		String orderby
-	) throws IOException {
+	public TicketGroupsV4GetModel getTicketGroups(TicketGroupQuery q) throws IOException {
 		return inventoryResource.getTicketGroups(
-			hasEticket, pending, returnTicketsData, perPage, page, skip,
-			filter, orderby
+			q.getHasEticket(),
+			q.getPending(),
+			q.getReturnTicketsData(),
+			q.getPerPage(),
+			q.getPage(),
+			q.getSkip(),
+			q.getFilter(),
+			q.getOrderby()
 		);
 	}
 
@@ -88,6 +87,21 @@ public class InventoryServiceImpl implements InventoryService {
 		log.debug("Patch: {}", patch);
 
 		return updateTicketGroup(ticketGroupId, patch);
+	}
+
+	@Override
+	public TicketGroupsV4GetModel getAllTicketGroups(AllTicketGroupQuery q) throws IOException {
+		return inventoryResource.getAllTicketGroups(
+			q.getHasEticket(),
+			q.getPending(),
+			q.getIncludeTicketNetworkInventory(),
+			q.getReturnTicketsData(),
+			q.getPerPage(),
+			q.getPage(),
+			q.getSkip(),
+			q.getFilter(),
+			q.getOrderby()
+		);
 	}
 
 	@Override

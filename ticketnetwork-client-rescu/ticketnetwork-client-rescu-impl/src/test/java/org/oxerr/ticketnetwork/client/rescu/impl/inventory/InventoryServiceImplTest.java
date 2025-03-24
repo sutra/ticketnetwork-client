@@ -11,7 +11,9 @@ import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.oxerr.ticketnetwork.client.inventory.AllTicketGroupQuery;
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
+import org.oxerr.ticketnetwork.client.inventory.TicketGroupQuery;
 import org.oxerr.ticketnetwork.client.model.MoneyAmountModel;
 import org.oxerr.ticketnetwork.client.model.SeatingTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupTypesGetModel;
@@ -44,19 +46,10 @@ class InventoryServiceImplTest {
 	@Disabled("Call API")
 	@Test
 	void testGetTicketGroups() throws IOException {
-		Boolean hasEticket = null;
-		Boolean pending = null;
-		Boolean returnTicketsData = null;
-		Integer perPage = null;
-		Integer page = null;
-		Integer skip = null;
 		String filter = "event/id eq 6562663 and seats/section eq '105' and seats/row eq 'W'";
-		String orderby = null;
-
-		TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(
-			hasEticket, pending, returnTicketsData, perPage, page, skip,
-			filter, orderby
-		);
+		TicketGroupQuery q = new TicketGroupQuery();
+		q.setFilter(filter);
+		TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(q);
 		log.info("ticket groups: {}", ticketGroups);
 		ticketGroups.getResults().forEach(tg -> log.info("ticket group: {} {}", tg.getTicketGroupId(), tg.getReferenceTicketGroupId()));
 		log.info("ticket groups total count: {}", ticketGroups.getTotalCount());
@@ -117,6 +110,20 @@ class InventoryServiceImplTest {
 		pathOperations[0] = new ReplaceOperation(path, value);
 		JsonPatch patch = new JsonPatch(Arrays.asList(pathOperations));
 		inventoryService.updateTicketGroup(ticketGroupId, patch);
+	}
+
+	// {"code":"900910","message":"The access token does not allow you to access the requested resource","description":"User is NOT authorized to access the Resource: /ticketgroups/all. Scope validation failed."}
+	@Disabled("Call API")
+	@Test
+	void testGetAllTicketGroups() throws IOException {
+		String filter = "event/id eq 6562663 and seats/section eq '105' and seats/row eq 'W'";
+		AllTicketGroupQuery q = new AllTicketGroupQuery();
+		q.setFilter(filter);
+		TicketGroupsV4GetModel ticketGroups = inventoryService.getAllTicketGroups(q);
+		log.info("ticket groups: {}", ticketGroups);
+		ticketGroups.getResults().forEach(tg -> log.info("ticket group: {} {}", tg.getTicketGroupId(), tg.getReferenceTicketGroupId()));
+		log.info("ticket groups total count: {}", ticketGroups.getTotalCount());
+		assertEquals(0, ticketGroups.getCount().intValue());
 	}
 
 	@Disabled("Call API")

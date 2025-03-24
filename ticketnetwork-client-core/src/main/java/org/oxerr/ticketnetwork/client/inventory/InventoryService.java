@@ -12,16 +12,7 @@ import com.github.fge.jsonpatch.JsonPatch;
 
 public interface InventoryService {
 
-	TicketGroupsV4GetModel getTicketGroups(
-		Boolean hasEticket,
-		Boolean pending,
-		Boolean returnTicketsData,
-		Integer perPage,
-		Integer page,
-		Integer skip,
-		String filter,
-		String orderby
-	) throws IOException;
+	TicketGroupsV4GetModel getTicketGroups(TicketGroupQuery q) throws IOException;
 
 	TicketGroupV4GetModel createTicketGroup(TicketGroupV4PostModel ticketGroup)
 		throws IOException;
@@ -40,6 +31,8 @@ public interface InventoryService {
 		TicketGroupV4PostModel target,
 		TicketGroupV4PostModel source
 	) throws IOException;
+
+	TicketGroupsV4GetModel getAllTicketGroups(AllTicketGroupQuery q) throws IOException;
 
 	SeatingTypesGetModel getSeatingTypes() throws IOException;
 
