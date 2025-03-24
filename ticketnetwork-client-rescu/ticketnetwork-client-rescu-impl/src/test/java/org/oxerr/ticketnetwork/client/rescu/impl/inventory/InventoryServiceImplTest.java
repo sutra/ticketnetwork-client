@@ -49,10 +49,11 @@ class InventoryServiceImplTest {
 		String filter = "event/id eq 6562663 and seats/section eq '105' and seats/row eq 'W'";
 		TicketGroupQuery q = new TicketGroupQuery();
 		q.setFilter(filter);
+		q.setPerPage(500);
 		TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(q);
 		log.info("ticket groups: {}", ticketGroups);
 		ticketGroups.getResults().forEach(tg -> log.info("ticket group: {} {}", tg.getTicketGroupId(), tg.getReferenceTicketGroupId()));
-		log.info("ticket groups total count: {}", ticketGroups.getTotalCount());
+		log.info("ticket groups count: {}/{}", ticketGroups.getCount(), ticketGroups.getTotalCount());
 		assertEquals(0, ticketGroups.getCount().intValue());
 	}
 

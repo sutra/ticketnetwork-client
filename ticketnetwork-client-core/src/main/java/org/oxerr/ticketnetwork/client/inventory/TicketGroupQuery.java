@@ -8,6 +8,11 @@ public class TicketGroupQuery {
 
 	Boolean returnTicketsData;
 
+	/**
+	 * The number of results per page.
+	 *
+	 * A maximum of 500 results will be returned, even if a value greater than 500 is specified.
+	 */
 	Integer perPage;
 
 	Integer page;
