@@ -260,11 +260,35 @@ public interface InventoryResource {
 		JsonPatch patchOperations
 	) throws IOException, TicketNetworkException;
 
+	/**
+	 * Gets a listing of all possible ticket group seating types.
+	 *
+	 * If successful, the HTTP response code will indicate a 200 (OK) response,
+	 * and a representation of all the possible ticket group seating types
+	 * will be included in the response.
+	 * Note that this is infrequently modified reference data,
+	 * and caching this response is recommended.
+	 * @return the seating types.
+	 * @throws IOException if an I/O error occurs.
+	 * @throws TicketNetworkException if a business exception occurs.
+	 */
 	@GET
 	@Path("/ticketgroups/seatingtypes")
 	@Produces(MediaType.APPLICATION_JSON)
 	SeatingTypesGetModel getSeatingTypes() throws IOException, TicketNetworkException;
 
+	/**
+	 * Gets a listing of all possible ticket group types.
+	 *
+	 * If successful, the HTTP response code will indicate a 200 (OK) response,
+	 * and a representation of all the possible ticket group types
+	 * will be included in the response.
+	 * Note that this is infrequently modified reference data,
+	 * and caching this response is recommended.
+	 * @return the ticket group types.
+	 * @throws IOException if an I/O error occurs.
+	 * @throws TicketNetworkException if a business exception occurs.
+	 */
 	@GET
 	@Path("/ticketgroups/types")
 	@Produces(MediaType.APPLICATION_JSON)
