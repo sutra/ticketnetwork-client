@@ -59,6 +59,7 @@ class InventoryServiceImplTest {
 		);
 		log.info("ticket groups: {}", ticketGroups);
 		ticketGroups.getResults().forEach(tg -> log.info("ticket group: {} {}", tg.getTicketGroupId(), tg.getReferenceTicketGroupId()));
+		log.info("ticket groups total count: {}", ticketGroups.getTotalCount());
 		assertEquals(0, ticketGroups.getCount().intValue());
 	}
 
