@@ -14,27 +14,27 @@ public class TicketNetworkEvent extends Event<String, String, TicketGroupV4PostM
 
 	private static final long serialVersionUID = 2023031901L;
 
-	private Integer ticketNetworkEventId;
+	private Integer marketplaceEventId;
 
 	public TicketNetworkEvent() {
 		this(null, null, null, Collections.emptyList());
 	}
 
-	public TicketNetworkEvent(String id, OffsetDateTime startDate, Integer ticketNetworkEventId) {
-		this(id, startDate, ticketNetworkEventId, Collections.emptyList());
+	public TicketNetworkEvent(String id, OffsetDateTime startDate, Integer marketplaceEventId) {
+		this(id, startDate, marketplaceEventId, Collections.emptyList());
 	}
 
-	public TicketNetworkEvent(String id, OffsetDateTime startDate, Integer ticketNetworkEventId, List<TicketNetworkListing> listings) {
+	public TicketNetworkEvent(String id, OffsetDateTime startDate, Integer marketplaceEventId, List<TicketNetworkListing> listings) {
 		super(id, startDate, listings);
-		this.ticketNetworkEventId = ticketNetworkEventId;
+		this.marketplaceEventId = marketplaceEventId;
 	}
 
-	public Integer getTicketNetworkEventId() {
-		return ticketNetworkEventId;
+	public Integer getMarketplaceEventId() {
+		return marketplaceEventId;
 	}
 
-	public void setTicketNetworkEventId(Integer ticketNetworkEventId) {
-		this.ticketNetworkEventId = ticketNetworkEventId;
+	public void setMarketplaceEventId(Integer marketplaceEventId) {
+		this.marketplaceEventId = marketplaceEventId;
 	}
 
 	@Override

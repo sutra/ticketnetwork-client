@@ -14,21 +14,21 @@ public class TicketNetworkCachedEvent implements Serializable {
 
 	private String id;
 
-	private Integer ticketNetworkEventId;
+	private Integer marketplaceEventId;
 
 	private OffsetDateTime startDate;
 
 	public TicketNetworkCachedEvent() {
 	}
 
-	public TicketNetworkCachedEvent(String id, Integer ticketNetworkEventId, OffsetDateTime startDate) {
+	public TicketNetworkCachedEvent(String id, Integer marketplaceEventId, OffsetDateTime startDate) {
 		this.id = id;
-		this.ticketNetworkEventId = ticketNetworkEventId;
+		this.marketplaceEventId = marketplaceEventId;
 		this.startDate = startDate;
 	}
 
 	public TicketNetworkCachedEvent(TicketNetworkEvent event) {
-		this(event.getId(), event.getTicketNetworkEventId(), event.getStartDate());
+		this(event.getId(), event.getMarketplaceEventId(), event.getStartDate());
 	}
 
 	public String getId() {
@@ -39,12 +39,12 @@ public class TicketNetworkCachedEvent implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getTicketNetworkEventId() {
-		return ticketNetworkEventId;
+	public Integer getMarketplaceEventId() {
+		return marketplaceEventId;
 	}
 
-	public void setTicketNetworkEventId(Integer ticketNetworkEventId) {
-		this.ticketNetworkEventId = ticketNetworkEventId;
+	public void setMarketplaceEventId(Integer marketplaceEventId) {
+		this.marketplaceEventId = marketplaceEventId;
 	}
 
 	public OffsetDateTime getStartDate() {
@@ -56,7 +56,7 @@ public class TicketNetworkCachedEvent implements Serializable {
 	}
 
 	public TicketNetworkEvent toTicketNetworkEvent() {
-		return new TicketNetworkEvent(id, startDate, ticketNetworkEventId);
+		return new TicketNetworkEvent(id, startDate, marketplaceEventId);
 	}
 
 	@Override

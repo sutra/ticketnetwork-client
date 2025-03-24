@@ -60,7 +60,7 @@ public class TicketNetworkCachedListing extends CachedListing<TicketGroupV4PostM
 	}
 
 	public TicketNetworkListing toTicketNetworkTicketGroup() {
-		return new TicketNetworkListing(id, this.event.getTicketNetworkEventId(), this.getRequest(), ticketGroupId);
+		return new TicketNetworkListing(id, this.event.getMarketplaceEventId(), this.getRequest(), ticketGroupId);
 	}
 
 	@Override

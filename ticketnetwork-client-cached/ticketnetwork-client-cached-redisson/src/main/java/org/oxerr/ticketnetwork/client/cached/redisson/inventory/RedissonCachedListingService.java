@@ -82,7 +82,7 @@ public class RedissonCachedListingService
 		@Nullable TicketNetworkCachedListing cachedListing
 	) {
 		boolean shouldCreate = super.shouldCreate(event, ticketGroup, cachedListing);
-		return shouldCreate || (cachedListing != null && !Objects.equals(ticketGroup.getTicketNetworkEventId(), cachedListing.getEvent().getTicketNetworkEventId()));
+		return shouldCreate || (cachedListing != null && !Objects.equals(ticketGroup.getMarketplaceEventId(), cachedListing.getEvent().getMarketplaceEventId()));
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class RedissonCachedListingService
 		@Nullable TicketNetworkCachedListing cachedListing
 	) {
 		boolean shouldUpdate = super.shouldUpdate(event, ticketGroup, cachedListing);
-		return shouldUpdate || (cachedListing != null && !Objects.equals(ticketGroup.getTicketNetworkEventId(), cachedListing.getEvent().getTicketNetworkEventId()));
+		return shouldUpdate || (cachedListing != null && !Objects.equals(ticketGroup.getMarketplaceEventId(), cachedListing.getEvent().getMarketplaceEventId()));
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class RedissonCachedListingService
 		@Nonnull TicketNetworkCachedListing cachedListing
 	) {
 		return super.shouldDelete(event, inventoryListingIds, listingId, cachedListing)
-			|| !Objects.equals(event.getTicketNetworkEventId(), cachedListing.getEvent().getTicketNetworkEventId());
+			|| !Objects.equals(event.getMarketplaceEventId(), cachedListing.getEvent().getMarketplaceEventId());
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public class RedissonCachedListingService
 					.contains("A ticket group already exists with the provided event ID, section, and row with overlapping seats.")) {
 
 				var filter = String.format("event/id eq %d and seats/section eq '%s' and seats/row eq '%s'",
-					event.getTicketNetworkEventId(), listing.getRequest().getSection(), listing.getRequest().getRow());
+					event.getMarketplaceEventId(), listing.getRequest().getSection(), listing.getRequest().getRow());
 
 				TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(null, null, null, null, null, null, filter, null);
 				log.info("Filter: {}, ticket group count: {}", filter, ticketGroups.getTotalCount());
