@@ -55,7 +55,7 @@ public class TicketNetworkCachedEvent implements Serializable {
 		this.startDate = startDate;
 	}
 
-	public TicketNetworkEvent toTicketNetworkEvent() {
+	public TicketNetworkEvent toMarketplaceEvent() {
 		return new TicketNetworkEvent(id, startDate, marketplaceEventId);
 	}
 
