@@ -448,7 +448,8 @@ public class RedissonCachedListingService
 				.flatMap(cacheName ->
 					// Retrieve the cache and create a stream of ticketGroupId-to-cacheName entries
 					this.getCache(cacheName).values().stream()
-						.map((TicketNetworkCachedListing c) -> Map.entry(c.getTicketGroupId(), new TicketGroupInfo(cacheName, c)))
+						.filter(c -> c.getTicketGroupId() != null)
+						.map(c -> Map.entry(c.getTicketGroupId(), new TicketGroupInfo(cacheName, c)))
 				)
 				// Collect the entries into a map
 				.collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
