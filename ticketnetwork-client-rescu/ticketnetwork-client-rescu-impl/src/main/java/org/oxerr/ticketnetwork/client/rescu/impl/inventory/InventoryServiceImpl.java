@@ -1,6 +1,7 @@
 package org.oxerr.ticketnetwork.client.rescu.impl.inventory;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.oxerr.ticketnetwork.client.inventory.AllTicketGroupQuery;
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
@@ -40,7 +41,7 @@ public class InventoryServiceImpl implements InventoryService {
 			q.getReturnTicketsData(),
 			q.getPerPage(),
 			q.getPage(),
-			q.getSkip(),
+			Optional.ofNullable(q.getSkip()).filter(skip -> skip > 0).orElse(null),
 			q.getFilter(),
 			q.getOrderby()
 		);
