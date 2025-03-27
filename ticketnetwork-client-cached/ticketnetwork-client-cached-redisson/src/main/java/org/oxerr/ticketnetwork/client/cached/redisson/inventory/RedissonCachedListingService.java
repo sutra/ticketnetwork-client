@@ -313,8 +313,6 @@ public class RedissonCachedListingService
 					getCache(cacheName)
 						.values()
 						.stream()
-						.filter(Objects::nonNull)
-						.filter(c -> c.getTicketGroupId() != null)
 						.map(c -> Map.entry(new ListingInfo(c), new CacheInfo(cacheName, c)))
 				)
 				// Collect the entries into a map
