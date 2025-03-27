@@ -341,7 +341,7 @@ public class RedissonCachedListingService
 	 * @param page the page.
 	 */
 	private void check(CheckContext ctx, TicketGroupsV4GetModel page) {
-		// Delete the listings not in the page
+		// Delete the listings not in the cache
 		var deleteTasks = page.getResults().stream()
 			.filter(listing -> !ctx.getCaches().containsKey(new ListingInfo(listing)))
 			.map(listing -> this.<Void>callAsync(() -> {
