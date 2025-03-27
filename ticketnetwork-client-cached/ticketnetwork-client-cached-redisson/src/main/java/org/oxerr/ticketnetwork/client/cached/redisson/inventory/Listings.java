@@ -7,6 +7,8 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.commons.lang3.builder.ToStringSummary;
 import org.oxerr.ticketnetwork.client.model.TicketGroup;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 
@@ -30,7 +32,7 @@ final class Listings {
 	}
 
 	public static String toString(TicketGroup g) {
-		return new ToStringBuilder(g)
+		return new ToStringBuilder(g, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("ticketGroupId", g.getTicketGroupId())
 			.append("referenceTicketGroupId", g.getReferenceTicketGroupId())
 			.append("section", g.getSeats().getSection())
@@ -44,7 +46,7 @@ final class Listings {
 	}
 
 	public static String toString(TicketGroupV4PostModel r) {
-		return new ToStringBuilder(r)
+		return new ToStringBuilder(r, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("referenceTicketGroupId", r.getReferenceTicketGroupId())
 			.append("section", r.getSection())
 			.append("row", r.getRow())
