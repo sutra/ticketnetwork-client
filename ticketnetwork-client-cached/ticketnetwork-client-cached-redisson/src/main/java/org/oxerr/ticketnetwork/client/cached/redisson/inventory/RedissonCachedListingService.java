@@ -1,19 +1,12 @@
 package org.oxerr.ticketnetwork.client.cached.redisson.inventory;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -48,7 +41,7 @@ public class RedissonCachedListingService
 	>
 	implements TicketNetworkCachedListingService {
 
-	private final Logger log = LogManager.getLogger();
+	final Logger log = LogManager.getLogger();
 
 	private final InventoryService inventoryService;
 
@@ -235,135 +228,6 @@ public class RedissonCachedListingService
 		doCheck(options);
 	}
 
-	private class CheckContext {
-
-		private final CheckOptions options;
-
-		/**
-		 * Ticket group ID to ticket group info mapping.
-		 */
-		private final Map<Integer, TicketGroupInfo> ticketGroupInfoMapping;
-
-		/**
-		 * The ticket group IDs listed on the marketplace.
-		 */
-		private final Set<Integer> listedTicketGroupIds = ConcurrentHashMap.newKeySet();
-
-		/**
-		 * The checking tasks.
-		 */
-		private final List<CompletableFuture<TicketGroupsV4GetModel>> checkings;
-
-		/**
-		 * The tasks to delete or update the listings.
-		 */
-		private final List<CompletableFuture<Void>> tasks;
-
-		private final AtomicInteger skip;
-
-		public CheckContext(CheckOptions options, Map<Integer, TicketGroupInfo> ticketGroupInfoMapping) {
-			this.options = options;
-			this.ticketGroupInfoMapping = ticketGroupInfoMapping;
-			this.checkings = Collections.synchronizedList(new ArrayList<>());
-			this.tasks = Collections.synchronizedList(new ArrayList<>());
-			this.skip = new AtomicInteger();
-		}
-
-		public Map<Integer, TicketGroupInfo> getTicketGroupInfoMapping() {
-			return ticketGroupInfoMapping;
-		}
-
-		public TicketGroupQuery nextPage() {
-			TicketGroupQuery q = new TicketGroupQuery();
-			q.setPerPage(options.pageSize());
-			q.setSkip(skip.getAndAdd(options.pageSize()));
-			return q;
-		}
-
-		public int checkingCount() {
-			return checkings.size();
-		}
-
-		public boolean addChecking(CompletableFuture<TicketGroupsV4GetModel> e) {
-			return checkings.add(e);
-		}
-
-		public void joinCheckings() {
-			CompletableFuture.allOf(checkings.toArray(CompletableFuture[]::new)).join();
-		}
-
-		public int taskCount() {
-			return tasks.size();
-		}
-
-		public boolean addTask(CompletableFuture<Void> e) {
-			return tasks.add(e);
-		}
-
-		public boolean addTasks(Collection<? extends CompletableFuture<Void>> c) {
-			return tasks.addAll(c);
-		}
-
-		public void joinTasks() {
-			CompletableFuture.allOf(tasks.toArray(CompletableFuture[]::new)).join();
-		}
-
-		/**
-		 * Adds ticket group IDs which is listed on the marketplace.
-		 *
-		 * @param ticketGroupId the ticket group ID.
-		 */
-		public void addListedTicketGroupId(Integer ticketGroupId) {
-			listedTicketGroupIds.add(ticketGroupId);
-		}
-
-		/**
-		 * Returns the missing ticket group informations on the marketplace.
-		 *
-		 * @return the missing ticket group informations.
-		 */
-		public Set<TicketGroupInfo> getMissingTicketGroupInfos() {
-			// missing = cached - listed
-			var missingTicketGroupInfos = new HashSet<>(ticketGroupInfoMapping.values());
-			missingTicketGroupInfos.removeIf(t -> listedTicketGroupIds.contains(t.getTicketGroupId()));
-			log.debug("missing ticket group info count: {}", missingTicketGroupInfos::size);
-			return missingTicketGroupInfos;
-		}
-
-	}
-
-	private class TicketGroupInfo {
-
-		private final String cacheName;
-
-		/**
-		 * @see TicketNetworkCachedListing#getId()
-		 */
-		private final String listingId;
-
-		@Nullable
-		private final Integer ticketGroupId;
-
-		public TicketGroupInfo(String cacheName, TicketNetworkCachedListing c) {
-			this.cacheName = cacheName;
-			this.listingId = c.getId();
-			this.ticketGroupId = c.getTicketGroupId();
-		}
-
-		public String getCacheName() {
-			return cacheName;
-		}
-
-		public String getListingId() {
-			return listingId;
-		}
-
-		public Integer getTicketGroupId() {
-			return ticketGroupId;
-		}
-
-	}
-
 	private void doCheck(CheckOptions options) {
 		log.info("[check] begin.");
 
@@ -393,7 +257,9 @@ public class RedissonCachedListingService
 		ctx.joinTasks();
 
 		// Create the listings which in cache but not on the marketplace.
-		ctx.getMissingTicketGroupInfos().forEach(t -> {
+		var missing = ctx.getMissingTicketGroupInfos();
+		log.debug("missing ticket group info count: {}", missing::size);
+		missing.forEach(t -> {
 			var cacheName = t.getCacheName();
 			var cache = this.getCache(cacheName);
 			var marketplaceCachedListing = cache.get(t.getListingId());
@@ -422,28 +288,25 @@ public class RedissonCachedListingService
 	 * @return a new check context.
 	 */
 	private CheckContext newCheckContext(CheckOptions options) {
-		// The mapping of ticket group IDs to their corresponding ticket group informations.
-		var ticketGroupInfoMapping = this.getTicketGroupInfoMapping(options);
-
-		// The context for checking.
-		return new CheckContext(options, ticketGroupInfoMapping);
+		var caches = this.getCaches(options);
+		return new CheckContext(options, caches);
 	}
 
 	/**
-	 * Retrieves a mapping of ticket group ID to their corresponding ticket group info.
+	 * Retrieves a mapping of listing info to their corresponding cache info.
 	 *
 	 * This method iterates over all available cache names, retrieves each cache, 
-	 * and then creates a map entry for each ticket group ID pointing to its ticket group info.
+	 * and then creates a map entry for each listing pointing to its cache info.
 	 *
 	 * @param options the check options.
-	 * @return a map where the keys are ticket group IDs and the values are ticket group informations.
+	 * @return a map where the keys are listings and the values are cache informations.
 	 */
-	private Map<Integer, TicketGroupInfo> getTicketGroupInfoMapping(CheckOptions options) {
-		// Create a stop watch to measure the time taken to retrieve the ticket group ID to ticket group informations
+	private Map<ListingInfo, CacheInfo> getCaches(CheckOptions options) {
+		// Create a stop watch to measure the time taken to retrieve the caches.
 		StopWatch stopWatch = StopWatch.createStarted();
 
-		// Create a map to hold the ticket group ID to ticket group info mapping
-		Map<Integer, TicketGroupInfo> ticketGroupInfoMapping =
+		// Create a map to hold the listings to cache mapping
+		Map<ListingInfo, CacheInfo> caches =
 			getCacheNamesStream(options.chunkSize()) // Stream of cache names
 				.flatMap(cacheName ->
 					// Retrieve the cache and create a stream of ticketGroupId-to-ticketGroupInfo entries
@@ -452,17 +315,17 @@ public class RedissonCachedListingService
 						.stream()
 						.filter(Objects::nonNull)
 						.filter(c -> c.getTicketGroupId() != null)
-						.map(c -> Map.entry(c.getTicketGroupId(), new TicketGroupInfo(cacheName, c)))
+						.map(c -> Map.entry(new ListingInfo(c), new CacheInfo(cacheName, c)))
 				)
 				// Collect the entries into a map
 				.collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
 
-		// Log the time taken to retrieve the ticket group ID to cache name mapping
+		// Log the time taken to retrieve the listing to cache info mapping.
 		stopWatch.stop();
-		log.debug("[getTicketGroupIdToCacheName] end. Retrieved {} ticket group IDs in {}", ticketGroupInfoMapping::size, () -> stopWatch);
+		log.debug("[getCaches] end. Retrieved {} caches in {}", caches::size, () -> stopWatch);
 
-		// Return the map of ticket group IDs to ticket group info
-		return ticketGroupInfoMapping;
+		// Return the map of listings to cache informations.
+		return caches;
 	}
 
 	private CompletableFuture<TicketGroupsV4GetModel> check(CheckContext ctx, TicketGroupQuery q) {
@@ -482,7 +345,7 @@ public class RedissonCachedListingService
 	private void check(CheckContext ctx, TicketGroupsV4GetModel page) {
 		// Delete the listings not in the page
 		var deleteTasks = page.getResults().stream()
-			.filter(listing -> !ctx.getTicketGroupInfoMapping().containsKey(listing.getTicketGroupId()))
+			.filter(listing -> !ctx.getCaches().containsKey(new ListingInfo(listing)))
 			.map(listing -> this.<Void>callAsync(() -> {
 				this.inventoryService.deleteTicketGroup(listing.getTicketGroupId());
 				return null;
@@ -491,7 +354,7 @@ public class RedissonCachedListingService
 
 		// Check the listings in the page.
 		page.getResults().stream()
-			.filter(listing -> ctx.getTicketGroupInfoMapping().containsKey(listing.getTicketGroupId()))
+			.filter(listing -> ctx.getCaches().containsKey(new ListingInfo(listing)))
 			.forEach((TicketGroup listing) -> check(ctx, listing));
 	}
 
@@ -509,7 +372,7 @@ public class RedissonCachedListingService
 
 		ctx.addListedTicketGroupId(listing.getTicketGroupId());
 
-		TicketGroupInfo ticketGroupInfo = ctx.getTicketGroupInfoMapping().get(listing.getTicketGroupId());
+		CacheInfo ticketGroupInfo = ctx.getCaches().get(new ListingInfo(listing));
 		TicketNetworkCachedListing cachedListing = this.getCache(ticketGroupInfo.getCacheName()).get(ticketGroupInfo.getListingId());
 
 		if (cachedListing == null) {
