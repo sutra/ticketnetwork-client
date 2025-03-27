@@ -376,6 +376,7 @@ public class RedissonCachedListingService
 		if (cachedListing == null) {
 			// Double check the listing if it is not cached.
 			// If the listing is not cached, delete the listing from the marketplace.
+
 			ctx.addTask(this.<Void>callAsync(() -> {
 				log.trace("Deleting {}", listing::getTicketGroupId);
 				this.inventoryService.deleteTicketGroup(listing.getTicketGroupId());
@@ -383,6 +384,7 @@ public class RedissonCachedListingService
 			}));
 		} else if (!isSame(listing, cachedListing.getRequest())) {
 			// If the listing is not same as the cached listing, update the listing.
+
 			ctx.addTask(this.<Void>callAsync(() -> {
 				log.trace("Updating {}", listing::getTicketGroupId);
 
@@ -391,7 +393,11 @@ public class RedissonCachedListingService
 				var p = getPriority(e, l, cachedListing);
 
 				if (e.getMarketplaceEventId().equals(listing.getEvent().getId())) {
-					this.updateListing(e, l, cachedListing, p);
+					if (l.getTicketGroupId() == null) {
+						this.createListing(e, l);
+					} else {
+						this.updateListing(e, l, cachedListing, p);
+					}
 				} else {
 					log.warn("Marketplace event ID mismatch:  {} != {}, event ID = {}",
 						e::getMarketplaceEventId, () -> listing.getEvent().getId(), e::getId);
