@@ -444,10 +444,13 @@ public class RedissonCachedListingService
 
 		// Create a map to hold the ticket group ID to ticket group info mapping
 		Map<Integer, TicketGroupInfo> ticketGroupInfoMapping =
-			this.getCacheNamesStream(options.chunkSize()) // Stream of cache names
+			getCacheNamesStream(options.chunkSize()) // Stream of cache names
 				.flatMap(cacheName ->
-					// Retrieve the cache and create a stream of ticketGroupId-to-cacheName entries
-					this.getCache(cacheName).values().stream()
+					// Retrieve the cache and create a stream of ticketGroupId-to-ticketGroupInfo entries
+					getCache(cacheName)
+						.values()
+						.stream()
+						.filter(Objects::nonNull)
 						.filter(c -> c.getTicketGroupId() != null)
 						.map(c -> Map.entry(c.getTicketGroupId(), new TicketGroupInfo(cacheName, c)))
 				)
