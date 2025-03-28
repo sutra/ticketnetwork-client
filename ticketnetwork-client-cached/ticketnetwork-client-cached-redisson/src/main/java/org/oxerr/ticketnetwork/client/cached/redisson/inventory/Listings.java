@@ -25,8 +25,7 @@ final class Listings {
 			Objects.equals(a.getHideSeats(), b.getHideSeats()),
 			Objects.equals(a.getQuantity().getAvailable(), b.getQuantity()),
 			Objects.equals(a.getUnitPrice().getRetailPrice().getCurrencyCode(), b.getUnitPrice().getFacePrice().getCurrencyCode()),
-			Objects.compare(a.getUnitPrice().getRetailPrice().getValue(), b.getUnitPrice().getRetailPrice(), BigDecimal::compareTo) == 0,
-			Objects.equals(a.getNotes(), b.getNotes())
+			Objects.compare(a.getUnitPrice().getRetailPrice().getValue(), b.getUnitPrice().getRetailPrice(), BigDecimal::compareTo) == 0
 		).allMatch(Boolean::booleanValue);
 	}
 
