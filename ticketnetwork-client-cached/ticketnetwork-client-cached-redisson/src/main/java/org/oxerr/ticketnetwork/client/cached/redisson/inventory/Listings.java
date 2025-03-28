@@ -24,8 +24,15 @@ final class Listings {
 			Objects.equals(a.getSeats().getLowSeat().toString(), b.getLowSeat()),
 			Objects.equals(a.getHideSeats(), b.getHideSeats()),
 			Objects.equals(a.getQuantity().getAvailable(), b.getQuantity()),
-			Objects.equals(a.getUnitPrice().getRetailPrice().getCurrencyCode(), b.getUnitPrice().getFacePrice().getCurrencyCode()),
-			Objects.compare(a.getUnitPrice().getRetailPrice().getValue(), b.getUnitPrice().getRetailPrice(), BigDecimal::compareTo) == 0
+			Objects.equals(
+				a.getUnitPrice().getRetailPrice().getCurrencyCode(),
+				b.getUnitPrice().getFacePrice().getCurrencyCode()
+			),
+			Objects.compare(
+				a.getUnitPrice().getRetailPrice().getValue(),
+				b.getUnitPrice().getRetailPrice(),
+				BigDecimal::compareTo
+			) == 0
 		).allMatch(Boolean::booleanValue);
 	}
 
@@ -39,6 +46,7 @@ final class Listings {
 			.append("highSeat", g.getSeats().getHighSeat())
 			.append("quantity", g.getQuantity())
 			.append("price", g.getUnitPrice().getRetailPrice().getValue())
+			.append("currency", g.getUnitPrice().getRetailPrice().getCurrencyCode())
 			.append("notes", g.getNotes())
 			.toString();
 	}
@@ -51,6 +59,7 @@ final class Listings {
 			.append("lowSeat", r.getLowSeat())
 			.append("quantity", r.getQuantity())
 			.append("price", r.getUnitPrice().getRetailPrice())
+			.append("currency", r.getUnitPrice().getFacePrice().getCurrencyCode())
 			.append("notes", r.getNotes())
 			.toString();
 	}
