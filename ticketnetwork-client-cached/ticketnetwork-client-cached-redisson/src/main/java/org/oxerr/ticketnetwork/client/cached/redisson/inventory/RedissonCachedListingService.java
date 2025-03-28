@@ -160,13 +160,12 @@ public class RedissonCachedListingService
 				TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(q);
 				log.info("Filter: {}, ticket group count: {}", filter, ticketGroups.getTotalCount());
 
-				if (ticketGroups.getTotalCount() > 0) {
-					TicketGroup existing = ticketGroups.getResults().get(0);
-					if (existing.getReferenceTicketGroupId().equals(listing.getRequest().getReferenceTicketGroupId())) {
-						ticketGroup = existing;
-					} else {
-						throw e;
-					}
+				var existing = ticketGroups.getResults()
+					.stream()
+					.filter(t -> t.getReferenceTicketGroupId().equals(listing.getRequest().getReferenceTicketGroupId()))
+					.findFirst();
+				if (existing.isPresent()) {
+					ticketGroup = existing.get();
 				} else {
 					throw e;
 				}
