@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.beanutils2.BeanUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -389,13 +390,15 @@ public class RedissonCachedListingService
 				log.trace("Updating {}", listing::getTicketGroupId);
 
 				var event = cachedListing.getEvent().toMarketplaceEvent();
-				var target = cachedListing.toMarketplaceListing();
 				var source = new TicketNetworkListing(
 					cachedListing.getId(),
 					cachedListing.getEvent().getMarketplaceEventId(),
 					new TicketGroupV4PostModel(listing),
 					listing.getTicketGroupId()
 				);
+				var target = (TicketNetworkListing) BeanUtils.cloneBean(source);
+				BeanUtils.copyProperties(target, cachedListing.toMarketplaceListing());
+
 				var priority = getPriority(event, target, cachedListing);
 
 				if (event.getMarketplaceEventId().equals(listing.getEvent().getId())) {
