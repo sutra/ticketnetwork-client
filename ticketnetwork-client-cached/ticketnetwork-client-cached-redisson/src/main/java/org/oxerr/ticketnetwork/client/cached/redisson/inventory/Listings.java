@@ -84,6 +84,14 @@ final class Listings {
 			.toString();
 	}
 
+	public static void patch(TicketGroupV4PostModel dest, TicketGroupV4PostModel orig) {
+		dest.setSection(orig.getSection());
+		dest.setRow(orig.getRow());
+		dest.setLowSeat(orig.getLowSeat());
+		dest.setQuantity(orig.getQuantity());
+		dest.getUnitPrice().setRetailPrice(orig.getUnitPrice().getRetailPrice());
+	}
+
 	@Override
 	public int hashCode() {
 		return HashCodeBuilder.reflectionHashCode(this);
