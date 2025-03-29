@@ -105,8 +105,8 @@ class CheckContext {
 	 */
 	public Set<CacheInfo> getMissingTicketGroupInfos() {
 		// missing = cached - listed
-		var missingTicketGroupInfos = new HashSet<>(caches.values());
-		missingTicketGroupInfos.removeIf(t -> listedTicketGroupIds.contains(t.getTicketGroupId()));
+		Set<CacheInfo> missingTicketGroupInfos = new HashSet<>(caches.values());
+		missingTicketGroupInfos.removeIf(t -> t.getTicketGroupId() != null && listedTicketGroupIds.contains(t.getTicketGroupId()));
 		return missingTicketGroupInfos;
 	}
 
