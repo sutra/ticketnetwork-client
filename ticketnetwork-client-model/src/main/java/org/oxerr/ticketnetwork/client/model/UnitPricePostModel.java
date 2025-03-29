@@ -53,6 +53,18 @@ public class UnitPricePostModel implements Serializable {
 	 */
 	private BigDecimal msrp;
 
+	public UnitPricePostModel() {
+	}
+
+	public UnitPricePostModel(UnitPriceGetModel unitPriceGetModel) {
+		this.wholesalePrice = unitPriceGetModel.getWholesalePrice().getValue();
+		this.retailPrice = unitPriceGetModel.getRetailPrice().getValue();
+		this.facePrice = unitPriceGetModel.getFacePrice();
+		this.cost = unitPriceGetModel.getCost().getValue();
+		this.taxedCost = unitPriceGetModel.getTaxedCost().getValue();
+		this.msrp = unitPriceGetModel.getMsrp().getValue();
+	}
+
 	public BigDecimal getWholesalePrice() {
 		return wholesalePrice;
 	}

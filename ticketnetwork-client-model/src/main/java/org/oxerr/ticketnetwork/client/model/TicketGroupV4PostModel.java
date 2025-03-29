@@ -1,7 +1,7 @@
 package org.oxerr.ticketnetwork.client.model;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -57,7 +57,7 @@ public class TicketGroupV4PostModel implements Serializable {
 	 * The lowest seat in the ticket group. Required if seatingType is not
 	 * “General Admission”. For General Admission tickets, the value is ignored.
 	 */
-	private String lowSeat;
+	private Integer lowSeat;
 
 	/**
 	 * UnitPrice object.
@@ -79,7 +79,7 @@ public class TicketGroupV4PostModel implements Serializable {
 	 * this date. Only the date component will be used; midnight will be used
 	 * as the time.
 	 */
-	private Instant onHandDate;
+	private LocalDate onHandDate;
 
 	/**
 	 * The stock type for the ticket group. If omitted, defaults to stock type
@@ -156,6 +156,36 @@ public class TicketGroupV4PostModel implements Serializable {
 	 */
 	private Autopricer autopricer;
 
+	public TicketGroupV4PostModel() {
+	}
+
+	public TicketGroupV4PostModel(TicketGroup ticketGroup) {
+		this.eventId = ticketGroup.getEvent().getId();
+		this.quantity = ticketGroup.getQuantity().getAvailable();
+		this.seatingTypeId = ticketGroup.getSeats().getSeatingType().getId();
+		this.section = ticketGroup.getSeats().getSection();
+		this.standardSection = ticketGroup.getSeats().getStandardSection();
+		this.canonicalSection = ticketGroup.getSeats().getCanonicalSection();
+		this.row = ticketGroup.getSeats().getRow();
+		this.lowSeat = ticketGroup.getSeats().getLowSeat();
+		this.unitPrice = new UnitPricePostModel(ticketGroup.getUnitPrice());
+		this.isOnHand = ticketGroup.getIsOnHand();
+		this.onHandDate = ticketGroup.getOnHandDate();
+		this.stockTypeId = ticketGroup.getStockType().getId();
+		this.ticketGroupTypeId = ticketGroup.getTicketGroupType().getId();
+		this.broadcastChannelIds = ticketGroup.getBroadcastChannelIds();
+		this.notes = ticketGroup.getNotes();
+		this.nearTermDeliveryMethodId = ticketGroup.getNearTerm().getNearTermDeliveryMethod().getId();
+		this.nearTermDisplayId = ticketGroup.getNearTerm().getNearTermDisplay().getId();
+		this.splitRuleId = ticketGroup.getSplitRule().getId();
+		this.hideSeats = ticketGroup.getHideSeats();
+		this.pending = ticketGroup.getPending();
+		this.referenceTicketGroupId = ticketGroup.getReferenceTicketGroupId();
+		this.isShort = ticketGroup.getIsShort();
+		this.tags = ticketGroup.getTags();
+		this.autopricer = ticketGroup.getAutopricer();
+	}
+
 	public Integer getEventId() {
 		return eventId;
 	}
@@ -212,11 +242,11 @@ public class TicketGroupV4PostModel implements Serializable {
 		this.row = row;
 	}
 
-	public String getLowSeat() {
+	public Integer getLowSeat() {
 		return lowSeat;
 	}
 
-	public void setLowSeat(String lowSeat) {
+	public void setLowSeat(Integer lowSeat) {
 		this.lowSeat = lowSeat;
 	}
 
@@ -244,11 +274,11 @@ public class TicketGroupV4PostModel implements Serializable {
 		this.onHandDaysBeforeEvent = onHandDaysBeforeEvent;
 	}
 
-	public Instant getOnHandDate() {
+	public LocalDate getOnHandDate() {
 		return onHandDate;
 	}
 
-	public void setOnHandDate(Instant onHandDate) {
+	public void setOnHandDate(LocalDate onHandDate) {
 		this.onHandDate = onHandDate;
 	}
 

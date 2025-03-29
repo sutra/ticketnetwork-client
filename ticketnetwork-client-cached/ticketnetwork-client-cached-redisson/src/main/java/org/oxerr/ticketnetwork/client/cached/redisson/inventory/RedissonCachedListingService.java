@@ -184,14 +184,11 @@ public class RedissonCachedListingService
 	@Override
 	protected void updateListing(
 		TicketNetworkEvent event,
-		TicketNetworkListing listing,
-		TicketNetworkCachedListing cachedListing,
+		TicketNetworkListing target,
+		TicketNetworkListing source,
 		int priority
 	) throws IOException {
-		Integer ticketGroupId = cachedListing.getTicketGroupId();
-		TicketGroupV4PostModel target = listing.getRequest();
-		TicketGroupV4PostModel source = cachedListing.getRequest();
-		inventoryService.updateTicketGroup(ticketGroupId, target, source);
+		inventoryService.updateTicketGroup(source.getTicketGroupId(), target.getRequest(), source.getRequest());
 	}
 
 	@Override
@@ -365,7 +362,7 @@ public class RedissonCachedListingService
 	 * If the listing is not same as the cached listing, update the listing.
 	 *
 	 * @param ctx the context.
-	 * @param listing the listing.
+	 * @param listing the listing on marketplace.
 	 */
 	private void check(CheckContext ctx, TicketGroup listing) {
 		log.trace("Checking {}", listing::getTicketGroupId);
@@ -379,31 +376,38 @@ public class RedissonCachedListingService
 			// Double check the listing if it is not cached.
 			// If the listing is not cached, delete the listing from the marketplace.
 
-			ctx.addTask(this.<Void>callAsync(() -> {
+			ctx.addTask(callAsync(() -> {
 				log.trace("Deleting {}", listing::getTicketGroupId);
-				this.inventoryService.deleteTicketGroup(listing.getTicketGroupId());
+				inventoryService.deleteTicketGroup(listing.getTicketGroupId());
 				return null;
 			}));
 		} else if (!isSame(listing, cachedListing.getRequest())) {
-			// If the listing is not same as the cached listing, update the listing.
+			// If the listing on marketplace is not same as the cached listing,
+			// update the listing.
 
-			ctx.addTask(this.<Void>callAsync(() -> {
+			ctx.addTask(callAsync(() -> {
 				log.trace("Updating {}", listing::getTicketGroupId);
 
-				var e = cachedListing.getEvent().toMarketplaceEvent();
-				var l = cachedListing.toMarketplaceListing();
-				var p = getPriority(e, l, cachedListing);
+				var event = cachedListing.getEvent().toMarketplaceEvent();
+				var target = cachedListing.toMarketplaceListing();
+				var source = new TicketNetworkListing(
+					cachedListing.getId(),
+					cachedListing.getEvent().getMarketplaceEventId(),
+					new TicketGroupV4PostModel(listing),
+					listing.getTicketGroupId()
+				);
+				var priority = getPriority(event, target, cachedListing);
 
-				if (e.getMarketplaceEventId().equals(listing.getEvent().getId())) {
-					if (l.getTicketGroupId() == null) {
-						this.createListing(e, l);
+				if (event.getMarketplaceEventId().equals(listing.getEvent().getId())) {
+					if (target.getTicketGroupId() == null) {
+						createListing(event, target);
 					} else {
-						this.updateListing(e, l, cachedListing, p);
+						updateListing(event, target, source, priority);
 					}
 				} else {
 					log.warn("Marketplace event ID mismatch:  {} != {}, event ID = {}",
-						e::getMarketplaceEventId, () -> listing.getEvent().getId(), e::getId);
-					this.deleteListing(e, ticketGroupInfo.getListingId(), cachedListing, p);
+						event::getMarketplaceEventId, () -> listing.getEvent().getId(), event::getId);
+					deleteListing(event, ticketGroupInfo.getListingId(), cachedListing, priority);
 				}
 				return null;
 			}));
