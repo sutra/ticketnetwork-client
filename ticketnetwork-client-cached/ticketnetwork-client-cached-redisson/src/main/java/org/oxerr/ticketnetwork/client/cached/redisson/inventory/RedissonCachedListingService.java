@@ -400,7 +400,15 @@ public class RedissonCachedListingService
 
 				// Deep clone the source to avoid modifying the source.
 				var target = SerializationUtils.clone(source);
-				BeanCopyUtils.copyNonNullProperties(target.getRequest(), cachedListing.toMarketplaceListing().getRequest());
+
+				var tr = target.getRequest();
+				var sr = source.getRequest();
+
+				tr.setSection(sr.getSection());
+				tr.setRow(sr.getRow());
+				tr.setLowSeat(sr.getLowSeat());
+				tr.setQuantity(sr.getQuantity());
+				tr.getUnitPrice().setRetailPrice(sr.getUnitPrice().getRetailPrice());
 
 				var priority = getPriority(event, target, cachedListing);
 
