@@ -79,9 +79,12 @@ public class InventoryServiceImpl implements InventoryService {
 		TicketGroupV4PostModel target,
 		TicketGroupV4PostModel source
 	) throws IOException {
+		TicketGroupV4GetModel targetTicketGroupV4GetModel = new TicketGroupV4GetModel(target);
+		TicketGroupV4GetModel sourceTicketGroupV4GetModel = new TicketGroupV4GetModel(source);
+
 		// Convert to JsonNode
-		JsonNode sourceNode = objectMapper.valueToTree(source);
-		JsonNode targetNode = objectMapper.valueToTree(target);
+		JsonNode targetNode = objectMapper.valueToTree(targetTicketGroupV4GetModel);
+		JsonNode sourceNode = objectMapper.valueToTree(sourceTicketGroupV4GetModel);
 
 		// Generate JSON Patch
 		JsonPatch patch = JsonDiff.asJsonPatch(sourceNode, targetNode);

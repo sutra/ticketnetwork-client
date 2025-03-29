@@ -26,6 +26,13 @@ public class TicketGroupType implements Serializable {
 	 */
 	private Boolean allowsCustomNotes;
 
+	public TicketGroupType() {
+	}
+
+	public TicketGroupType(Integer id) {
+		this.id = id;
+	}
+
 	public Integer getId() {
 		return id;
 	}

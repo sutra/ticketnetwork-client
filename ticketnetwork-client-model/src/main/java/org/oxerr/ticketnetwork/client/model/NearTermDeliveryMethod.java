@@ -24,6 +24,13 @@ public class NearTermDeliveryMethod implements Serializable {
 	 */
 	private String description;
 
+	public NearTermDeliveryMethod() {
+	}
+
+	public NearTermDeliveryMethod(Integer id) {
+		this.id = id;
+	}
+
 	/**
 	 * Returns the ID.
 	 *

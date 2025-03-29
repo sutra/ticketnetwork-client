@@ -25,6 +25,13 @@ public class SeatingType implements Serializable {
 	 */
 	private String description;
 
+	public SeatingType() {
+	}
+
+	public SeatingType(Integer id) {
+		this.id = id;
+	}
+
 	public Integer getId() {
 		return id;
 	}

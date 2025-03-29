@@ -58,6 +58,13 @@ public class Event implements Serializable {
 	 */
 	private Integer venueConfigurationId;
 
+	public Event() {
+	}
+
+	public Event(Integer id) {
+		this.id = id;
+	}
+
 	public Integer getId() {
 		return id;
 	}

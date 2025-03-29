@@ -217,6 +217,47 @@ public class TicketGroup implements Serializable {
 	@JsonProperty("_links")
 	private List<Link> links;
 
+	public TicketGroup() {
+	}
+
+	public TicketGroup(TicketGroupV4PostModel ticketGroupV4PostModel) {
+		this.event = new Event(ticketGroupV4PostModel.getEventId());
+
+		this.seats = new Seats();
+		this.seats.setSection(ticketGroupV4PostModel.getSection());
+		this.seats.setRow(ticketGroupV4PostModel.getRow());
+		this.seats.setLowSeat(ticketGroupV4PostModel.getLowSeat());
+		this.seats.setStandardSection(ticketGroupV4PostModel.getStandardSection());
+		this.seats.setCanonicalSection(ticketGroupV4PostModel.getCanonicalSection());
+		this.seats.setSeatingType(new SeatingType(ticketGroupV4PostModel.getSeatingTypeId()));
+
+		this.unitPrice = new UnitPriceGetModel(ticketGroupV4PostModel.getUnitPrice());
+		this.isOnHand = ticketGroupV4PostModel.getIsOnHand();
+		this.onHandDate = ticketGroupV4PostModel.getOnHandDate();
+		this.referenceTicketGroupId = ticketGroupV4PostModel.getReferenceTicketGroupId();
+		this.stockType = new StockType(ticketGroupV4PostModel.getStockTypeId());
+		this.ticketGroupType = new TicketGroupType(ticketGroupV4PostModel.getTicketGroupTypeId());
+		this.splitRule = new SplitRule(ticketGroupV4PostModel.getSplitRuleId());
+
+		Quantity quantity = new Quantity();
+		quantity.setTotal(ticketGroupV4PostModel.getQuantity());
+		this.quantity = quantity;
+
+		this.broadcastChannelIds = ticketGroupV4PostModel.getBroadcastChannelIds();
+		this.notes = ticketGroupV4PostModel.getNotes();
+
+		NearTerm nearTerm = new NearTerm();
+		nearTerm.setNearTermDeliveryMethod(new NearTermDeliveryMethod(ticketGroupV4PostModel.getNearTermDeliveryMethodId()));
+		nearTerm.setNearTermDisplay(new NearTermDisplay(ticketGroupV4PostModel.getNearTermDisplayId()));
+
+		this.nearTerm = nearTerm;
+		this.hideSeats = ticketGroupV4PostModel.getHideSeats();
+		this.pending = ticketGroupV4PostModel.getPending();
+		this.isShort = ticketGroupV4PostModel.getIsShort();
+		this.tags = ticketGroupV4PostModel.getTags();
+		this.autopricer = ticketGroupV4PostModel.getAutopricer();
+	}
+
 	public Integer getBrokerId() {
 		return brokerId;
 	}
