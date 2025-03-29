@@ -7,6 +7,7 @@ import org.oxerr.ticketnetwork.client.inventory.AllTicketGroupQuery;
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
 import org.oxerr.ticketnetwork.client.inventory.TicketGroupQuery;
 import org.oxerr.ticketnetwork.client.model.SeatingTypesGetModel;
+import org.oxerr.ticketnetwork.client.model.TicketGroup;
 import org.oxerr.ticketnetwork.client.model.TicketGroupTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
@@ -82,9 +83,18 @@ public class InventoryServiceImpl implements InventoryService {
 		TicketGroupV4GetModel targetTicketGroupV4GetModel = new TicketGroupV4GetModel(target);
 		TicketGroupV4GetModel sourceTicketGroupV4GetModel = new TicketGroupV4GetModel(source);
 
+		return updateTicketGroup(ticketGroupId, targetTicketGroupV4GetModel, sourceTicketGroupV4GetModel);
+	}
+
+	@Override
+	public TicketGroupV4GetModel updateTicketGroup(
+		Integer ticketGroupId,
+		TicketGroup target,
+		TicketGroup source
+	) throws IOException {
 		// Convert to JsonNode
-		JsonNode targetNode = objectMapper.valueToTree(targetTicketGroupV4GetModel);
-		JsonNode sourceNode = objectMapper.valueToTree(sourceTicketGroupV4GetModel);
+		JsonNode targetNode = objectMapper.valueToTree(target);
+		JsonNode sourceNode = objectMapper.valueToTree(source);
 
 		// Generate JSON Patch
 		JsonPatch patch = JsonDiff.asJsonPatch(sourceNode, targetNode);
