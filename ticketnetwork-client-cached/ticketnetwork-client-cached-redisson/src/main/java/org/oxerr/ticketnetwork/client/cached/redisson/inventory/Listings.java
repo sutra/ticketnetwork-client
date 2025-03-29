@@ -24,8 +24,13 @@ final class Listings {
 			Objects.equals(a.getSeats().getSection(), b.getSection()),
 			Objects.equals(a.getSeats().getRow(), b.getRow()),
 			Objects.equals(a.getSeats().getLowSeat().toString(), b.getLowSeat()),
-			Objects.equals(a.getHideSeats(), b.getHideSeats()),
 			Objects.equals(a.getQuantity().getAvailable(), b.getQuantity()),
+			isSamePrice(a, b)
+		).allMatch(Boolean::booleanValue);
+	}
+
+	public static boolean isSamePrice(TicketGroup a, TicketGroupV4PostModel b) {
+		return Stream.of(
 			Objects.equals(
 				a.getUnitPrice().getRetailPrice().getCurrencyCode(),
 				b.getUnitPrice().getFacePrice().getCurrencyCode()
