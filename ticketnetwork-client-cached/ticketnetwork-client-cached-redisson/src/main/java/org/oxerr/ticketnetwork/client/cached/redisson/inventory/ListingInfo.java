@@ -1,7 +1,5 @@
 package org.oxerr.ticketnetwork.client.cached.redisson.inventory;
 
-import java.util.Objects;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -17,7 +15,7 @@ class ListingInfo {
 
 	private String row;
 
-	private String lowSeat;
+	private Integer lowSeat;
 
 	public ListingInfo(TicketNetworkCachedListing c) {
 		this.marketplaceEventId = c.getEvent().getMarketplaceEventId();
@@ -32,7 +30,7 @@ class ListingInfo {
 		this.referenceTicketGroupId = listing.getReferenceTicketGroupId();
 		this.section = listing.getSeats().getSection();
 		this.row = listing.getSeats().getRow();
-		this.lowSeat = Objects.toString(listing.getSeats().getLowSeat());
+		this.lowSeat = listing.getSeats().getLowSeat();
 	}
 
 	public Integer getMarketplaceEventId() {
@@ -51,7 +49,7 @@ class ListingInfo {
 		return row;
 	}
 
-	public String getLowSeat() {
+	public Integer getLowSeat() {
 		return lowSeat;
 	}
 

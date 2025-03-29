@@ -40,7 +40,7 @@ class ListingsTest {
 		b.setReferenceTicketGroupId(1061163092);
 		b.setSection("205");
 		b.setRow("T");
-		b.setLowSeat("6");
+		b.setLowSeat(6);
 		b.setQuantity(9);
 		UnitPricePostModel unitPricePostModel = new UnitPricePostModel();
 		unitPricePostModel.setRetailPrice(new BigDecimal("94.64"));

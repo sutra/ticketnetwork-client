@@ -23,7 +23,7 @@ final class Listings {
 		return Stream.of(
 			Objects.equals(a.getSeats().getSection(), b.getSection()),
 			Objects.equals(a.getSeats().getRow(), b.getRow()),
-			Objects.equals(a.getSeats().getLowSeat().toString(), b.getLowSeat()),
+			Objects.equals(a.getSeats().getLowSeat(), b.getLowSeat()),
 			Objects.equals(a.getQuantity().getAvailable(), b.getQuantity()),
 			isSamePrice(a, b)
 		).allMatch(Boolean::booleanValue);
