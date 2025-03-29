@@ -8,6 +8,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.oxerr.ticketnetwork.client.model.Notes;
 import org.oxerr.ticketnetwork.client.model.TicketGroup;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 
@@ -47,7 +48,7 @@ final class Listings {
 			.append("quantity", g.getQuantity())
 			.append("price", g.getUnitPrice().getRetailPrice().getValue())
 			.append("currency", g.getUnitPrice().getRetailPrice().getCurrencyCode())
-			.append("notes", g.getNotes())
+			.append("notes", toString(g.getNotes()))
 			.toString();
 	}
 
@@ -60,7 +61,13 @@ final class Listings {
 			.append("quantity", r.getQuantity())
 			.append("price", r.getUnitPrice().getRetailPrice())
 			.append("currency", r.getUnitPrice().getFacePrice().getCurrencyCode())
-			.append("notes", r.getNotes())
+			.append("notes", toString(r.getNotes()))
+			.toString();
+	}
+
+	public static String toString(Notes notes) {
+		return new ToStringBuilder(notes, ToStringStyle.SHORT_PREFIX_STYLE)
+			.append("external", notes.getExternal())
 			.toString();
 	}
 
