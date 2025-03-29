@@ -397,7 +397,7 @@ public class RedissonCachedListingService
 					listing.getTicketGroupId()
 				);
 				var target = (TicketNetworkListing) BeanUtils.cloneBean(source);
-				BeanCopyUtils.copyNonNullProperties(target, cachedListing.toMarketplaceListing());
+				BeanCopyUtils.copyNonNullProperties(target.getRequest(), cachedListing.toMarketplaceListing().getRequest());
 
 				var priority = getPriority(event, target, cachedListing);
 
