@@ -402,13 +402,13 @@ public class RedissonCachedListingService
 				var target = SerializationUtils.clone(source);
 
 				var tr = target.getRequest();
-				var sr = source.getRequest();
+				var u = cachedListing.getRequest();
 
-				tr.setSection(sr.getSection());
-				tr.setRow(sr.getRow());
-				tr.setLowSeat(sr.getLowSeat());
-				tr.setQuantity(sr.getQuantity());
-				tr.getUnitPrice().setRetailPrice(sr.getUnitPrice().getRetailPrice());
+				tr.setSection(u.getSection());
+				tr.setRow(u.getRow());
+				tr.setLowSeat(u.getLowSeat());
+				tr.setQuantity(u.getQuantity());
+				tr.getUnitPrice().setRetailPrice(u.getUnitPrice().getRetailPrice());
 
 				var priority = getPriority(event, target, cachedListing);
 
