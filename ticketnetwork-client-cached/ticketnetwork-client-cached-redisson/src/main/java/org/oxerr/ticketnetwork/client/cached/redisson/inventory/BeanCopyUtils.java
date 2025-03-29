@@ -12,14 +12,14 @@ public final class BeanCopyUtils {
 		throw new AssertionError("No instances for you!");
 	}
 
-	public static void copyNonNullProperties(Object source, Object target)
+	public static void copyNonNullProperties(Object dest, Object orig)
 			throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		Map<String, Object> properties = PropertyUtils.describe(source);
+		Map<String, Object> properties = PropertyUtils.describe(orig);
 		for (Map.Entry<String, Object> entry : properties.entrySet()) {
 			String propertyName = entry.getKey();
 			Object value = entry.getValue();
 			if (value != null && !"class".equals(propertyName)) {
-				BeanUtils.copyProperty(target, propertyName, value);
+				BeanUtils.copyProperty(dest, propertyName, value);
 			}
 		}
 	}
