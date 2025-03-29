@@ -74,7 +74,7 @@ class InventoryServiceImplTest {
 		ticketGroup.setUnitPrice(unitPrice);
 		ticketGroup.setSection("BALCON TABLE 11");
 		ticketGroup.setRow("11");
-		ticketGroup.setLowSeat("1");
+		ticketGroup.setLowSeat(1);
 		ticketGroup.setReferenceTicketGroupId(1);
 
 		try {
