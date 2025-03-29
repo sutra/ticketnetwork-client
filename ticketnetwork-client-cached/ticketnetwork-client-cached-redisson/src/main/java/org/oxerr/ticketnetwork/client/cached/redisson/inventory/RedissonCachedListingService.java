@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.beanutils2.BeanUtils;
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -397,7 +397,9 @@ public class RedissonCachedListingService
 					new TicketGroupV4PostModel(listing),
 					listing.getTicketGroupId()
 				);
-				var target = (TicketNetworkListing) BeanUtils.cloneBean(source);
+
+				// Deep clone the source to avoid modifying the source.
+				var target = SerializationUtils.clone(source);
 				BeanCopyUtils.copyNonNullProperties(target.getRequest(), cachedListing.toMarketplaceListing().getRequest());
 
 				var priority = getPriority(event, target, cachedListing);
