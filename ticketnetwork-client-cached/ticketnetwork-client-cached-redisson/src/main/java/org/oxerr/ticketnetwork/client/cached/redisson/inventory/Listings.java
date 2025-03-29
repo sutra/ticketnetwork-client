@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.oxerr.ticketnetwork.client.model.Notes;
+import org.oxerr.ticketnetwork.client.model.Quantity;
 import org.oxerr.ticketnetwork.client.model.TicketGroup;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 
@@ -45,7 +46,7 @@ final class Listings {
 			.append("row", g.getSeats().getRow())
 			.append("lowSeat", g.getSeats().getLowSeat())
 			.append("highSeat", g.getSeats().getHighSeat())
-			.append("quantity", g.getQuantity())
+			.append("quantity", toString(g.getQuantity()))
 			.append("price", g.getUnitPrice().getRetailPrice().getValue())
 			.append("currency", g.getUnitPrice().getRetailPrice().getCurrencyCode())
 			.append("notes", toString(g.getNotes()))
@@ -62,6 +63,13 @@ final class Listings {
 			.append("price", r.getUnitPrice().getRetailPrice())
 			.append("currency", r.getUnitPrice().getFacePrice().getCurrencyCode())
 			.append("notes", toString(r.getNotes()))
+			.toString();
+	}
+
+	public static String toString(Quantity quantity) {
+		return new ToStringBuilder(quantity, ToStringStyle.SHORT_PREFIX_STYLE)
+			.append("total", quantity.getTotal())
+			.append("available", quantity.getAvailable())
 			.toString();
 	}
 
