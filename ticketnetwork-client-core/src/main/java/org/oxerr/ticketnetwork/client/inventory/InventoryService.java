@@ -29,14 +29,14 @@ public interface InventoryService {
 
 	TicketGroupV4GetModel updateTicketGroup(
 		Integer ticketGroupId,
-		TicketGroupV4PostModel target,
-		TicketGroupV4PostModel source
+		TicketGroup target,
+		TicketGroup source
 	) throws IOException;
 
 	TicketGroupV4GetModel updateTicketGroup(
 		Integer ticketGroupId,
-		TicketGroup target,
-		TicketGroup source
+		TicketGroupV4PostModel target,
+		TicketGroupV4PostModel source
 	) throws IOException;
 
 	TicketGroupsV4GetModel getAllTicketGroups(AllTicketGroupQuery q) throws IOException;

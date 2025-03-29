@@ -77,18 +77,6 @@ public class InventoryServiceImpl implements InventoryService {
 	@Override
 	public TicketGroupV4GetModel updateTicketGroup(
 		Integer ticketGroupId,
-		TicketGroupV4PostModel target,
-		TicketGroupV4PostModel source
-	) throws IOException {
-		TicketGroupV4GetModel targetTicketGroupV4GetModel = new TicketGroupV4GetModel(target);
-		TicketGroupV4GetModel sourceTicketGroupV4GetModel = new TicketGroupV4GetModel(source);
-
-		return updateTicketGroup(ticketGroupId, targetTicketGroupV4GetModel, sourceTicketGroupV4GetModel);
-	}
-
-	@Override
-	public TicketGroupV4GetModel updateTicketGroup(
-		Integer ticketGroupId,
 		TicketGroup target,
 		TicketGroup source
 	) throws IOException {
@@ -102,6 +90,17 @@ public class InventoryServiceImpl implements InventoryService {
 			ticketGroupId, sourceNode, targetNode, patch);
 
 		return updateTicketGroup(ticketGroupId, patch);
+	}
+
+	@Override
+	public TicketGroupV4GetModel updateTicketGroup(
+		Integer ticketGroupId,
+		TicketGroupV4PostModel target,
+		TicketGroupV4PostModel source
+	) throws IOException {
+		TicketGroupV4GetModel targetTicketGroupV4GetModel = new TicketGroupV4GetModel(target);
+		TicketGroupV4GetModel sourceTicketGroupV4GetModel = new TicketGroupV4GetModel(source);
+		return updateTicketGroup(ticketGroupId, targetTicketGroupV4GetModel, sourceTicketGroupV4GetModel);
 	}
 
 	@Override
