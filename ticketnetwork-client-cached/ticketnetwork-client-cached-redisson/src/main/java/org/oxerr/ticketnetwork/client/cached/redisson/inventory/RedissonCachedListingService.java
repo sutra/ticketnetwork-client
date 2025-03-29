@@ -189,6 +189,7 @@ public class RedissonCachedListingService
 		TicketNetworkListing source,
 		int priority
 	) throws IOException {
+		log.debug("Updating listing. source: {}, target: {}", source, target);
 		inventoryService.updateTicketGroup(source.getTicketGroupId(), target.getRequest(), source.getRequest());
 	}
 
