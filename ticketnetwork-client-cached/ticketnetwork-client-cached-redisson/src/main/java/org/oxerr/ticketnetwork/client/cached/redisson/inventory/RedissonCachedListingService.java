@@ -163,12 +163,22 @@ public class RedissonCachedListingService
 				&& e.getValidationErrors().get("lowSeat").getReasons()
 					.contains("A ticket group already exists with the provided event ID, section, and row with overlapping seats.")) {
 
-				var existing = getFirstTicketGroup(listing);
+				TicketGroupsV4GetModel ticketGroups = getTicketGroups(listing);
+
+				var existing = ticketGroups.getResults()
+					.stream()
+					.filter(t -> t.getReferenceTicketGroupId().equals(listing.getRequest().getReferenceTicketGroupId()))
+					.findFirst();
+
+				log.debug("Existing ticket group: {}", existing);
 
 				if (existing.isPresent()) {
 					ticketGroup = existing.get();
 				} else {
-					throw e;
+					for (var t : ticketGroups.getResults()) {
+						this.inventoryService.deleteTicketGroup(t.getTicketGroupId());
+					}
+					ticketGroup = inventoryService.createTicketGroup(listing.getRequest());
 				}
 			} else {
 				throw e;
@@ -180,19 +190,6 @@ public class RedissonCachedListingService
 		cached.setTicketGroupId(ticketGroup.getTicketGroupId());
 
 		getEventCache(event.getId()).put(listing.getId(), cached);
-	}
-
-	private Optional<TicketGroup> getFirstTicketGroup(TicketNetworkListing listing) throws IOException {
-		TicketGroupsV4GetModel ticketGroups = getTicketGroups(listing);
-
-		var existing = ticketGroups.getResults()
-			.stream()
-			.filter(t -> t.getReferenceTicketGroupId().equals(listing.getRequest().getReferenceTicketGroupId()))
-			.findFirst();
-
-		log.debug("Existing ticket group: {}", existing);
-
-		return existing;
 	}
 
 	private TicketGroupsV4GetModel getTicketGroups(TicketNetworkListing listing) throws IOException {
