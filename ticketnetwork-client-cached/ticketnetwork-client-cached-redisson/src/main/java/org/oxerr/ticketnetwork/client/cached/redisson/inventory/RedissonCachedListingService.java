@@ -408,7 +408,11 @@ public class RedissonCachedListingService
 					if (target.getTicketGroupId() == null) {
 						createListing(event, target);
 					} else {
-						updateListing(event, target, source, priority);
+						try {
+							updateListing(event, target, source, priority);
+						} catch (ValidationErrorsModel e) {
+							log.warn("Update listing failed, external ID: {}.", target.getTicketGroupId(), e);
+						}
 					}
 				} else {
 					log.warn("Marketplace event ID mismatch:  {} != {}, event ID = {}",
