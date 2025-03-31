@@ -162,11 +162,10 @@ public class RedissonCachedListingService
 					.contains("A ticket group already exists with the provided event ID, section, and row with overlapping seats.")) {
 
 				var filter = String.format(
-					"event/id eq %d and seats/section eq '%s' and seats/row eq '%s' and seats/lowSeat eq %d",
+					"event/id eq %d and seats/section eq '%s' and seats/row eq '%s'",
 					listing.getRequest().getEventId(),
 					listing.getRequest().getSection().replace("'", "''"),
-					listing.getRequest().getRow().replace("'", "''"),
-					listing.getRequest().getLowSeat()
+					listing.getRequest().getRow().replace("'", "''")
 				);
 
 				TicketGroupQuery q = new TicketGroupQuery();
@@ -174,7 +173,8 @@ public class RedissonCachedListingService
 				TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(q);
 				log.info("Filter: {}, ticket group count: {}", filter, ticketGroups.getTotalCount());
 				if (log.isDebugEnabled()) {
-					ticketGroups.getResults().forEach(t -> log.debug("Reference ticket group: {}", t.getReferenceTicketGroupId()));
+					ticketGroups.getResults()
+						.forEach(t -> log.debug("Ticket group, referenceTicketGroupId: {}, lowSeat: {}", t.getReferenceTicketGroupId(), t.getSeats().getLowSeat()));
 				}
 
 				var existing = ticketGroups.getResults()
