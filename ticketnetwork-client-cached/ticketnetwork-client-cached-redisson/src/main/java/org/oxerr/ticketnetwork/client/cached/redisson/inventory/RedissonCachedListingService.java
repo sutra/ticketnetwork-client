@@ -144,9 +144,10 @@ public class RedissonCachedListingService
 		TicketGroup ticketGroup;
 
 		try {
+			log.info("Creating ticket group: {}", listing.getRequest().getReferenceTicketGroupId());
 			ticketGroup = inventoryService.createTicketGroup(listing.getRequest());
 		} catch (ValidationErrorsModel e) {
-			log.info("Validation errors: {}", e.getValidationErrors());
+			log.info("Create ticket group failed, reference ticket group ID: {}, validation errors: {}", listing.getRequest().getReferenceTicketGroupId(), e.getValidationErrors());
 			if (e.getValidationErrors().get("lowSeat") != null
 				&& e.getValidationErrors().get("lowSeat").getReasons()
 					.contains("A ticket group already exists with the provided event ID, section, and row with overlapping seats.")) {
