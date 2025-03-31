@@ -163,32 +163,8 @@ public class RedissonCachedListingService
 				&& e.getValidationErrors().get("lowSeat").getReasons()
 					.contains("A ticket group already exists with the provided event ID, section, and row with overlapping seats.")) {
 
-				var filter = String.format(
-					"event/id eq %d and seats/section eq '%s' and seats/row eq '%s'",
-					listing.getRequest().getEventId(),
-					listing.getRequest().getSection().replace("'", "''"),
-					listing.getRequest().getRow().replace("'", "''")
-				);
+				var existing = getFirstTicketGroup(listing);
 
-				TicketGroupQuery q = new TicketGroupQuery();
-				q.setFilter(filter);
-				TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(q);
-				log.info("Filter: {}, ticket group count: {}.", filter, ticketGroups.getTotalCount());
-				if (log.isDebugEnabled()) {
-					ticketGroups.getResults()
-						.forEach(t -> log.debug(
-							"Ticket group. Event ID: {} reference ticket group ID: {}, low seat: {}.",
-							t.getEvent().getId(),
-							t.getReferenceTicketGroupId(),
-							t.getSeats().getLowSeat()
-						));
-				}
-
-				var existing = ticketGroups.getResults()
-					.stream()
-					.filter(t -> t.getReferenceTicketGroupId().equals(listing.getRequest().getReferenceTicketGroupId()))
-					.findFirst();
-				log.debug("Existing ticket group: {}", existing);
 				if (existing.isPresent()) {
 					ticketGroup = existing.get();
 				} else {
@@ -204,6 +180,47 @@ public class RedissonCachedListingService
 		cached.setTicketGroupId(ticketGroup.getTicketGroupId());
 
 		getEventCache(event.getId()).put(listing.getId(), cached);
+	}
+
+	private Optional<TicketGroup> getFirstTicketGroup(TicketNetworkListing listing) throws IOException {
+		TicketGroupsV4GetModel ticketGroups = getTicketGroups(listing);
+
+		var existing = ticketGroups.getResults()
+			.stream()
+			.filter(t -> t.getReferenceTicketGroupId().equals(listing.getRequest().getReferenceTicketGroupId()))
+			.findFirst();
+
+		log.debug("Existing ticket group: {}", existing);
+
+		return existing;
+	}
+
+	private TicketGroupsV4GetModel getTicketGroups(TicketNetworkListing listing) throws IOException {
+		var filter = String.format(
+			"event/id eq %d and seats/section eq '%s' and seats/row eq '%s'",
+			listing.getRequest().getEventId(),
+			listing.getRequest().getSection().replace("'", "''"),
+			listing.getRequest().getRow().replace("'", "''")
+		);
+
+		TicketGroupQuery q = new TicketGroupQuery();
+		q.setFilter(filter);
+
+		TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(q);
+
+		log.info("Filter: {}, ticket group count: {}.", filter, ticketGroups.getTotalCount());
+
+		if (log.isDebugEnabled()) {
+			ticketGroups.getResults()
+				.forEach(t -> log.debug(
+					"Ticket group. Event ID: {} reference ticket group ID: {}, low seat: {}.",
+					t.getEvent().getId(),
+					t.getReferenceTicketGroupId(),
+					t.getSeats().getLowSeat()
+				));
+		}
+
+		return ticketGroups;
 	}
 
 	@Override
