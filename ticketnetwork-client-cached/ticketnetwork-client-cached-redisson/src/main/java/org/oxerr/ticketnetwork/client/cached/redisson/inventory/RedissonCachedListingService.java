@@ -171,7 +171,9 @@ public class RedissonCachedListingService
 				q.setFilter(filter);
 				TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(q);
 				log.info("Filter: {}, ticket group count: {}", filter, ticketGroups.getTotalCount());
-				log.debug("Filter: {}, ticket groups: {}", filter, ticketGroups.getResults());
+				if (log.isDebugEnabled()) {
+					ticketGroups.getResults().forEach(t -> log.debug("Reference ticket group: {}", t.getReferenceTicketGroupId()));
+				}
 
 				var existing = ticketGroups.getResults()
 					.stream()
