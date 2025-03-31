@@ -162,7 +162,7 @@ public class RedissonCachedListingService
 					.contains("A ticket group already exists with the provided event ID, section, and row with overlapping seats.")) {
 
 				var filter = String.format("event/id eq %d and seats/section eq '%s' and seats/row eq '%s'",
-					event.getMarketplaceEventId(),
+					listing.getRequest().getEventId(),
 					listing.getRequest().getSection().replace("'", "''"),
 					listing.getRequest().getRow().replace("'", "''")
 				);
@@ -176,6 +176,7 @@ public class RedissonCachedListingService
 					.stream()
 					.filter(t -> t.getReferenceTicketGroupId().equals(listing.getRequest().getReferenceTicketGroupId()))
 					.findFirst();
+				log.debug("Existing ticket group: {}", existing);
 				if (existing.isPresent()) {
 					ticketGroup = existing.get();
 				} else {
