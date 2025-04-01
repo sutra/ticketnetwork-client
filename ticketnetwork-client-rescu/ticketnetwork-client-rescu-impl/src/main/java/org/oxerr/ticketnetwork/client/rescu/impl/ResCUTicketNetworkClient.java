@@ -33,7 +33,7 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 
 	public ResCUTicketNetworkClient(
 		Integer brokerId,
-		String accessToken,
+		CharSequence accessToken,
 		Interceptor... interceptors
 	) {
 		this(DEFAULT_BASE_URL, brokerId, accessToken, interceptors);
@@ -42,7 +42,7 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 	public ResCUTicketNetworkClient(
 		String baseUrl,
 		Integer brokerId,
-		String accessToken,
+		CharSequence accessToken,
 		Interceptor... interceptors
 	) {
 		this.baseUrl = baseUrl;
@@ -63,7 +63,7 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 		return this.restProxyFactory.createProxy(restInterface, baseUrl, clientConfig, interceptors);
 	}
 
-	protected ClientConfig createClientConfig(String accessToken, Integer brokerId) {
+	protected ClientConfig createClientConfig(CharSequence accessToken, Integer brokerId) {
 		var jacksonObjectMapperFactory = createJacksonObjectMapperFactory();
 		var clientConfig = new ClientConfig();
 		clientConfig.setConnectionType(HttpConnectionType.apache);
