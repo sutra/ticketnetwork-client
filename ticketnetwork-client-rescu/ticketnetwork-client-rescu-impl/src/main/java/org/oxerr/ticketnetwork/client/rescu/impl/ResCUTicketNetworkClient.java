@@ -1,5 +1,7 @@
 package org.oxerr.ticketnetwork.client.rescu.impl;
 
+import java.util.function.Supplier;
+
 import org.oxerr.rescu.ext.singleton.RestProxyFactorySingletonImpl;
 import org.oxerr.ticketnetwork.client.TicketNetworkClient;
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
@@ -36,7 +38,15 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 		CharSequence accessToken,
 		Interceptor... interceptors
 	) {
-		this(DEFAULT_BASE_URL, brokerId, accessToken, interceptors);
+		this(brokerId, () -> accessToken, interceptors);
+	}
+
+	public ResCUTicketNetworkClient(
+		Integer brokerId,
+		Supplier<CharSequence> accessTokenSupplier,
+		Interceptor... interceptors
+	) {
+		this(DEFAULT_BASE_URL, brokerId, accessTokenSupplier, interceptors);
 	}
 
 	public ResCUTicketNetworkClient(
@@ -45,10 +55,19 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 		CharSequence accessToken,
 		Interceptor... interceptors
 	) {
+		this(baseUrl, brokerId, () -> accessToken, interceptors);
+	}
+
+	public ResCUTicketNetworkClient(
+		String baseUrl,
+		Integer brokerId,
+		Supplier<CharSequence> accessTokenSupplier,
+		Interceptor... interceptors
+	) {
 		this.baseUrl = baseUrl;
 		this.restProxyFactory = new RestProxyFactorySingletonImpl(new RestProxyFactoryImpl());
 
-		var clientConfig = createClientConfig(accessToken, brokerId);
+		var clientConfig = createClientConfig(accessTokenSupplier, brokerId);
 		var objectMapper = clientConfig.getJacksonObjectMapperFactory().createObjectMapper();
 		InventoryResource inventoryResource = restProxyFactory.createProxy(InventoryResource.class, baseUrl, clientConfig, interceptors);
 		this.inventoryService = new InventoryServiceImpl(objectMapper, inventoryResource);
@@ -63,11 +82,18 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 		return this.restProxyFactory.createProxy(restInterface, baseUrl, clientConfig, interceptors);
 	}
 
-	protected ClientConfig createClientConfig(CharSequence accessToken, Integer brokerId) {
+	protected ClientConfig createClientConfig(Supplier<CharSequence> accessTokenSupplier, Integer brokerId) {
 		var jacksonObjectMapperFactory = createJacksonObjectMapperFactory();
 		var clientConfig = new ClientConfig();
 		clientConfig.setConnectionType(HttpConnectionType.apache);
-		clientConfig.addDefaultParam(HeaderParam.class, "Authorization", "Bearer " + accessToken);
+		clientConfig.addDefaultParam(HeaderParam.class, "Authorization", new Object() {
+
+			@Override
+			public String toString() {
+				return "Bearer " + accessTokenSupplier.get();
+			}
+
+		});
 		clientConfig.addDefaultParam(HeaderParam.class, "X-Identity-Context", "broker-id=" + brokerId);
 		clientConfig.setJacksonObjectMapperFactory(jacksonObjectMapperFactory);
 		return clientConfig;
