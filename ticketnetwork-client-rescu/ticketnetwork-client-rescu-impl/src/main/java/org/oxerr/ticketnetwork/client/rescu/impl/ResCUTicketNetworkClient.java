@@ -43,6 +43,14 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 
 	public ResCUTicketNetworkClient(
 		Integer brokerId,
+		String accessToken,
+		Interceptor... interceptors
+	) {
+		this(brokerId, (CharSequence) accessToken, interceptors);
+	}
+
+	public ResCUTicketNetworkClient(
+		Integer brokerId,
 		Supplier<CharSequence> accessTokenSupplier,
 		Interceptor... interceptors
 	) {
@@ -56,6 +64,15 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 		Interceptor... interceptors
 	) {
 		this(baseUrl, brokerId, () -> accessToken, interceptors);
+	}
+
+	public ResCUTicketNetworkClient(
+		String baseUrl,
+		Integer brokerId,
+		String accessToken,
+		Interceptor... interceptors
+	) {
+		this(baseUrl, brokerId, (CharSequence) accessToken, interceptors);
 	}
 
 	public ResCUTicketNetworkClient(
