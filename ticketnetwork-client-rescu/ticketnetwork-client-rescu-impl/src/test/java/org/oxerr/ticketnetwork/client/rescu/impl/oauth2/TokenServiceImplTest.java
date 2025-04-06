@@ -17,7 +17,8 @@ class TokenServiceImplTest {
 	@Test
 	void testGenerateToken() {
 		var grantType = "client_credentials";
-		var scope = "api_resource_scope_1 api_resource_scope_2";
+		// var scope = "api_resource_scope_1 api_resource_scope_2";
+		var scope = "sections_get standard_section_scope exchange_inventory_read batch_pricing_write";
 		var token = ResCUTicketNetworkClients.createKeyManagerClient().getTokenService().generateToken(grantType, scope);
 		log.info("Token: {}", token);
 		assertEquals(scope, token.getScope());
