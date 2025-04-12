@@ -86,7 +86,7 @@ public class InventoryServiceImpl implements InventoryService {
 
 		// Generate JSON Patch
 		JsonPatch patch = JsonDiff.asJsonPatch(sourceNode, targetNode);
-		log.debug("ticketGroupId: {}, sourceNode: {}, targetNode: {}, patch: {}",
+		log.trace("ticketGroupId: {}, sourceNode: {}, targetNode: {}, patch: {}",
 			ticketGroupId, sourceNode, targetNode, patch);
 
 		return updateTicketGroup(ticketGroupId, patch);
