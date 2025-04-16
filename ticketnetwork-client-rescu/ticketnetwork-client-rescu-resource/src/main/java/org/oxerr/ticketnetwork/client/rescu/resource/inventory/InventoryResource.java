@@ -3,6 +3,7 @@ package org.oxerr.ticketnetwork.client.rescu.resource.inventory;
 import java.io.IOException;
 
 import org.oxerr.ticketnetwork.client.model.SeatingTypesGetModel;
+import org.oxerr.ticketnetwork.client.model.StockTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
@@ -317,6 +318,23 @@ public interface InventoryResource {
 	@Path("/ticketgroups/seatingtypes")
 	@Produces(MediaType.APPLICATION_JSON)
 	SeatingTypesGetModel getSeatingTypes() throws IOException, TicketNetworkException;
+
+	/**
+	 * Gets a listing of all possible ticket group stock types.
+	 *
+	 * If successful, the HTTP response code will indicate a 200 (OK) response,
+	 * and a representation of all the possible ticket group stock types
+	 * will be included in the response.
+	 * Note that this is infrequently modified reference data,
+	 * and caching this response is recommended.
+	 * @return the stock types.
+	 * @throws IOException if an I/O error occurs.
+	 * @throws TicketNetworkException if a business exception occurs.
+	 */
+	@GET
+	@Path("/ticketgroups/stocktypes")
+	@Produces(MediaType.APPLICATION_JSON)
+	StockTypesGetModel getStockTypes() throws IOException, TicketNetworkException;
 
 	/**
 	 * Gets a listing of all possible ticket group types.

@@ -16,6 +16,7 @@ import org.oxerr.ticketnetwork.client.inventory.InventoryService;
 import org.oxerr.ticketnetwork.client.inventory.TicketGroupQuery;
 import org.oxerr.ticketnetwork.client.model.MoneyAmountModel;
 import org.oxerr.ticketnetwork.client.model.SeatingTypesGetModel;
+import org.oxerr.ticketnetwork.client.model.StockTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
@@ -134,6 +135,12 @@ class InventoryServiceImplTest {
 		log.info("seating types: {}", seatingTypes);
 	}
 
+	@Disabled("Call API")
+	@Test
+	void testGetStockTypes() throws IOException {
+		StockTypesGetModel stockTypes = inventoryService.getStockTypes();
+		log.info("stock types: {}", stockTypes);
+	}
 	@Disabled("Call API")
 	@Test
 	void testGetTypes() throws IOException {
