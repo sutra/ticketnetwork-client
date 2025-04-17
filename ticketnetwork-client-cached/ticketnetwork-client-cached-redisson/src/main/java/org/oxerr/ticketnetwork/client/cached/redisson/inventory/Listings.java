@@ -25,19 +25,33 @@ final class Listings {
 			Objects.equals(a.getSeats().getRow(), b.getRow()),
 			Objects.equals(a.getSeats().getLowSeat(), b.getLowSeat()),
 			Objects.equals(a.getQuantity().getAvailable(), b.getQuantity()),
-			isSamePrice(a, b)
+			isSameUnitPrice(a, b)
 		).allMatch(Boolean::booleanValue);
 	}
 
-	public static boolean isSamePrice(TicketGroup a, TicketGroupV4PostModel b) {
+	public static boolean isSameUnitPrice(TicketGroup a, TicketGroupV4PostModel b) {
 		return Stream.of(
+			// Currency
 			Objects.equals(
 				a.getUnitPrice().getRetailPrice().getCurrencyCode(),
 				b.getUnitPrice().getFacePrice().getCurrencyCode()
 			),
+			// Face price
+			Objects.compare(
+				a.getUnitPrice().getFacePrice().getValue(),
+				b.getUnitPrice().getFacePrice().getValue(),
+				BigDecimal::compareTo
+			) == 0,
+			// Retail price
 			Objects.compare(
 				a.getUnitPrice().getRetailPrice().getValue(),
 				b.getUnitPrice().getRetailPrice(),
+				BigDecimal::compareTo
+			) == 0,
+			// Wholesale price
+			Objects.compare(
+				a.getUnitPrice().getWholesalePrice().getValue(),
+				b.getUnitPrice().getWholesalePrice(),
 				BigDecimal::compareTo
 			) == 0
 		).allMatch(Boolean::booleanValue);
