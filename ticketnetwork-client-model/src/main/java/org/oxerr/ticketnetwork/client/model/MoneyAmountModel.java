@@ -82,7 +82,7 @@ public class MoneyAmountModel implements Comparable<MoneyAmountModel>, Serializa
 
 	@Override
 	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
+		return String.format("%s %s", getCurrencyCode(), getValue().toPlainString());
 	}
 
 }
