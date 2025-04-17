@@ -134,7 +134,7 @@
 			<dependency>
 				<groupId>org.redisson</groupId>
 				<artifactId>redisson</artifactId>
-				<version>3.45.0</version>
+				<version>3.45.1</version>
 			</dependency>
 			<dependency>
 				<groupId>com.evanlennick</groupId>
@@ -177,7 +177,7 @@
 			<dependency>
 				<groupId>nl.jqno.equalsverifier</groupId>
 				<artifactId>equalsverifier</artifactId>
-				<version>3.19.1</version>
+				<version>3.19.3</version>
 			</dependency>
 
 		</dependencies>
