@@ -47,13 +47,21 @@ class InventoryServiceImplTest {
 	@Disabled("Call API")
 	@Test
 	void testGetTicketGroups() throws IOException {
-		String filter = "event/id eq 6562663 and seats/section eq '105' and seats/row eq 'W'";
+		// String filter = "event/id eq 6562663 and seats/section eq '105' and seats/row eq 'W'";
 		TicketGroupQuery q = new TicketGroupQuery();
-		q.setFilter(filter);
+		// q.setFilter(filter);
 		q.setPerPage(500);
 		TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(q);
 		log.info("ticket groups: {}", ticketGroups);
-		ticketGroups.getResults().forEach(tg -> log.info("ticket group: {} {}", tg.getTicketGroupId(), tg.getReferenceTicketGroupId()));
+		ticketGroups.getResults().forEach(
+			tg -> log.info(
+				"ticket group: {} {} {}{}",
+				tg.getTicketGroupId(),
+				tg.getReferenceTicketGroupId(),
+				tg.getUnitPrice().getWholesalePrice().getValue(),
+				tg.getUnitPrice().getWholesalePrice().getCurrencyCode()
+			)
+		);
 		log.info("ticket groups count: {}/{}", ticketGroups.getCount(), ticketGroups.getTotalCount());
 		assertEquals(0, ticketGroups.getCount().intValue());
 	}
