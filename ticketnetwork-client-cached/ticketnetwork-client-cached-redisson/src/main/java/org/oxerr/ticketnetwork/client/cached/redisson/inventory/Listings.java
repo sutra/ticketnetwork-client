@@ -2,16 +2,23 @@ package org.oxerr.ticketnetwork.client.cached.redisson.inventory;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.oxerr.ticketnetwork.client.model.MoneyAmountModel;
 import org.oxerr.ticketnetwork.client.model.Notes;
 import org.oxerr.ticketnetwork.client.model.Quantity;
+import org.oxerr.ticketnetwork.client.model.SeatingType;
+import org.oxerr.ticketnetwork.client.model.Seats;
+import org.oxerr.ticketnetwork.client.model.StockType;
 import org.oxerr.ticketnetwork.client.model.TicketGroup;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
+import org.oxerr.ticketnetwork.client.model.UnitPriceGetModel;
+import org.oxerr.ticketnetwork.client.model.UnitPricePostModel;
 
 final class Listings {
 
@@ -25,7 +32,9 @@ final class Listings {
 			Objects.equals(a.getSeats().getRow(), b.getRow()),
 			Objects.equals(a.getSeats().getLowSeat(), b.getLowSeat()),
 			Objects.equals(a.getQuantity().getAvailable(), b.getQuantity()),
-			isSameUnitPrice(a, b)
+			isSameUnitPrice(a, b),
+			Objects.equals(Optional.ofNullable(a.getSeats()).map(Seats::getSeatingType).map(SeatingType::getId).orElse(null), b.getSeatingTypeId()),
+			Objects.equals(Optional.ofNullable(a.getStockType()).map(StockType::getId).orElse(null), b.getStockTypeId())
 		).allMatch(Boolean::booleanValue);
 	}
 
@@ -33,25 +42,25 @@ final class Listings {
 		return Stream.of(
 			// Currency
 			Objects.equals(
-				a.getUnitPrice().getRetailPrice().getCurrencyCode(),
-				b.getUnitPrice().getFacePrice().getCurrencyCode()
+				Optional.ofNullable(a.getUnitPrice()).map(UnitPriceGetModel::getRetailPrice).map(MoneyAmountModel::getCurrencyCode).orElse(null),
+				Optional.ofNullable(b.getUnitPrice()).map(UnitPricePostModel::getFacePrice).map(MoneyAmountModel::getCurrencyCode).orElse(null)
 			),
 			// Face price
 			Objects.compare(
-				a.getUnitPrice().getFacePrice().getValue(),
-				b.getUnitPrice().getFacePrice().getValue(),
+				Optional.ofNullable(a.getUnitPrice()).map(UnitPriceGetModel::getFacePrice).map(MoneyAmountModel::getValue).orElse(BigDecimal.ZERO),
+				Optional.ofNullable(b.getUnitPrice()).map(UnitPricePostModel::getFacePrice).map(MoneyAmountModel::getValue).orElse(BigDecimal.ZERO),
 				BigDecimal::compareTo
 			) == 0,
 			// Retail price
 			Objects.compare(
-				a.getUnitPrice().getRetailPrice().getValue(),
-				b.getUnitPrice().getRetailPrice(),
+				Optional.ofNullable(a.getUnitPrice()).map(UnitPriceGetModel::getRetailPrice).map(MoneyAmountModel::getValue).orElse(BigDecimal.ZERO),
+				Optional.ofNullable(b.getUnitPrice()).map(UnitPricePostModel::getRetailPrice).orElse(BigDecimal.ZERO),
 				BigDecimal::compareTo
 			) == 0,
 			// Wholesale price
 			Objects.compare(
-				a.getUnitPrice().getWholesalePrice().getValue(),
-				b.getUnitPrice().getWholesalePrice(),
+				Optional.ofNullable(a.getUnitPrice()).map(UnitPriceGetModel::getWholesalePrice).map(MoneyAmountModel::getValue).orElse(BigDecimal.ZERO),
+				Optional.ofNullable(b.getUnitPrice()).map(UnitPricePostModel::getWholesalePrice).orElse(BigDecimal.ZERO),
 				BigDecimal::compareTo
 			) == 0
 		).allMatch(Boolean::booleanValue);

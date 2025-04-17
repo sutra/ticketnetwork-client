@@ -34,6 +34,7 @@ class ListingsTest {
 		a.setQuantity(quantity);
 		UnitPriceGetModel unitPriceGetModel = new UnitPriceGetModel();
 		unitPriceGetModel.setRetailPrice(MoneyAmountModel.of(new BigDecimal("94.6400"), "USD"));
+		unitPriceGetModel.setFacePrice(MoneyAmountModel.of(new BigDecimal("94.6400"), "USD"));
 		a.setUnitPrice(unitPriceGetModel);
 
 		TicketGroupV4PostModel b = new TicketGroupV4PostModel();
