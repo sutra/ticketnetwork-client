@@ -55,12 +55,19 @@ class InventoryServiceImplTest {
 		TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(q);
 		log.info("ticket groups: {}", ticketGroups);
 		ticketGroups.getResults().forEach(
-			g -> log.info(
-				"ticket group: {} {} {}",
-				g.getTicketGroupId(),
-				g.getReferenceTicketGroupId(),
-				g.getUnitPrice().getWholesalePrice()
-			)
+			g -> {
+				log.info(
+					"ticket group: {} {} {}",
+					g.getTicketGroupId(),
+					g.getReferenceTicketGroupId(),
+					g.getUnitPrice().getWholesalePrice()
+				);
+				try {
+					inventoryService.deleteTicketGroup(g.getTicketGroupId());
+				} catch (IOException e) {
+					log.error("Failed to delete ticket group: {}", g.getTicketGroupId(), e);
+				}
+			}
 		);
 		log.info("ticket groups count: {}/{}", ticketGroups.getCount(), ticketGroups.getTotalCount());
 		assertEquals(0, ticketGroups.getCount().intValue());
