@@ -55,11 +55,11 @@ class InventoryServiceImplTest {
 		TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(q);
 		log.info("ticket groups: {}", ticketGroups);
 		ticketGroups.getResults().forEach(
-			tg -> log.info(
+			g -> log.info(
 				"ticket group: {} {} {}",
-				tg.getTicketGroupId(),
-				tg.getReferenceTicketGroupId(),
-				tg.getUnitPrice().getWholesalePrice()
+				g.getTicketGroupId(),
+				g.getReferenceTicketGroupId(),
+				g.getUnitPrice().getWholesalePrice()
 			)
 		);
 		log.info("ticket groups count: {}/{}", ticketGroups.getCount(), ticketGroups.getTotalCount());
