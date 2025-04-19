@@ -116,7 +116,9 @@ final class Listings {
 		dest.setRow(orig.getRow());
 		dest.setLowSeat(orig.getLowSeat());
 		dest.setQuantity(orig.getQuantity());
+		dest.getUnitPrice().setWholesalePrice(orig.getUnitPrice().getWholesalePrice());
 		dest.getUnitPrice().setRetailPrice(orig.getUnitPrice().getRetailPrice());
+		dest.getUnitPrice().setFacePrice(orig.getUnitPrice().getFacePrice());
 	}
 
 	@Override
