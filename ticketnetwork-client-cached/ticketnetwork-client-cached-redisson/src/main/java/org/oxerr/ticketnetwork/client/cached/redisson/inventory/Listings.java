@@ -75,7 +75,9 @@ final class Listings {
 			.append("lowSeat", g.getSeats().getLowSeat())
 			.append("highSeat", g.getSeats().getHighSeat())
 			.append("quantity", toString(g.getQuantity()))
-			.append("price", g.getUnitPrice().getRetailPrice().getValue())
+			.append("wholesalePrice", g.getUnitPrice().getWholesalePrice().getValue())
+			.append("retailPrice", g.getUnitPrice().getRetailPrice().getValue())
+			.append("facePrice", g.getUnitPrice().getFacePrice().getValue())
 			.append("currency", g.getUnitPrice().getRetailPrice().getCurrencyCode())
 			.append("notes", toString(g.getNotes()))
 			.toString();
@@ -88,7 +90,9 @@ final class Listings {
 			.append("row", r.getRow())
 			.append("lowSeat", r.getLowSeat())
 			.append("quantity", r.getQuantity())
-			.append("price", r.getUnitPrice().getRetailPrice())
+			.append("wholesalePrice", r.getUnitPrice().getWholesalePrice())
+			.append("retailPrice", r.getUnitPrice().getRetailPrice())
+			.append("facePrice", r.getUnitPrice().getFacePrice())
 			.append("currency", r.getUnitPrice().getFacePrice().getCurrencyCode())
 			.append("notes", toString(r.getNotes()))
 			.toString();
