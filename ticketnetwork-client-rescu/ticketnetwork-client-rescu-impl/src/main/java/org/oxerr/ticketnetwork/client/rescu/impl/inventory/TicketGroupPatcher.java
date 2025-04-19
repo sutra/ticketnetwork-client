@@ -27,7 +27,7 @@ class TicketGroupPatcher {
 		// Generate JSON Patch
 		JsonPatch patch = JsonDiff.asJsonPatch(sourceNode, targetNode);
 
-		log.debug("[createPatch] source: {}, target: {}, patch: {}", sourceNode, targetNode, patch);
+		log.debug("[createPatch] source: {}, target: {}, patch: {}", source, target, patch);
 
 		return patch;
 	}
