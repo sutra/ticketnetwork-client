@@ -17,21 +17,19 @@ import org.oxerr.ticketnetwork.client.rescu.resource.inventory.InventoryResource
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
-import com.github.fge.jsonpatch.diff.JsonDiff;
 
 public class InventoryServiceImpl implements InventoryService {
 
 	private final Logger log = LoggerFactory.getLogger(InventoryServiceImpl.class);
 
-	private final ObjectMapper objectMapper;
+	private final TicketGroupPatcher ticketGroupPatcher;
 
 	private final InventoryResource inventoryResource;
 
 	public InventoryServiceImpl(ObjectMapper objectMapper, InventoryResource inventoryResource) {
-		this.objectMapper = objectMapper;
+		this.ticketGroupPatcher = new TicketGroupPatcher(objectMapper);
 		this.inventoryResource = inventoryResource;
 	}
 
@@ -81,15 +79,8 @@ public class InventoryServiceImpl implements InventoryService {
 		TicketGroup target,
 		TicketGroup source
 	) throws IOException {
-		// Convert to JsonNode
-		JsonNode targetNode = objectMapper.valueToTree(target);
-		JsonNode sourceNode = objectMapper.valueToTree(source);
-
-		// Generate JSON Patch
-		JsonPatch patch = JsonDiff.asJsonPatch(sourceNode, targetNode);
-		log.trace("ticketGroupId: {}, sourceNode: {}, targetNode: {}, patch: {}",
-			ticketGroupId, sourceNode, targetNode, patch);
-
+		JsonPatch patch = this.ticketGroupPatcher.createPatch(target, source);
+		log.trace("ticketGroupId: {}, patch: {}", ticketGroupId, patch);
 		return updateTicketGroup(ticketGroupId, patch);
 	}
 
