@@ -14,15 +14,11 @@ import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
 import org.oxerr.ticketnetwork.client.rescu.resource.inventory.InventoryResource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 
 public class InventoryServiceImpl implements InventoryService {
-
-	private final Logger log = LoggerFactory.getLogger(InventoryServiceImpl.class);
 
 	private final TicketGroupPatcher ticketGroupPatcher;
 
@@ -80,7 +76,6 @@ public class InventoryServiceImpl implements InventoryService {
 		TicketGroup source
 	) throws IOException {
 		JsonPatch patch = this.ticketGroupPatcher.createPatch(target, source);
-		log.trace("ticketGroupId: {}, patch: {}", ticketGroupId, patch);
 		return updateTicketGroup(ticketGroupId, patch);
 	}
 
