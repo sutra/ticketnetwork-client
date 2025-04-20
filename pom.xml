@@ -33,6 +33,7 @@
 		<module>ticketnetwork-client-model</module>
 		<module>ticketnetwork-client-core</module>
 		<module>ticketnetwork-client-cached</module>
+		<module>ticketnetwork-client-cxf</module>
 		<module>ticketnetwork-client-rescu</module>
 		<module>ticketnetwork-client-coverage</module>
 	</modules>
@@ -99,6 +100,11 @@
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-core</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-jul</artifactId>
 				<version>${log4j.version}</version>
 			</dependency>
 			<dependency>
@@ -208,6 +214,26 @@
 		</site>
 	</distributionManagement>
 	<profiles>
+		<profile>
+			<id>cxf</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<dependencyManagement>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.cxf</groupId>
+						<artifactId>cxf-rt-rs-client</artifactId>
+						<version>4.0.7</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.cxf</groupId>
+						<artifactId>cxf-rt-features-logging</artifactId>
+						<version>4.0.7</version>
+					</dependency>
+				</dependencies>
+			</dependencyManagement>
+		</profile>
 		<profile>
 			<id>test</id>
 			<activation>
