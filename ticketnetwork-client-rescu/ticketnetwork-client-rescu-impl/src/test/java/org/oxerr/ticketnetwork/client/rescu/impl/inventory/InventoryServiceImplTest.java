@@ -5,6 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,7 +53,6 @@ class InventoryServiceImplTest {
 	@Test
 	void testGetTicketGroups() throws IOException {
 		String filter = "event/id eq 6562663 and seats/section eq '105' and seats/row eq 'W'";
-		filter = "unitPrice/wholesalePrice/value eq 0";
 		TicketGroupQuery q = new TicketGroupQuery();
 		q.setFilter(filter);
 		q.setPerPage(500);
@@ -70,6 +74,44 @@ class InventoryServiceImplTest {
 			}
 		);
 		log.info("ticket groups count: {}/{}", ticketGroups.getCount(), ticketGroups.getTotalCount());
+		assertEquals(0, ticketGroups.getCount().intValue());
+	}
+
+	@Disabled("Call API")
+	@Test
+	void testDeleteTicketGroupsWithoutWholesalePrice() throws IOException {
+		ExecutorService executor = Executors.newFixedThreadPool(10);
+
+		String filter = "unitPrice/wholesalePrice/value eq 0";
+		TicketGroupQuery q = new TicketGroupQuery();
+		q.setFilter(filter);
+		q.setPerPage(500);
+
+		TicketGroupsV4GetModel ticketGroups;
+		do {
+			ticketGroups = inventoryService.getTicketGroups(q);
+			log.info("ticket groups count: {}/{}", ticketGroups.getCount(), ticketGroups.getTotalCount());
+
+			List<Future<?>> futures = ticketGroups.getResults().stream()
+				.map(g -> executor.submit(() -> {
+					log.info("Deleting ticket group: {}", g.getTicketGroupId());
+					try {
+						inventoryService.deleteTicketGroup(g.getTicketGroupId());
+					} catch (IOException e) {
+						log.error("Failed to delete ticket group: {}", g.getTicketGroupId(), e);
+					}
+				})).collect(Collectors.toList());
+
+			// Wait for all futures to complete
+			for (Future<?> future : futures) {
+				try {
+					future.get();
+				} catch (Exception e) {
+					log.error("Failed to delete ticket group.", e);
+				}
+			}
+		} while (ticketGroups.getTotalCount() > 0);
+
 		assertEquals(0, ticketGroups.getCount().intValue());
 	}
 

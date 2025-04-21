@@ -124,12 +124,12 @@
 			</dependency>
 			<dependency>
 				<groupId>org.oxerr.rescu.ext</groupId>
-				<artifactId>rescu-ext-singleton</artifactId>
+				<artifactId>rescu-ext-rate-limiter-core</artifactId>
 				<version>${rescu-ext.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.oxerr.rescu.ext</groupId>
-				<artifactId>rescu-ext-rate-limiter-core</artifactId>
+				<artifactId>rescu-ext-singleton</artifactId>
 				<version>${rescu-ext.version}</version>
 			</dependency>
 			<dependency>
