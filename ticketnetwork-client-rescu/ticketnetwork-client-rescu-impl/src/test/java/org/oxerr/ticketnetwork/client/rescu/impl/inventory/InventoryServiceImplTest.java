@@ -31,6 +31,7 @@ import org.oxerr.ticketnetwork.client.rescu.impl.ResCUTicketNetworkClients;
 import org.oxerr.ticketnetwork.client.rescu.resource.TicketNetworkException;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.DecimalNode;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
 import com.github.fge.jsonpatch.JsonPatch;
@@ -169,6 +170,22 @@ class InventoryServiceImplTest {
 		pathOperations[0] = new ReplaceOperation(path, value);
 		JsonPatch patch = new JsonPatch(Arrays.asList(pathOperations));
 		inventoryService.updateTicketGroup(ticketGroupId, patch);
+	}
+
+	@Disabled("Call API")
+	@Test
+	void testUpdateTicketGroupWithInvalidPath() throws IOException {
+		int ticketGroupId = -577118;
+		ObjectMapper objectMapper = new ObjectMapper();
+		// TODO: fix the patch
+		JsonNode jsonNode = objectMapper.readTree(this.getClass().getResourceAsStream("patch.json"));
+		JsonPatch patch = JsonPatch.fromJson(jsonNode);
+		try {
+			inventoryService.updateTicketGroup(ticketGroupId, patch);
+		} catch (TicketNetworkException e) {
+			log.error("Failed to update ticket group.", e);
+			e.getValidationErrors().forEach((k, v) -> log.error("{}: {}", k, v));
+		}
 	}
 
 	// {"code":"900910","message":"The access token does not allow you to access the requested resource","description":"User is NOT authorized to access the Resource: /ticketgroups/all. Scope validation failed."}
