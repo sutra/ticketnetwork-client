@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.oxerr.ticketnetwork.client.inventory.AllTicketGroupQuery;
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
 import org.oxerr.ticketnetwork.client.inventory.TicketGroupQuery;
+import org.oxerr.ticketnetwork.client.model.BroadcastChannelsGetModel;
 import org.oxerr.ticketnetwork.client.model.MoneyAmountModel;
 import org.oxerr.ticketnetwork.client.model.SeatingTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.StockTypesGetModel;
@@ -202,6 +203,13 @@ class InventoryServiceImplTest {
 		ticketGroups.getResults().forEach(tg -> log.info("ticket group: {} {}", tg.getTicketGroupId(), tg.getReferenceTicketGroupId()));
 		log.info("ticket groups total count: {}", ticketGroups.getTotalCount());
 		assertEquals(0, ticketGroups.getCount().intValue());
+	}
+
+	@Disabled("Call API")
+	@Test
+	void testGetBroadcastChannels() throws IOException {
+		BroadcastChannelsGetModel broadcastChannelsGetModel = inventoryService.getBroadcastChannels();
+		log.info("broadcast channels: {}", broadcastChannelsGetModel);
 	}
 
 	@Disabled("Call API")

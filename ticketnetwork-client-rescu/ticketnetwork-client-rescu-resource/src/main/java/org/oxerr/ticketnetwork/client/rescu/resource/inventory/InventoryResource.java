@@ -2,6 +2,7 @@ package org.oxerr.ticketnetwork.client.rescu.resource.inventory;
 
 import java.io.IOException;
 
+import org.oxerr.ticketnetwork.client.model.BroadcastChannelsGetModel;
 import org.oxerr.ticketnetwork.client.model.SeatingTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.StockTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupTypesGetModel;
@@ -274,6 +275,7 @@ public interface InventoryResource {
 	 * ticketGroupId, exchangeTicketGroupId, created, updated, onHandDate, notes, broadcastChannelId, isInstant, referenceTicketGroupId, isMercury, isTNPrime, isShort, hasBarcodes, hasPurchaseOrder, purchaseOrderIds, hasQrScreenshots, isNatbBroker, pricingBadgeLevel, event/id, event/date, event/time, event/venueConfigurationId, event/venue/id, event/categories/id, event/categories/description, seats/section, seats/row, seats/standardSection, seats/canonicalSection, unitPrice/wholesalePrice/value, unitPrice/retailPrice/value, unitPrice/facePrice/value, unitPrice/cost/value, unitPrice/taxedCost/value, unitPrice/msrp/value, stockType/id, ticketGroupType/description, splitRule/id, splitRule/description, quantity/total, quantity/available, quantity/purchasable, tickets/seat, tickets/status, tickets/ticketRequestId, tickets/mercuryTransactionId, nearTerm/nearTermDeliveryMethod/id, nearTerm/nearTermDisplay/id, lastUpdatedBy/userId, tags/tag, thirdPartyExchangeListings/thirdPartyExchangeId, thirdPartyExchangeListings/thirdPartyExchangeListingId, thirdPartyExchangeListings/thirdPartyExchangeListingStatus, thirdPartyExchangeListings/checkedAtDateTime, autopricer/isActive
 	 * <h3>Sortable Properties</h3>
 	 * mine, ticketGroupId, created, updated, onHandDate, isInstant, referenceTicketGroupId, isShort, purchaseOrderIds, hasQrScreenshots, isNatbBroker, pricingBadgeLevel, event/id, event/name, event/date, event/time, event/categories/id, event/categories/description, seats/section, seats/row, seats/lowSeat, unitPrice/wholesalePrice/value, unitPrice/retailPrice/value, unitPrice/facePrice/value, unitPrice/cost/value, unitPrice/taxedCost/value, unitPrice/msrp/value, stockType/id, stockType/description, ticketGroupType/description, splitRule/description, quantity/total, quantity/available, thirdPartyExchangeListings/thirdPartyExchangeListingId, thirdPartyExchangeListings/thirdPartyExchangeListingStatus, thirdPartyExchangeListings/checkedAtDateTime
+	 *
 	 * @param hasEticket When true, only ticket groups with eTickets attached to all tickets will be included, otherwise no restriction. Defaults to false.
 	 * @param pending When true, only ticket groups with pending = true will be included, otherwise those ticket groups will be excluded. Defaults to false.
 	 * @param includeTicketNetworkInventory if set to true include inventory that is owned by other brokers and listed on the TN exchange.
@@ -303,6 +305,25 @@ public interface InventoryResource {
 	) throws IOException, TicketNetworkException;
 
 	/**
+	 * Gets a listing of all of the broadcast channels.
+	 *
+	 * If successful, the HTTP response code will indicate a 200 (OK) response,
+	 * and a representation of the requested data
+	 * will be included in the response.
+	 * Note that this is infrequently modified reference data,
+	 * and caching this response is recommended.
+	 *
+	 * @return the broadcast channels.
+	 * @throws IOException if an I/O errors occurs.
+	 * @throws TicketNetworkException if a business exception occurs.
+	 */
+	@GET
+	@Path("/ticketgroups/broadcastchannels")
+	@Produces(MediaType.APPLICATION_JSON)
+	BroadcastChannelsGetModel getBroadcastChannels()
+		throws IOException, TicketNetworkException;
+
+	/**
 	 * Gets a listing of all possible ticket group seating types.
 	 *
 	 * If successful, the HTTP response code will indicate a 200 (OK) response,
@@ -310,6 +331,7 @@ public interface InventoryResource {
 	 * will be included in the response.
 	 * Note that this is infrequently modified reference data,
 	 * and caching this response is recommended.
+	 *
 	 * @return the seating types.
 	 * @throws IOException if an I/O error occurs.
 	 * @throws TicketNetworkException if a business exception occurs.

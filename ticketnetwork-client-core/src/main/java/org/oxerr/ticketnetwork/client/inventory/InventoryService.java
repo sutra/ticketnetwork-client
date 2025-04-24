@@ -2,6 +2,7 @@ package org.oxerr.ticketnetwork.client.inventory;
 
 import java.io.IOException;
 
+import org.oxerr.ticketnetwork.client.model.BroadcastChannelsGetModel;
 import org.oxerr.ticketnetwork.client.model.SeatingTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.StockTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroup;
@@ -41,6 +42,8 @@ public interface InventoryService {
 	) throws IOException;
 
 	TicketGroupsV4GetModel getAllTicketGroups(AllTicketGroupQuery q) throws IOException;
+
+	BroadcastChannelsGetModel getBroadcastChannels() throws IOException;
 
 	SeatingTypesGetModel getSeatingTypes() throws IOException;
 

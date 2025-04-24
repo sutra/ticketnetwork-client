@@ -1,0 +1,44 @@
+{
+	"broadcastChannels": [
+		{
+			"id": 1,
+			"description": "TicketNetwork Exchange"
+		},
+		{
+			"id": 2,
+			"description": "Export"
+		},
+		{
+			"id": 3,
+			"description": "Vivid Seats"
+		},
+		{
+			"id": 4,
+			"description": "Ticket Evolution"
+		},
+		{
+			"id": 5,
+			"description": "StubHub"
+		},
+		{
+			"id": 6,
+			"description": "TickPick"
+		},
+		{
+			"id": 7,
+			"description": "SeatGeek"
+		},
+		{
+			"id": 8,
+			"description": "TicketMaster"
+		},
+		{
+			"id": 9,
+			"description": "Gametime"
+		},
+		{
+			"id": 10,
+			"description": "Viagogo"
+		}
+	]
+}
