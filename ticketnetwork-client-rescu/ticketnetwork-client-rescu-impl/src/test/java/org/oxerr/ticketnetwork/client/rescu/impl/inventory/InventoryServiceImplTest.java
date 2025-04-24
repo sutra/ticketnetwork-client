@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -184,7 +185,8 @@ class InventoryServiceImplTest {
 			inventoryService.updateTicketGroup(ticketGroupId, patch);
 		} catch (TicketNetworkException e) {
 			log.error("Failed to update ticket group.", e);
-			e.getValidationErrors().forEach((k, v) -> log.error("{}: {}", k, v));
+			Optional.ofNullable(e.getValidationErrors())
+				.ifPresent(ve -> ve.forEach((k, v) -> log.error("{}: {}", k, v)));
 		}
 	}
 
