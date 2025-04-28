@@ -45,10 +45,10 @@ final class Listings {
 				Optional.ofNullable(a.getUnitPrice()).map(UnitPriceGetModel::getRetailPrice).map(MoneyAmountModel::getCurrencyCode).orElse(null),
 				Optional.ofNullable(b.getUnitPrice()).map(UnitPricePostModel::getFacePrice).map(MoneyAmountModel::getCurrencyCode).orElse(null)
 			),
-			// Face price
+			// Wholesale price
 			Objects.compare(
-				Optional.ofNullable(a.getUnitPrice()).map(UnitPriceGetModel::getFacePrice).map(MoneyAmountModel::getValue).orElse(BigDecimal.ZERO),
-				Optional.ofNullable(b.getUnitPrice()).map(UnitPricePostModel::getFacePrice).map(MoneyAmountModel::getValue).orElse(BigDecimal.ZERO),
+				Optional.ofNullable(a.getUnitPrice()).map(UnitPriceGetModel::getWholesalePrice).map(MoneyAmountModel::getValue).orElse(BigDecimal.ZERO),
+				Optional.ofNullable(b.getUnitPrice()).map(UnitPricePostModel::getWholesalePrice).orElse(BigDecimal.ZERO),
 				BigDecimal::compareTo
 			) == 0,
 			// Retail price
@@ -57,10 +57,10 @@ final class Listings {
 				Optional.ofNullable(b.getUnitPrice()).map(UnitPricePostModel::getRetailPrice).orElse(BigDecimal.ZERO),
 				BigDecimal::compareTo
 			) == 0,
-			// Wholesale price
+			// Face price
 			Objects.compare(
-				Optional.ofNullable(a.getUnitPrice()).map(UnitPriceGetModel::getWholesalePrice).map(MoneyAmountModel::getValue).orElse(BigDecimal.ZERO),
-				Optional.ofNullable(b.getUnitPrice()).map(UnitPricePostModel::getWholesalePrice).orElse(BigDecimal.ZERO),
+				Optional.ofNullable(a.getUnitPrice()).map(UnitPriceGetModel::getFacePrice).map(MoneyAmountModel::getValue).orElse(BigDecimal.ZERO),
+				Optional.ofNullable(b.getUnitPrice()).map(UnitPricePostModel::getFacePrice).map(MoneyAmountModel::getValue).orElse(BigDecimal.ZERO),
 				BigDecimal::compareTo
 			) == 0
 		).allMatch(Boolean::booleanValue);
