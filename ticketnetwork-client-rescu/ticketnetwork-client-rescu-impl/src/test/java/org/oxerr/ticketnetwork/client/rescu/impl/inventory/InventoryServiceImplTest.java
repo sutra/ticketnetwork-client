@@ -41,7 +41,7 @@ import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchOperation;
 import com.github.fge.jsonpatch.ReplaceOperation;
 
-// @Disabled("This test requires the access_token.")
+@Disabled("This test requires the access_token.")
 class InventoryServiceImplTest {
 
 	private final Logger log = LogManager.getLogger();
