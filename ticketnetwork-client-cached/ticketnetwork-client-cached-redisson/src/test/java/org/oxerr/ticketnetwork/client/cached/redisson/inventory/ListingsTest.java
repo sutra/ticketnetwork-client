@@ -32,6 +32,7 @@ class ListingsTest {
 		quantity.setSold(0);
 		quantity.setTotal(9);
 		a.setQuantity(quantity);
+
 		UnitPriceGetModel unitPriceGetModel = new UnitPriceGetModel();
 
 		// Wholesale price
@@ -50,6 +51,7 @@ class ListingsTest {
 		b.setRow("T");
 		b.setLowSeat(6);
 		b.setQuantity(9);
+
 		UnitPricePostModel unitPricePostModel = new UnitPricePostModel();
 
 		// Wholesale price

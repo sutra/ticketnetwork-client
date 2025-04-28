@@ -13,6 +13,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.SerializationUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -450,8 +452,12 @@ public class RedissonCachedListingService
 							updateListing(event, target, source, priority);
 						} catch (ValidationErrorsModel e) {
 							log.warn(
-								"Update listing failed, external ID: {}. source: {}, target: {}",
-								target.getTicketGroupId(), source, target, e);
+								"Update listing failed, external ID: {}. listing: {}, cachedListing: {}",
+								target.getTicketGroupId(),
+								ToStringBuilder.reflectionToString(listing, ToStringStyle.JSON_STYLE),
+								ToStringBuilder.reflectionToString(cachedListing.getRequest(), ToStringStyle.JSON_STYLE),
+								e
+							);
 						}
 					}
 				} else {
