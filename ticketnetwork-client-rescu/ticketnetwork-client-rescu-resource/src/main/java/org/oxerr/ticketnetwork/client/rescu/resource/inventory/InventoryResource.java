@@ -1,8 +1,10 @@
 package org.oxerr.ticketnetwork.client.rescu.resource.inventory;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.oxerr.ticketnetwork.client.model.BroadcastChannelsGetModel;
+import org.oxerr.ticketnetwork.client.model.NearTermShippingMethodGetModel;
 import org.oxerr.ticketnetwork.client.model.SeatingTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.StockTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupTypesGetModel;
@@ -321,6 +323,25 @@ public interface InventoryResource {
 	@Path("/ticketgroups/broadcastchannels")
 	@Produces(MediaType.APPLICATION_JSON)
 	BroadcastChannelsGetModel getBroadcastChannels()
+		throws IOException, TicketNetworkException;
+
+	/**
+	 * Gets all of the near-term shipping methods.
+	 *
+	 * If successful, the HTTP response code will indicate a 200 (OK) response,
+	 * and a representation of all the possible near-term shipping methods
+	 * will be included in the response.
+	 * Note that this is infrequently modified reference data,
+	 * and caching this response is recommended.
+	 *
+	 * @return the near-term shipping methods.
+	 * @throws IOException if an I/O error occurs.
+	 * @throws TicketNetworkException if a business exception occurs.
+	 */
+	@GET
+	@Path("/ticketgroups/neartermdeliverymethods")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<NearTermShippingMethodGetModel> getNearTermShippingMethods()
 		throws IOException, TicketNetworkException;
 
 	/**

@@ -22,6 +22,7 @@ import org.oxerr.ticketnetwork.client.inventory.InventoryService;
 import org.oxerr.ticketnetwork.client.inventory.TicketGroupQuery;
 import org.oxerr.ticketnetwork.client.model.BroadcastChannelsGetModel;
 import org.oxerr.ticketnetwork.client.model.MoneyAmountModel;
+import org.oxerr.ticketnetwork.client.model.NearTermShippingMethodGetModel;
 import org.oxerr.ticketnetwork.client.model.SeatingTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.StockTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupTypesGetModel;
@@ -40,7 +41,7 @@ import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchOperation;
 import com.github.fge.jsonpatch.ReplaceOperation;
 
-@Disabled("This test requires the access_token.")
+// @Disabled("This test requires the access_token.")
 class InventoryServiceImplTest {
 
 	private final Logger log = LogManager.getLogger();
@@ -210,6 +211,13 @@ class InventoryServiceImplTest {
 	void testGetBroadcastChannels() throws IOException {
 		BroadcastChannelsGetModel broadcastChannelsGetModel = inventoryService.getBroadcastChannels();
 		log.info("broadcast channels: {}", broadcastChannelsGetModel);
+	}
+
+	@Disabled("Call API")
+	@Test
+	void testGet() throws IOException {
+		List<NearTermShippingMethodGetModel> nearTermShippingMethodGetModel = inventoryService.getNearTermShippingMethods();
+		log.info("near term shipping methods: {}", nearTermShippingMethodGetModel);
 	}
 
 	@Disabled("Call API")

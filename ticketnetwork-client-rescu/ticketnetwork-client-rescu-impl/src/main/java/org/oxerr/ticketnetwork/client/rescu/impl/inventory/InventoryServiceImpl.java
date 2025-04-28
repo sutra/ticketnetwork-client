@@ -1,12 +1,14 @@
 package org.oxerr.ticketnetwork.client.rescu.impl.inventory;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import org.oxerr.ticketnetwork.client.inventory.AllTicketGroupQuery;
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
 import org.oxerr.ticketnetwork.client.inventory.TicketGroupQuery;
 import org.oxerr.ticketnetwork.client.model.BroadcastChannelsGetModel;
+import org.oxerr.ticketnetwork.client.model.NearTermShippingMethodGetModel;
 import org.oxerr.ticketnetwork.client.model.SeatingTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.StockTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroup;
@@ -109,6 +111,11 @@ public class InventoryServiceImpl implements InventoryService {
 	@Override
 	public BroadcastChannelsGetModel getBroadcastChannels() throws IOException {
 		return inventoryResource.getBroadcastChannels();
+	}
+
+	@Override
+	public List<NearTermShippingMethodGetModel> getNearTermShippingMethods() throws IOException {
+		return inventoryResource.getNearTermShippingMethods();
 	}
 
 	@Override
