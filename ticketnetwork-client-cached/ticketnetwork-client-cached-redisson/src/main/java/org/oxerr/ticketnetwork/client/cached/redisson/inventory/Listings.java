@@ -10,6 +10,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.oxerr.ticketnetwork.client.model.MoneyAmountModel;
+import org.oxerr.ticketnetwork.client.model.NearTerm;
+import org.oxerr.ticketnetwork.client.model.NearTermDeliveryMethod;
 import org.oxerr.ticketnetwork.client.model.Notes;
 import org.oxerr.ticketnetwork.client.model.Quantity;
 import org.oxerr.ticketnetwork.client.model.SeatingType;
@@ -33,8 +35,18 @@ final class Listings {
 			Objects.equals(a.getSeats().getLowSeat(), b.getLowSeat()),
 			Objects.equals(a.getQuantity().getAvailable(), b.getQuantity()),
 			isSameUnitPrice(a, b),
-			Objects.equals(Optional.ofNullable(a.getSeats()).map(Seats::getSeatingType).map(SeatingType::getId).orElse(null), b.getSeatingTypeId()),
-			Objects.equals(Optional.ofNullable(a.getStockType()).map(StockType::getId).orElse(null), b.getStockTypeId())
+			Objects.equals(
+				Optional.ofNullable(a.getSeats()).map(Seats::getSeatingType).map(SeatingType::getId).orElse(null),
+				b.getSeatingTypeId()
+			),
+			Objects.equals(
+				Optional.ofNullable(a.getStockType()).map(StockType::getId).orElse(null),
+				b.getStockTypeId()
+			),
+			Objects.equals(
+				Optional.ofNullable(a.getNearTerm()).map(NearTerm::getNearTermDeliveryMethod).map(NearTermDeliveryMethod::getId).orElse(null),
+				b.getNearTermDeliveryMethodId()
+			)
 		).allMatch(Boolean::booleanValue);
 	}
 
@@ -64,6 +76,19 @@ final class Listings {
 				BigDecimal::compareTo
 			) == 0
 		).allMatch(Boolean::booleanValue);
+	}
+
+	public static void patch(TicketGroupV4PostModel dest, TicketGroupV4PostModel orig) {
+		dest.setSection(orig.getSection());
+		dest.setRow(orig.getRow());
+		dest.setLowSeat(orig.getLowSeat());
+		dest.setQuantity(orig.getQuantity());
+		dest.getUnitPrice().setWholesalePrice(orig.getUnitPrice().getWholesalePrice());
+		dest.getUnitPrice().setRetailPrice(orig.getUnitPrice().getRetailPrice());
+		dest.getUnitPrice().setFacePrice(orig.getUnitPrice().getFacePrice());
+		dest.setSeatingTypeId(orig.getSeatingTypeId());
+		dest.setStockTypeId(orig.getStockTypeId());
+		dest.setNearTermDeliveryMethodId(orig.getNearTermDeliveryMethodId());
 	}
 
 	public static String toString(TicketGroup g) {
@@ -109,18 +134,6 @@ final class Listings {
 		return new ToStringBuilder(notes, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("external", notes.getExternal())
 			.toString();
-	}
-
-	public static void patch(TicketGroupV4PostModel dest, TicketGroupV4PostModel orig) {
-		dest.setSection(orig.getSection());
-		dest.setRow(orig.getRow());
-		dest.setLowSeat(orig.getLowSeat());
-		dest.setQuantity(orig.getQuantity());
-		dest.getUnitPrice().setWholesalePrice(orig.getUnitPrice().getWholesalePrice());
-		dest.getUnitPrice().setRetailPrice(orig.getUnitPrice().getRetailPrice());
-		dest.getUnitPrice().setFacePrice(orig.getUnitPrice().getFacePrice());
-		dest.setSeatingTypeId(orig.getSeatingTypeId());
-		dest.setStockTypeId(orig.getStockTypeId());
 	}
 
 	@Override
