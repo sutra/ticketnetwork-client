@@ -1,1 +1,32 @@
-[{"op":"replace","path":"/unitPrice/facePrice/value","value":76.3},{"op":"replace","path":"/unitPrice/retailPrice/value","value":103.77},{"op":"replace","path":"/unitPrice/wholesalePrice/value","value":103.77}]
+[
+	{
+		"op": "replace",
+		"path": "/unitPrice/facePrice/currencyCode",
+		"value": "USD"
+	},
+	{
+		"op": "replace",
+		"path": "/unitPrice/facePrice/value",
+		"value": 97.28
+	},
+	{
+		"op": "replace",
+		"path": "/unitPrice/retailPrice/value",
+		"value": 132.31
+	},
+	{
+		"op": "replace",
+		"path": "/unitPrice/wholesalePrice/value",
+		"value": 132.31
+	},
+	{
+		"op": "replace",
+		"path": "/stockType/id",
+		"value": 7
+	},
+	{
+		"op": "replace",
+		"path": "/nearTerm/nearTermDeliveryMethod/id",
+		"value": 13
+	}
+]

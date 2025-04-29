@@ -178,7 +178,7 @@ class InventoryServiceImplTest {
 	@Disabled("Call API")
 	@Test
 	void testUpdateTicketGroupWithInvalidPath() throws IOException {
-		int ticketGroupId = -577118;
+		int ticketGroupId = -397363;
 		ObjectMapper objectMapper = new ObjectMapper();
 		// TODO: fix the patch
 		JsonNode jsonNode = objectMapper.readTree(this.getClass().getResourceAsStream("patch.json"));
