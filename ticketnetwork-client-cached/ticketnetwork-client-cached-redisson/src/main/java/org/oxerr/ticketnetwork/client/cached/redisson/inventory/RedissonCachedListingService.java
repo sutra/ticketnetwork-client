@@ -166,6 +166,7 @@ public class RedissonCachedListingService
 					.contains("A ticket group already exists with the provided event ID, section, and row with overlapping seats.")) {
 
 				TicketGroupsV4GetModel ticketGroups = getTicketGroups(listing);
+				log.debug("Ticket group count: {}.", ticketGroups.getTotalCount());
 
 				var existing = ticketGroups.getResults()
 					.stream()
@@ -176,6 +177,7 @@ public class RedissonCachedListingService
 
 				if (existing.isPresent()) {
 					ticketGroup = existing.get();
+					log.debug("Found existing ticket group: {}", ticketGroup::getTicketGroupId);
 				} else {
 					for (var t : ticketGroups.getResults()) {
 						this.inventoryService.deleteTicketGroup(t.getTicketGroupId());
