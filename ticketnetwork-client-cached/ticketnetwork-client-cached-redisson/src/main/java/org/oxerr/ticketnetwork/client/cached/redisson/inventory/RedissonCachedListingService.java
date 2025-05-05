@@ -311,6 +311,8 @@ public class RedissonCachedListingService
 				var viagogoListing = marketplaceCachedListing.toMarketplaceListing();
 				try {
 					this.createListing(viagogoEvent, viagogoListing);
+				} catch (ValidationErrorsModel e) {
+					log.warn("Create listing failed, external ID: {}. validation errors: {}.", viagogoListing.getId(), e.getValidationErrors());
 				} catch (IOException e) {
 					log.warn("Create listing failed, external ID: {}.", viagogoListing.getId(), e);
 				}
