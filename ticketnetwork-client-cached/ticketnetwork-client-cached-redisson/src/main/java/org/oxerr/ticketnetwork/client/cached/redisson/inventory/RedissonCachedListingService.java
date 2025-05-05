@@ -454,10 +454,11 @@ public class RedissonCachedListingService
 							updateListing(event, target, source, priority);
 						} catch (ValidationErrorsModel e) {
 							log.warn(
-								"Update listing failed, external ID: {}. listing: {}, cachedListing: {}",
+								"Update listing failed, external ID: {}. listing: {}, cachedListing: {}, error: {}.",
 								target.getTicketGroupId(),
 								ToStringBuilder.reflectionToString(listing, ToStringStyle.JSON_STYLE),
 								ToStringBuilder.reflectionToString(cachedListing.getRequest(), ToStringStyle.JSON_STYLE),
+								e.toString(),
 								e
 							);
 						}
