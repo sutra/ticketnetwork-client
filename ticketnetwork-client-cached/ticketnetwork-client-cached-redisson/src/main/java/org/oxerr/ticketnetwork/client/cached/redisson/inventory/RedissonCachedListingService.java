@@ -146,7 +146,7 @@ public class RedissonCachedListingService
 		TicketGroup ticketGroup;
 
 		try {
-			log.info(
+			log.debug(
 				"Creating ticket group. Event ID: {}, reference ticket group ID: {}, low seat: {}.",
 				listing.getRequest().getEventId(),
 				listing.getRequest().getReferenceTicketGroupId(),
@@ -154,7 +154,7 @@ public class RedissonCachedListingService
 			);
 			ticketGroup = inventoryService.createTicketGroup(listing.getRequest());
 		} catch (ValidationErrorsModel e) {
-			log.info(
+			log.debug(
 				"Create ticket group failed. Event ID: {}, reference ticket group ID: {}, low seat: {}, validation errors: {}.",
 				listing.getRequest().getEventId(),
 				listing.getRequest().getReferenceTicketGroupId(),
@@ -209,7 +209,7 @@ public class RedissonCachedListingService
 
 		TicketGroupsV4GetModel ticketGroups = inventoryService.getTicketGroups(q);
 
-		log.info("Filter: {}, ticket group count: {}.", filter, ticketGroups.getTotalCount());
+		log.debug("Filter: {}, ticket group count: {}.", filter, ticketGroups.getTotalCount());
 
 		if (log.isDebugEnabled()) {
 			ticketGroups.getResults()
