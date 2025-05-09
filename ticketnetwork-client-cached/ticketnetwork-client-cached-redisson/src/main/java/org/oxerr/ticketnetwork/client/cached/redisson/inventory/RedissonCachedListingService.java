@@ -326,7 +326,8 @@ public class RedissonCachedListingService
 				}
 
 				return null;
-			})).collect(Collectors.toUnmodifiableList());
+			}))
+			.collect(Collectors.toUnmodifiableList());
 
 		log.debug("[check] creating missing listings, task size: {}", createTasks::size);
 		CompletableFuture.allOf(createTasks.toArray(CompletableFuture[]::new)).join();
