@@ -3,13 +3,13 @@ package org.oxerr.ticketnetwork.client.cached.redisson.inventory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import org.oxerr.ticketnetwork.client.cached.inventory.CheckOptions;
 import org.oxerr.ticketnetwork.client.inventory.TicketGroupQuery;
@@ -105,9 +105,9 @@ class CheckContext {
 	 */
 	public Set<CacheInfo> getMissingTicketGroupInfos() {
 		// missing = cached - listed
-		Set<CacheInfo> missingTicketGroupInfos = new HashSet<>(caches.values());
-		missingTicketGroupInfos.removeIf(t -> t.getTicketGroupId() != null && listedTicketGroupIds.contains(t.getTicketGroupId()));
-		return missingTicketGroupInfos;
+		return caches.values().stream()
+			.filter(entry -> entry.getTicketGroupId() == null || !listedTicketGroupIds.contains(entry.getTicketGroupId()))
+			.collect(Collectors.toSet());
 	}
 
 }
