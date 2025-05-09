@@ -310,7 +310,9 @@ public class RedissonCachedListingService
 				String cacheName = cacheInfo.getCacheName();
 				RMap<String, TicketNetworkCachedListing> cache = this.getCache(cacheName);
 				return cache.get(cacheInfo.getListingId());
-			}).filter(Objects::nonNull) // Double check if the cached listing still exists.
+			})
+			// Double check if the cached listing still exists.
+			.filter(Objects::nonNull)
 			.map(marketplaceCachedListing -> this.<Void>callAsync(() -> {
 				TicketNetworkEvent marketplaceEvent = marketplaceCachedListing.getEvent().toMarketplaceEvent();
 				TicketNetworkListing marketplaceListing = marketplaceCachedListing.toMarketplaceListing();
