@@ -1,6 +1,7 @@
 package org.oxerr.ticketnetwork.client.cached.redisson.inventory;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -31,6 +32,7 @@ import org.oxerr.ticketnetwork.client.model.TicketGroup;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
 import org.oxerr.ticketnetwork.client.model.ValidationErrorsModel;
+import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
 
 public class RedissonCachedListingService
@@ -300,26 +302,32 @@ public class RedissonCachedListingService
 		ctx.joinTasks();
 
 		// Create the listings which in cache but not on the marketplace.
-		var missing = ctx.getMissingTicketGroupInfos();
+		Set<CacheInfo> missing = ctx.getMissingTicketGroupInfos();
 		log.debug("missing ticket group info count: {}", missing::size);
-		missing.forEach(t -> {
-			var cacheName = t.getCacheName();
-			var cache = this.getCache(cacheName);
-			var marketplaceCachedListing = cache.get(t.getListingId());
 
-			if (marketplaceCachedListing != null) {
-				// Double check if the cached listing still exists.
-				var viagogoEvent = marketplaceCachedListing.getEvent().toMarketplaceEvent();
-				var viagogoListing = marketplaceCachedListing.toMarketplaceListing();
+		List<CompletableFuture<Void>> createTasks = missing.stream()
+			.map(cacheInfo -> {
+				String cacheName = cacheInfo.getCacheName();
+				RMap<String, TicketNetworkCachedListing> cache = this.getCache(cacheName);
+				return cache.get(cacheInfo.getListingId());
+			}).filter(Objects::nonNull) // Double check if the cached listing still exists.
+			.map(marketplaceCachedListing -> this.<Void>callAsync(() -> {
+				TicketNetworkEvent marketplaceEvent = marketplaceCachedListing.getEvent().toMarketplaceEvent();
+				TicketNetworkListing marketplaceListing = marketplaceCachedListing.toMarketplaceListing();
+
 				try {
-					this.createListing(viagogoEvent, viagogoListing);
+					this.createListing(marketplaceEvent, marketplaceListing);
 				} catch (ValidationErrorsModel e) {
-					log.warn("Create listing failed, external ID: {}. validation errors: {}.", viagogoListing.getId(), e.getValidationErrors());
+					log.warn("Create listing failed, external ID: {}. validation errors: {}.", marketplaceListing.getId(), e.getValidationErrors());
 				} catch (IOException e) {
-					log.warn("Create listing failed, external ID: {}.", viagogoListing.getId(), e);
+					log.warn("Create listing failed, external ID: {}.", marketplaceListing.getId(), e);
 				}
-			}
-		});
+
+				return null;
+			})).collect(Collectors.toUnmodifiableList());
+
+		log.debug("[check] creating missing listings, task size: {}", createTasks::size);
+		CompletableFuture.allOf(createTasks.toArray(CompletableFuture[]::new)).join();
 
 		// Log the time taken to check the listings.
 		stopWatch.stop();
