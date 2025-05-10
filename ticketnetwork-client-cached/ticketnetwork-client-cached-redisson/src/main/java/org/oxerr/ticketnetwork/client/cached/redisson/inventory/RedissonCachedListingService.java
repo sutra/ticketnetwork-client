@@ -54,36 +54,36 @@ public class RedissonCachedListingService
 	 * Constructs with default {@link ListingConfiguration}.
 	 *
 	 * @param inventoryService the inventory service.
-	 * @param redissonClient the redisson client.
+	 * @param redisson the redisson client.
 	 * @param keyPrefix the key prefix for the cache.
 	 * @param executor the executor.
 	 */
 	public RedissonCachedListingService(
 		InventoryService inventoryService,
-		RedissonClient redissonClient,
+		RedissonClient redisson,
 		String keyPrefix,
 		Executor executor
 	) {
-		this(inventoryService, redissonClient, keyPrefix, executor, new ListingConfiguration());
+		this(inventoryService, redisson, keyPrefix, executor, new ListingConfiguration());
 	}
 
 	/**
 	 * Constructs with specified {@link ListingConfiguration}.
 	 *
 	 * @param inventoryService the inventory service.
-	 * @param redissonClient the redisson client.
+	 * @param redisson the redisson client.
 	 * @param keyPrefix the key prefix for the cache.
 	 * @param executor the executor.
 	 * @param listingConfiguration the listing configuration.
 	 */
 	public RedissonCachedListingService(
 		InventoryService inventoryService,
-		RedissonClient redissonClient,
+		RedissonClient redisson,
 		String keyPrefix,
 		Executor executor,
 		ListingConfiguration listingConfiguration
 	) {
-		super(redissonClient, keyPrefix, executor, listingConfiguration);
+		super(redisson, keyPrefix, executor, listingConfiguration);
 		this.inventoryService = inventoryService;
 	}
 
