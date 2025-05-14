@@ -55,7 +55,7 @@ class InventoryServiceImplTest {
 
 	@Disabled("Call API")
 	@Test
-	void testGetTicketGroups() throws IOException {
+	void testGetTicketGroups() {
 		String filter = "event/id eq 6562663 and seats/section eq '105' and seats/row eq 'W'";
 		TicketGroupQuery q = new TicketGroupQuery();
 		q.setFilter(filter);
@@ -70,11 +70,7 @@ class InventoryServiceImplTest {
 					g.getReferenceTicketGroupId(),
 					g.getUnitPrice().getWholesalePrice()
 				);
-				try {
-					inventoryService.deleteTicketGroup(g.getTicketGroupId());
-				} catch (IOException e) {
-					log.error("Failed to delete ticket group: {}", g.getTicketGroupId(), e);
-				}
+				inventoryService.deleteTicketGroup(g.getTicketGroupId());
 			}
 		);
 		log.info("ticket groups count: {}/{}", ticketGroups.getCount(), ticketGroups.getTotalCount());
@@ -83,7 +79,7 @@ class InventoryServiceImplTest {
 
 	@Disabled("Call API")
 	@Test
-	void testDeleteTicketGroupsWithoutWholesalePrice() throws IOException {
+	void testDeleteTicketGroupsWithoutWholesalePrice() {
 		ExecutorService executor = Executors.newFixedThreadPool(10);
 
 		String filter = "unitPrice/wholesalePrice/value eq 0";
@@ -99,11 +95,7 @@ class InventoryServiceImplTest {
 			List<Future<?>> futures = ticketGroups.getResults().stream()
 				.map(g -> executor.submit(() -> {
 					log.info("Deleting ticket group: {}", g.getTicketGroupId());
-					try {
-						inventoryService.deleteTicketGroup(g.getTicketGroupId());
-					} catch (IOException e) {
-						log.error("Failed to delete ticket group: {}", g.getTicketGroupId(), e);
-					}
+					inventoryService.deleteTicketGroup(g.getTicketGroupId());
 				})).collect(Collectors.toList());
 
 			// Wait for all futures to complete
@@ -121,7 +113,7 @@ class InventoryServiceImplTest {
 
 	@Disabled("Create ticket group")
 	@Test
-	void testCreateTicketGroup() throws IOException {
+	void testCreateTicketGroup() {
 		log.info("Creating ticket group...");
 		TicketGroupV4PostModel ticketGroup = new TicketGroupV4PostModel();
 		ticketGroup.setEventId(6953073);
@@ -150,7 +142,7 @@ class InventoryServiceImplTest {
 
 	@Disabled("Call API")
 	@Test
-	void testGetTicketGroup() throws IOException {
+	void testGetTicketGroup() {
 		Integer ticketGroupId = -258482;
 		TicketGroupV4GetModel ticketGroup = inventoryService.getTicketGroup(ticketGroupId);
 		log.info("ticket group: {}", ticketGroup);
@@ -158,14 +150,14 @@ class InventoryServiceImplTest {
 
 	@Disabled("Delete ticket group")
 	@Test
-	void testDeleteTicketGroup() throws IOException {
+	void testDeleteTicketGroup() {
 		Integer ticketGroupId = 0;
 		inventoryService.deleteTicketGroup(ticketGroupId);
 	}
 
 	@Disabled("Call API")
 	@Test
-	void testUpdateTicketGroup() throws IOException {
+	void testUpdateTicketGroup() {
 		int ticketGroupId = -258482;
 		JsonPatchOperation[] pathOperations = new JsonPatchOperation[1];
 		JsonPointer path = JsonPointer.of("unitPrice", "wholesalePrice", "value");
@@ -195,7 +187,7 @@ class InventoryServiceImplTest {
 	// {"code":"900910","message":"The access token does not allow you to access the requested resource","description":"User is NOT authorized to access the Resource: /ticketgroups/all. Scope validation failed."}
 	@Disabled("Call API")
 	@Test
-	void testGetAllTicketGroups() throws IOException {
+	void testGetAllTicketGroups() {
 		String filter = "event/id eq 6562663 and seats/section eq '105' and seats/row eq 'W'";
 		AllTicketGroupQuery q = new AllTicketGroupQuery();
 		q.setFilter(filter);
@@ -208,34 +200,34 @@ class InventoryServiceImplTest {
 
 	@Disabled("Call API")
 	@Test
-	void testGetBroadcastChannels() throws IOException {
+	void testGetBroadcastChannels() {
 		BroadcastChannelsGetModel broadcastChannelsGetModel = inventoryService.getBroadcastChannels();
 		log.info("broadcast channels: {}", broadcastChannelsGetModel);
 	}
 
 	@Disabled("Call API")
 	@Test
-	void testGet() throws IOException {
+	void testGet() {
 		List<NearTermShippingMethodGetModel> nearTermShippingMethodGetModel = inventoryService.getNearTermShippingMethods();
 		log.info("near term shipping methods: {}", nearTermShippingMethodGetModel);
 	}
 
 	@Disabled("Call API")
 	@Test
-	void testGetSeatingTypes() throws IOException {
+	void testGetSeatingTypes() {
 		SeatingTypesGetModel seatingTypes = inventoryService.getSeatingTypes();
 		log.info("seating types: {}", seatingTypes);
 	}
 
 	@Disabled("Call API")
 	@Test
-	void testGetStockTypes() throws IOException {
+	void testGetStockTypes() {
 		StockTypesGetModel stockTypes = inventoryService.getStockTypes();
 		log.info("stock types: {}", stockTypes);
 	}
 	@Disabled("Call API")
 	@Test
-	void testGetTypes() throws IOException {
+	void testGetTypes() {
 		TicketGroupTypesGetModel types = inventoryService.getTypes();
 		log.info("ticket group types: {}", types);
 	}

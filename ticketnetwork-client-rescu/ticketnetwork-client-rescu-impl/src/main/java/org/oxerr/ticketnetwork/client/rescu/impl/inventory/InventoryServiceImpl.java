@@ -1,6 +1,5 @@
 package org.oxerr.ticketnetwork.client.rescu.impl.inventory;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +32,7 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 
 	@Override
-	public TicketGroupsV4GetModel getTicketGroups(TicketGroupQuery q) throws IOException {
+	public TicketGroupsV4GetModel getTicketGroups(TicketGroupQuery q) {
 		return inventoryResource.getTicketGroups(
 			q.getHasEticket(),
 			q.getPending(),
@@ -49,18 +48,17 @@ public class InventoryServiceImpl implements InventoryService {
 	@Override
 	public TicketGroupV4GetModel createTicketGroup(
 		TicketGroupV4PostModel ticketGroup
-	) throws IOException {
+	) {
 		return inventoryResource.createTicketGroup(ticketGroup);
 	}
 
 	@Override
-	public TicketGroupV4GetModel getTicketGroup(Integer ticketGroupId)
-		throws IOException {
+	public TicketGroupV4GetModel getTicketGroup(Integer ticketGroupId) {
 		return inventoryResource.getTicketGroup(ticketGroupId);
 	}
 
 	@Override
-	public void deleteTicketGroup(Integer ticketGroupId) throws IOException {
+	public void deleteTicketGroup(Integer ticketGroupId) {
 		inventoryResource.deleteTicketGroup(ticketGroupId);
 	}
 
@@ -68,7 +66,7 @@ public class InventoryServiceImpl implements InventoryService {
 	public TicketGroupV4GetModel updateTicketGroup(
 		Integer ticketGroupId,
 		JsonPatch patch
-	) throws IOException {
+	) {
 		return inventoryResource.updateTicketGroup(ticketGroupId, patch);
 	}
 
@@ -77,7 +75,7 @@ public class InventoryServiceImpl implements InventoryService {
 		Integer ticketGroupId,
 		TicketGroup target,
 		TicketGroup source
-	) throws IOException {
+	) {
 		JsonPatch patch = this.ticketGroupPatcher.createPatch(target, source);
 		return updateTicketGroup(ticketGroupId, patch);
 	}
@@ -87,14 +85,14 @@ public class InventoryServiceImpl implements InventoryService {
 		Integer ticketGroupId,
 		TicketGroupV4PostModel target,
 		TicketGroupV4PostModel source
-	) throws IOException {
+	) {
 		TicketGroupV4GetModel targetTicketGroupV4GetModel = new TicketGroupV4GetModel(target);
 		TicketGroupV4GetModel sourceTicketGroupV4GetModel = new TicketGroupV4GetModel(source);
 		return updateTicketGroup(ticketGroupId, targetTicketGroupV4GetModel, sourceTicketGroupV4GetModel);
 	}
 
 	@Override
-	public TicketGroupsV4GetModel getAllTicketGroups(AllTicketGroupQuery q) throws IOException {
+	public TicketGroupsV4GetModel getAllTicketGroups(AllTicketGroupQuery q) {
 		return inventoryResource.getAllTicketGroups(
 			q.getHasEticket(),
 			q.getPending(),
@@ -109,27 +107,27 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 
 	@Override
-	public BroadcastChannelsGetModel getBroadcastChannels() throws IOException {
+	public BroadcastChannelsGetModel getBroadcastChannels() {
 		return inventoryResource.getBroadcastChannels();
 	}
 
 	@Override
-	public List<NearTermShippingMethodGetModel> getNearTermShippingMethods() throws IOException {
+	public List<NearTermShippingMethodGetModel> getNearTermShippingMethods() {
 		return inventoryResource.getNearTermShippingMethods();
 	}
 
 	@Override
-	public SeatingTypesGetModel getSeatingTypes() throws IOException {
+	public SeatingTypesGetModel getSeatingTypes() {
 		return inventoryResource.getSeatingTypes();
 	}
 
 	@Override
-	public StockTypesGetModel getStockTypes() throws IOException {
+	public StockTypesGetModel getStockTypes() {
 		return inventoryResource.getStockTypes();
 	}
 
 	@Override
-	public TicketGroupTypesGetModel getTypes() throws IOException {
+	public TicketGroupTypesGetModel getTypes() {
 		return inventoryResource.getTypes();
 	}
 

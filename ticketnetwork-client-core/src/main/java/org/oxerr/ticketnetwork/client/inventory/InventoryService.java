@@ -1,6 +1,5 @@
 package org.oxerr.ticketnetwork.client.inventory;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.oxerr.ticketnetwork.client.model.BroadcastChannelsGetModel;
@@ -17,42 +16,41 @@ import com.github.fge.jsonpatch.JsonPatch;
 
 public interface InventoryService {
 
-	TicketGroupsV4GetModel getTicketGroups(TicketGroupQuery q) throws IOException;
+	TicketGroupsV4GetModel getTicketGroups(TicketGroupQuery q);
 
-	TicketGroupV4GetModel createTicketGroup(TicketGroupV4PostModel ticketGroup)
-		throws IOException;
+	TicketGroupV4GetModel createTicketGroup(TicketGroupV4PostModel ticketGroup);
 
-	TicketGroupV4GetModel getTicketGroup(Integer ticketGroupId) throws IOException;
+	TicketGroupV4GetModel getTicketGroup(Integer ticketGroupId);
 
-	void deleteTicketGroup(Integer ticketGroupId) throws IOException;
+	void deleteTicketGroup(Integer ticketGroupId);
 
 	TicketGroupV4GetModel updateTicketGroup(
 		Integer ticketGroupId,
 		JsonPatch patch
-	) throws IOException;
+	);
 
 	TicketGroupV4GetModel updateTicketGroup(
 		Integer ticketGroupId,
 		TicketGroup target,
 		TicketGroup source
-	) throws IOException;
+	);
 
 	TicketGroupV4GetModel updateTicketGroup(
 		Integer ticketGroupId,
 		TicketGroupV4PostModel target,
 		TicketGroupV4PostModel source
-	) throws IOException;
+	);
 
-	TicketGroupsV4GetModel getAllTicketGroups(AllTicketGroupQuery q) throws IOException;
+	TicketGroupsV4GetModel getAllTicketGroups(AllTicketGroupQuery q);
 
-	BroadcastChannelsGetModel getBroadcastChannels() throws IOException;
+	BroadcastChannelsGetModel getBroadcastChannels();
 
-	List<NearTermShippingMethodGetModel> getNearTermShippingMethods() throws IOException;
+	List<NearTermShippingMethodGetModel> getNearTermShippingMethods();
 
-	SeatingTypesGetModel getSeatingTypes() throws IOException;
+	SeatingTypesGetModel getSeatingTypes();
 
-	StockTypesGetModel getStockTypes() throws IOException;
+	StockTypesGetModel getStockTypes();
 
-	TicketGroupTypesGetModel getTypes() throws IOException;
+	TicketGroupTypesGetModel getTypes();
 
 }

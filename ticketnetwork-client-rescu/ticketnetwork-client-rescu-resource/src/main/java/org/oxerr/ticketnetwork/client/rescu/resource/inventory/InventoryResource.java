@@ -1,6 +1,5 @@
 package org.oxerr.ticketnetwork.client.rescu.resource.inventory;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.oxerr.ticketnetwork.client.model.BroadcastChannelsGetModel;
@@ -107,7 +106,6 @@ public interface InventoryResource {
 	 * @param orderby The OData sorting string. This parameter cannot currently
 	 * be used with Swagger's "Try it out!".
 	 * @return the ticket groups.
-	 * @throws IOException if an I/O error occurs.
 	 * @throws TicketNetworkException if a business exception occurs.
 	 */
 	@GET
@@ -122,7 +120,7 @@ public interface InventoryResource {
 		@QueryParam("skip") Integer skip,
 		@QueryParam("$filter") String filter,
 		@QueryParam("$orderby") String orderby
-	) throws IOException, TicketNetworkException;
+	) throws TicketNetworkException;
 
 	/**
 	 * Create a ticket group.
@@ -136,7 +134,6 @@ public interface InventoryResource {
 	 * @param ticketGroupV4PostModel Object containing details of the ticket
 	 * group to create.
 	 * @return the created ticket group.
-	 * @throws IOException if an I/O error occurs.
 	 * @throws TicketNetworkException if a business exception occurs.
 	 */
 	@POST
@@ -144,7 +141,7 @@ public interface InventoryResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	TicketGroupV4GetModel createTicketGroup(TicketGroupV4PostModel ticketGroupV4PostModel)
-		throws IOException, TicketNetworkException;
+		throws TicketNetworkException;
 
 	/**
 	 * Gets a single ticket group by ID.
@@ -156,14 +153,13 @@ public interface InventoryResource {
 	 *
 	 * @param ticketGroupId The ticket group ID.
 	 * @return the ticket group.
-	 * @throws IOException if an I/O error occurs.
 	 * @throws TicketNetworkException if a business exception occurs.
 	 */
 	@GET
 	@Path("/ticketgroups/{ticketGroupId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	TicketGroupV4GetModel getTicketGroup(@PathParam("ticketGroupId") Integer ticketGroupId)
-		throws IOException, TicketNetworkException;
+		throws TicketNetworkException;
 
 	/**
 	 * Deletes a single ticket group by ID.
@@ -175,14 +171,13 @@ public interface InventoryResource {
 	 * </p>
 	 *
 	 * @param ticketGroupId The ticket group ID.
-	 * @throws IOException if an I/O error occurs.
 	 * @throws TicketNetworkException if a business exception occurs.
 	 */
 	@DELETE
 	@Path("/ticketgroups/{ticketGroupId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	void deleteTicketGroup(@PathParam("ticketGroupId") Integer ticketGroupId)
-		throws IOException, TicketNetworkException;
+		throws TicketNetworkException;
 
 	/**
 	 * Updates an ticket group according to a list of PATCH operations.
@@ -249,7 +244,6 @@ public interface InventoryResource {
 	 * group in the order in which they should be applied.
 	 *
 	 * @return OK
-	 * @throws IOException if an I/O error occurs.
 	 * @throws TicketNetworkException if a business exception occurs.
 	 * The model provided in the body is invalid, one or more of the operations
 	 * is not supported, or performing one or more of the operations would put
@@ -262,7 +256,7 @@ public interface InventoryResource {
 	TicketGroupV4GetModel updateTicketGroup(
 		@PathParam("ticketGroupId") Integer ticketGroupId,
 		JsonPatch patchOperations
-	) throws IOException, TicketNetworkException;
+	) throws TicketNetworkException;
 
 	/**
 	 * Search for ticket groups by filter.
@@ -288,7 +282,6 @@ public interface InventoryResource {
 	 * @param filter The OData filter string. This parameter cannot currently be used with Swagger's "Try it out!".
 	 * @param orderby The OData sorting string. This parameter cannot currently be used with Swagger's "Try it out!".
 	 * @return the ticket groups.
-	 * @throws IOException if an I/O error occurs.
 	 * @throws TicketNetworkException if a business exception occurs.
 	 */
 	@GET
@@ -304,7 +297,7 @@ public interface InventoryResource {
 		@QueryParam("skip") Integer skip,
 		@QueryParam("$filter") String filter,
 		@QueryParam("$orderby") String orderby
-	) throws IOException, TicketNetworkException;
+	) throws TicketNetworkException;
 
 	/**
 	 * Gets a listing of all of the broadcast channels.
@@ -316,14 +309,13 @@ public interface InventoryResource {
 	 * and caching this response is recommended.
 	 *
 	 * @return the broadcast channels.
-	 * @throws IOException if an I/O errors occurs.
 	 * @throws TicketNetworkException if a business exception occurs.
 	 */
 	@GET
 	@Path("/ticketgroups/broadcastchannels")
 	@Produces(MediaType.APPLICATION_JSON)
 	BroadcastChannelsGetModel getBroadcastChannels()
-		throws IOException, TicketNetworkException;
+		throws TicketNetworkException;
 
 	/**
 	 * Gets all of the near-term shipping methods.
@@ -335,14 +327,13 @@ public interface InventoryResource {
 	 * and caching this response is recommended.
 	 *
 	 * @return the near-term shipping methods.
-	 * @throws IOException if an I/O error occurs.
 	 * @throws TicketNetworkException if a business exception occurs.
 	 */
 	@GET
 	@Path("/ticketgroups/neartermdeliverymethods")
 	@Produces(MediaType.APPLICATION_JSON)
 	List<NearTermShippingMethodGetModel> getNearTermShippingMethods()
-		throws IOException, TicketNetworkException;
+		throws TicketNetworkException;
 
 	/**
 	 * Gets a listing of all possible ticket group seating types.
@@ -354,13 +345,12 @@ public interface InventoryResource {
 	 * and caching this response is recommended.
 	 *
 	 * @return the seating types.
-	 * @throws IOException if an I/O error occurs.
 	 * @throws TicketNetworkException if a business exception occurs.
 	 */
 	@GET
 	@Path("/ticketgroups/seatingtypes")
 	@Produces(MediaType.APPLICATION_JSON)
-	SeatingTypesGetModel getSeatingTypes() throws IOException, TicketNetworkException;
+	SeatingTypesGetModel getSeatingTypes() throws TicketNetworkException;
 
 	/**
 	 * Gets a listing of all possible ticket group stock types.
@@ -371,13 +361,12 @@ public interface InventoryResource {
 	 * Note that this is infrequently modified reference data,
 	 * and caching this response is recommended.
 	 * @return the stock types.
-	 * @throws IOException if an I/O error occurs.
 	 * @throws TicketNetworkException if a business exception occurs.
 	 */
 	@GET
 	@Path("/ticketgroups/stocktypes")
 	@Produces(MediaType.APPLICATION_JSON)
-	StockTypesGetModel getStockTypes() throws IOException, TicketNetworkException;
+	StockTypesGetModel getStockTypes() throws TicketNetworkException;
 
 	/**
 	 * Gets a listing of all possible ticket group types.
@@ -388,12 +377,11 @@ public interface InventoryResource {
 	 * Note that this is infrequently modified reference data,
 	 * and caching this response is recommended.
 	 * @return the ticket group types.
-	 * @throws IOException if an I/O error occurs.
 	 * @throws TicketNetworkException if a business exception occurs.
 	 */
 	@GET
 	@Path("/ticketgroups/types")
 	@Produces(MediaType.APPLICATION_JSON)
-	TicketGroupTypesGetModel getTypes() throws IOException, TicketNetworkException;
+	TicketGroupTypesGetModel getTypes() throws TicketNetworkException;
 
 }
