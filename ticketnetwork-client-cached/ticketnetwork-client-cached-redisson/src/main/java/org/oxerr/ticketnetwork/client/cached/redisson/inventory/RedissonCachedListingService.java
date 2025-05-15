@@ -474,8 +474,14 @@ public class RedissonCachedListingService
 								e.toString(),
 								e
 							);
-							log.warn("Update listing failed, external ID: {}. Error message: {}, validation errors: {}.",
-								target.getTicketGroupId(), e.getMessage(), e.getValidationErrors());
+							boolean isTicketGroupAlreadyExists = e.getValidationErrors() != null
+								&& e.getValidationErrors().get("ticketGroupId") != null
+								&& e.getValidationErrors().get("ticketGroupId").getReasons()
+									.contains("Ticket group already exists.");
+							if (isTicketGroupAlreadyExists) {
+								log.debug("Ticket group already exists, deleting {}.", target.getTicketGroupId());
+								inventoryService.deleteTicketGroup(target.getTicketGroupId());
+							}
 						}
 					}
 				} else {
