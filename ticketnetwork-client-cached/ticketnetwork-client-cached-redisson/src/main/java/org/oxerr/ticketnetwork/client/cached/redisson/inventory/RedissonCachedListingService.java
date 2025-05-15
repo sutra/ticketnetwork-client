@@ -285,7 +285,7 @@ public class RedissonCachedListingService
 		TicketGroupsV4GetModel firstPage = check(ctx, ctx.nextPage()).join();
 
 		// Check the next page to the last page
-		log.debug("[check] total items: {}.", firstPage::getTotalCount);
+		log.info("[check] total items: {}.", firstPage::getTotalCount);
 
 		int pageCount = (firstPage.getTotalCount() + options.pageSize() - 1) / options.pageSize();
 
@@ -294,16 +294,16 @@ public class RedissonCachedListingService
 		}
 
 		// Wait all checking tasks to complete
-		log.debug("[check] waiting for all checking tasks to complete, checking size: {}", ctx::checkingCount);
+		log.info("[check] waiting for all checking tasks to complete, checking size: {}", ctx::checkingCount);
 		ctx.joinCheckings();
 
 		// Wait all tasks to complete
-		log.debug("[check] waiting for all tasks to complete, task size: {}", ctx::taskCount);
+		log.info("[check] waiting for all tasks to complete, task size: {}", ctx::taskCount);
 		ctx.joinTasks();
 
 		// Create the listings which in cache but not on the marketplace.
 		Set<CacheInfo> missing = ctx.getMissingTicketGroupInfos();
-		log.debug("missing ticket group info count: {}", missing::size);
+		log.info("missing ticket group info count: {}", missing::size);
 
 		List<CompletableFuture<Void>> createTasks = missing.stream()
 			.map(cacheInfo -> {
@@ -329,7 +329,7 @@ public class RedissonCachedListingService
 			}))
 			.collect(Collectors.toUnmodifiableList());
 
-		log.debug("[check] creating missing listings, task size: {}", createTasks::size);
+		log.info("[check] creating missing listings, task size: {}", createTasks::size);
 		CompletableFuture.allOf(createTasks.toArray(CompletableFuture[]::new)).join();
 
 		// Log the time taken to check the listings.
