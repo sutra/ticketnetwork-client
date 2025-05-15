@@ -383,6 +383,7 @@ public class RedissonCachedListingService
 	}
 
 	private CompletableFuture<TicketGroupsV4GetModel> check(CheckContext ctx, TicketGroupQuery q) {
+		log.debug("[check] checking page: {}", q::getSkip);
 		return callAsync(() -> {
 			TicketGroupsV4GetModel p = inventoryService.getTicketGroups(q);
 			Optional.ofNullable(p).ifPresent(t -> check(ctx, t));
