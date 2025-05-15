@@ -442,56 +442,59 @@ public class RedissonCachedListingService
 			// If the listing on marketplace is not same as the cached listing,
 			// update the listing.
 
-			ctx.addTask(callAsync(() -> {
-				log.trace("Updating {}", listing::getTicketGroupId);
-
-				var event = cachedListing.getEvent().toMarketplaceEvent();
-				var source = new TicketNetworkListing(
-					cachedListing.getId(),
-					cachedListing.getEvent().getMarketplaceEventId(),
-					new TicketGroupV4PostModel(listing),
-					listing.getTicketGroupId()
-				);
-
-				// Deep clone the source to avoid modifying the source.
-				var target = SerializationUtils.clone(source);
-				Listings.patch(target.getRequest(), cachedListing.getRequest());
-
-				var priority = getPriority(event, target, cachedListing);
-
-				if (event.getMarketplaceEventId().equals(listing.getEvent().getId())) {
-					if (target.getTicketGroupId() == null) {
-						createListing(event, target);
-					} else {
-						try {
-							updateListing(event, target, source, priority);
-						} catch (ValidationErrorsModel e) {
-							log.debug(
-								"Update listing failed, external ID: {}. listing: {}, cachedListing: {}, error: {}.",
-								target.getTicketGroupId(),
-								ToStringBuilder.reflectionToString(listing, ToStringStyle.JSON_STYLE),
-								ToStringBuilder.reflectionToString(cachedListing.getRequest(), ToStringStyle.JSON_STYLE),
-								e.toString(),
-								e
-							);
-							boolean isTicketGroupAlreadyExists = e.getValidationErrors() != null
-								&& e.getValidationErrors().get("ticketGroupId") != null
-								&& e.getValidationErrors().get("ticketGroupId").getReasons()
-									.contains("Ticket group already exists.");
-							if (isTicketGroupAlreadyExists) {
-								log.debug("Ticket group already exists, deleting {}.", target.getTicketGroupId());
-								inventoryService.deleteTicketGroup(target.getTicketGroupId());
-							}
-						}
-					}
-				} else {
-					log.warn("Marketplace event ID mismatch:  {} != {}, event ID = {}",
-						event::getMarketplaceEventId, () -> listing.getEvent().getId(), event::getId);
-					deleteListing(event, ticketGroupInfo.getListingId(), cachedListing, priority);
-				}
-				return null;
-			}));
+			ctx.addTask(callAsync(() -> update(listing, ticketGroupInfo, cachedListing)));
 		}
+	}
+
+	private Void update(TicketGroup listing, CacheInfo ticketGroupInfo, TicketNetworkCachedListing cachedListing)
+			throws IOException {
+		log.trace("Updating {}", listing::getTicketGroupId);
+
+		var event = cachedListing.getEvent().toMarketplaceEvent();
+		var source = new TicketNetworkListing(
+			cachedListing.getId(),
+			cachedListing.getEvent().getMarketplaceEventId(),
+			new TicketGroupV4PostModel(listing),
+			listing.getTicketGroupId()
+		);
+
+		// Deep clone the source to avoid modifying the source.
+		var target = SerializationUtils.clone(source);
+		Listings.patch(target.getRequest(), cachedListing.getRequest());
+
+		var priority = getPriority(event, target, cachedListing);
+
+		if (event.getMarketplaceEventId().equals(listing.getEvent().getId())) {
+			if (target.getTicketGroupId() == null) {
+				createListing(event, target);
+			} else {
+				try {
+					updateListing(event, target, source, priority);
+				} catch (ValidationErrorsModel e) {
+					log.debug(
+						"Update listing failed, external ID: {}. listing: {}, cachedListing: {}, error: {}.",
+						target.getTicketGroupId(),
+						ToStringBuilder.reflectionToString(listing, ToStringStyle.JSON_STYLE),
+						ToStringBuilder.reflectionToString(cachedListing.getRequest(), ToStringStyle.JSON_STYLE),
+						e.toString(),
+						e
+					);
+					boolean isTicketGroupAlreadyExists = e.getValidationErrors() != null
+						&& e.getValidationErrors().get("ticketGroupId") != null
+						&& e.getValidationErrors().get("ticketGroupId").getReasons()
+							.contains("Ticket group already exists.");
+					if (isTicketGroupAlreadyExists) {
+						log.debug("Ticket group already exists, deleting {}.", target.getTicketGroupId());
+						inventoryService.deleteTicketGroup(target.getTicketGroupId());
+					}
+				}
+			}
+		} else {
+			log.warn("Marketplace event ID mismatch:  {} != {}, event ID = {}",
+				event::getMarketplaceEventId, () -> listing.getEvent().getId(), event::getId);
+			deleteListing(event, ticketGroupInfo.getListingId(), cachedListing, priority);
+		}
+		return null;
 	}
 
 	private boolean isSame(TicketGroup listing, TicketGroupV4PostModel request) {
