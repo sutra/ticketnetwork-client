@@ -289,6 +289,8 @@ public class RedissonCachedListingService
 
 		int pageCount = (firstPage.getTotalCount() + options.pageSize() - 1) / options.pageSize();
 
+		log.info("[check] page count: {}.", () -> pageCount);
+
 		for (int i = 1; i < pageCount; i++) {
 			ctx.addChecking(check(ctx, ctx.nextPage()));
 		}
