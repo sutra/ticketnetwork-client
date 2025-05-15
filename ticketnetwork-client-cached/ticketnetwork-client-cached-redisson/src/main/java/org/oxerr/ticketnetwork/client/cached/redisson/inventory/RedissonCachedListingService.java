@@ -292,6 +292,7 @@ public class RedissonCachedListingService
 		log.info("[check] page count: {}.", () -> pageCount);
 
 		for (int i = 1; i < pageCount; i++) {
+			log.debug("[check] checking page: {}", i);
 			ctx.addChecking(check(ctx, ctx.nextPage()));
 		}
 
@@ -385,7 +386,7 @@ public class RedissonCachedListingService
 	}
 
 	private CompletableFuture<TicketGroupsV4GetModel> check(CheckContext ctx, TicketGroupQuery q) {
-		log.debug("[check] checking page: {}", q::getSkip);
+		log.debug("[check] checking page, skip: {}", q::getSkip);
 		return callAsync(() -> {
 			TicketGroupsV4GetModel p = inventoryService.getTicketGroups(q);
 			Optional.ofNullable(p).ifPresent(t -> check(ctx, t));
