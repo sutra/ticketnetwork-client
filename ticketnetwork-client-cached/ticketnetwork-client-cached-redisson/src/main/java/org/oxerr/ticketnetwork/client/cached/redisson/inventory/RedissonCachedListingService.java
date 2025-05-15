@@ -474,7 +474,8 @@ public class RedissonCachedListingService
 								e.toString(),
 								e
 							);
-							log.warn("Update listing failed, external ID: {}. validation errors: {}.", target.getTicketGroupId(), e.getValidationErrors());
+							log.warn("Update listing failed, external ID: {}. Error message: {}, validation errors: {}.",
+								target.getTicketGroupId(), e.getMessage(), e.getValidationErrors());
 						}
 					}
 				} else {
