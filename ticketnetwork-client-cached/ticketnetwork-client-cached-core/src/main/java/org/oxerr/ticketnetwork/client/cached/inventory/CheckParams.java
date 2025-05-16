@@ -19,6 +19,10 @@ public class CheckParams implements CheckOptions {
 	 */
 	private int chunkSize = 0;
 
+	private boolean create = true;
+	private boolean update = true;
+	private boolean delete = true;
+
 	@Override
 	public CheckOptions pageSize(int pageSize) {
 		this.pageSize = pageSize;
@@ -31,12 +35,45 @@ public class CheckParams implements CheckOptions {
 		return this;
 	}
 
+	@Override
+	public CheckOptions create(boolean create) {
+		this.create = create;
+		return this;
+	}
+
+	@Override
+	public CheckOptions update(boolean update) {
+		this.update = update;
+		return this;
+	}
+
+	@Override
+	public CheckOptions delete(boolean delete) {
+		this.delete = delete;
+		return this;
+	}
+
 	public int pageSize() {
 		return pageSize;
 	}
 
 	public int chunkSize() {
 		return chunkSize;
+	}
+
+	@Override
+	public boolean create() {
+		return create;
+	}
+
+	@Override
+	public boolean update() {
+		return update;
+	}
+
+	@Override
+	public boolean delete() {
+		return delete;
 	}
 
 	@Override

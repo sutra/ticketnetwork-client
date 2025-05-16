@@ -50,6 +50,10 @@ class CheckContext {
 		this.skip = new AtomicInteger();
 	}
 
+	public CheckOptions getOptions() {
+		return options;
+	}
+
 	public Map<ListingInfo, CacheInfo> getCaches() {
 		return caches;
 	}

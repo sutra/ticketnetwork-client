@@ -278,7 +278,7 @@ public class RedissonCachedListingService
 		CheckContext ctx = newCheckContext(options);
 
 		// Check the first page
-		TicketGroupsV4GetModel firstPage = check(ctx, ctx.nextPage()).join();
+		TicketGroupsV4GetModel firstPage = checkPage(ctx, ctx.nextPage()).join();
 
 		// Check the next page to the last page
 		log.info("[check] total items: {}.", firstPage::getTotalCount);
@@ -289,7 +289,7 @@ public class RedissonCachedListingService
 
 		for (int i = 1; i < pageCount; i++) {
 			log.debug("[check] checking page: {}/{}", i, pageCount);
-			ctx.addChecking(check(ctx, ctx.nextPage()));
+			ctx.addChecking(checkPage(ctx, ctx.nextPage()));
 		}
 
 		// Wait all checking tasks to complete
@@ -301,47 +301,21 @@ public class RedissonCachedListingService
 		ctx.joinTasks();
 
 		// Create the listings which in cache but not on the marketplace.
-		Set<CacheInfo> missing = ctx.getMissingTicketGroupInfos();
-		log.info("missing ticket group info count: {}", missing::size);
-
-		List<CompletableFuture<Void>> createTasks = missing.stream()
-			.map(cacheInfo -> {
-				String cacheName = cacheInfo.getCacheName();
-				RMap<String, TicketNetworkCachedListing> cache = this.getCache(cacheName);
-				return cache.get(cacheInfo.getListingId());
-			})
-			// Double check if the cached listing still exists.
-			.filter(Objects::nonNull)
-			.map(marketplaceCachedListing -> this.<Void>callAsync(() -> {
-				TicketNetworkEvent marketplaceEvent = marketplaceCachedListing.getEvent().toMarketplaceEvent();
-				TicketNetworkListing marketplaceListing = marketplaceCachedListing.toMarketplaceListing();
-
-				try {
-					this.createListing(marketplaceEvent, marketplaceListing);
-				} catch (ValidationErrorsModel e) {
-					log.warn("Create listing failed, external ID: {}. validation errors: {}.", marketplaceListing.getId(), e.getValidationErrors());
-				} catch (IOException e) {
-					log.warn("Create listing failed, external ID: {}.", marketplaceListing.getId(), e);
-				}
-
-				return null;
-			}))
-			.collect(Collectors.toUnmodifiableList());
-
-		log.info("[check] creating missing listings, task size: {}", createTasks::size);
-		CompletableFuture.allOf(createTasks.toArray(CompletableFuture[]::new)).join();
+		if (ctx.getOptions().create()) {
+			checkCreate(ctx);
+		}
 
 		// Log the time taken to check the listings.
 		stopWatch.stop();
 		log.info("[check] end, checked {} items in {}", firstPage::getTotalCount, () -> stopWatch);
 	}
 
-	private CompletableFuture<TicketGroupsV4GetModel> check(CheckContext ctx, TicketGroupQuery q) {
+	private CompletableFuture<TicketGroupsV4GetModel> checkPage(CheckContext ctx, TicketGroupQuery q) {
 		log.debug("[check] checking page, skip: {}", q::getSkip);
 		return callAsync(() -> {
 			try {
 				TicketGroupsV4GetModel p = inventoryService.getTicketGroups(q);
-				Optional.ofNullable(p).ifPresent(t -> check(ctx, t));
+				Optional.ofNullable(p).ifPresent(t -> checkPage(ctx, t));
 				return p;
 			} catch (Exception e) {
 				log.warn("Check failed, skip: {}, message: {}.", q::getSkip, e::getMessage);
@@ -356,24 +330,23 @@ public class RedissonCachedListingService
 	 * @param ctx the context.
 	 * @param page the page.
 	 */
-	private void check(CheckContext ctx, TicketGroupsV4GetModel page) {
+	private void checkPage(CheckContext ctx, TicketGroupsV4GetModel page) {
 		// Delete the listings not in the cache
-		var deleteTasks = page.getResults().stream()
-			.filter(listing -> !ctx.getCaches().containsKey(new ListingInfo(listing)))
-			.map(listing -> this.<Void>callAsync(() -> {
-				try {
-					this.inventoryService.deleteTicketGroup(listing.getTicketGroupId());
-				} catch (Exception e) {
-					log.warn("Delete listing failed, external ID: {}. message: {}.", listing::getTicketGroupId, e::getMessage);
-				}
-				return null;
-			})).collect(Collectors.toUnmodifiableList());
-		ctx.addTasks(deleteTasks);
+		if (ctx.getOptions().delete()) {
+			checkDelete(ctx, page);
+		}
 
 		// Check the listings in the page.
 		page.getResults().stream()
 			.filter(listing -> ctx.getCaches().containsKey(new ListingInfo(listing)))
-			.forEach((TicketGroup listing) -> check(ctx, listing));
+			.forEach((TicketGroup listing) -> checkListing(ctx, listing));
+	}
+
+	private void checkDelete(CheckContext ctx, TicketGroupsV4GetModel page) {
+		var deleteTasks = page.getResults().stream()
+			.filter(listing -> !ctx.getCaches().containsKey(new ListingInfo(listing)))
+			.map(listing -> callAsync(() -> delete(listing))).collect(Collectors.toUnmodifiableList());
+		ctx.addTasks(deleteTasks);
 	}
 
 	/**
@@ -385,7 +358,7 @@ public class RedissonCachedListingService
 	 * @param ctx the context.
 	 * @param listing the listing on marketplace.
 	 */
-	private void check(CheckContext ctx, TicketGroup listing) {
+	private void checkListing(CheckContext ctx, TicketGroup listing) {
 		log.trace("Checking {}", listing::getTicketGroupId);
 
 		ctx.addListedTicketGroupId(listing.getTicketGroupId());
@@ -397,17 +370,26 @@ public class RedissonCachedListingService
 			// Double check the listing if it is not cached.
 			// If the listing is not cached, delete the listing from the marketplace.
 
-			ctx.addTask(callAsync(() -> {
-				log.trace("Deleting {}", listing::getTicketGroupId);
-				inventoryService.deleteTicketGroup(listing.getTicketGroupId());
-				return null;
-			}));
+			if (ctx.getOptions().delete()) {
+				checkDelete(ctx, listing);
+			}
 		} else if (!isSame(listing, cachedListing.getRequest())) {
 			// If the listing on marketplace is not same as the cached listing,
 			// update the listing.
 
-			ctx.addTask(callAsync(() -> update(listing, ticketGroupInfo, cachedListing)));
+			if (ctx.getOptions().update()) {
+				checkUpdate(ctx, listing, ticketGroupInfo, cachedListing);
+			}
 		}
+	}
+
+	private void checkDelete(CheckContext ctx, TicketGroup listing) {
+		ctx.addTask(callAsync(() -> delete(listing)));
+	}
+
+	private void checkUpdate(CheckContext ctx, TicketGroup listing, CacheInfo ticketGroupInfo,
+			TicketNetworkCachedListing cachedListing) {
+		ctx.addTask(callAsync(() -> update(listing, ticketGroupInfo, cachedListing)));
 	}
 
 	private Void update(TicketGroup listing, CacheInfo ticketGroupInfo, TicketNetworkCachedListing cachedListing)
@@ -458,7 +440,48 @@ public class RedissonCachedListingService
 				event::getMarketplaceEventId, () -> listing.getEvent().getId(), event::getId);
 			deleteListing(event, ticketGroupInfo.getListingId(), cachedListing, priority);
 		}
+
 		return null;
+	}
+
+	private Void delete(TicketGroup listing) {
+		log.trace("Deleting {}", listing::getTicketGroupId);
+
+		inventoryService.deleteTicketGroup(listing.getTicketGroupId());
+
+		return null;
+	}
+
+	private void checkCreate(CheckContext ctx) {
+		Set<CacheInfo> missing = ctx.getMissingTicketGroupInfos();
+		log.info("missing ticket group info count: {}", missing::size);
+
+		List<CompletableFuture<Void>> createTasks = missing.stream()
+			.map(cacheInfo -> {
+				String cacheName = cacheInfo.getCacheName();
+				RMap<String, TicketNetworkCachedListing> cache = this.getCache(cacheName);
+				return cache.get(cacheInfo.getListingId());
+			})
+			// Double check if the cached listing still exists.
+			.filter(Objects::nonNull)
+			.map(marketplaceCachedListing -> this.<Void>callAsync(() -> {
+				TicketNetworkEvent marketplaceEvent = marketplaceCachedListing.getEvent().toMarketplaceEvent();
+				TicketNetworkListing marketplaceListing = marketplaceCachedListing.toMarketplaceListing();
+
+				try {
+					this.createListing(marketplaceEvent, marketplaceListing);
+				} catch (ValidationErrorsModel e) {
+					log.warn("Create listing failed, external ID: {}. validation errors: {}.", marketplaceListing.getId(), e.getValidationErrors());
+				} catch (IOException e) {
+					log.warn("Create listing failed, external ID: {}.", marketplaceListing.getId(), e);
+				}
+
+				return null;
+			}))
+			.collect(Collectors.toUnmodifiableList());
+
+		log.info("[check] creating missing listings, task size: {}", createTasks::size);
+		CompletableFuture.allOf(createTasks.toArray(CompletableFuture[]::new)).join();
 	}
 
 	/**

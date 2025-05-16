@@ -13,8 +13,16 @@ public interface CheckOptions {
 
 	CheckOptions chunkSize(int chunkSize);
 
+	CheckOptions create(boolean create);
+	CheckOptions update(boolean update);
+	CheckOptions delete(boolean delete);
+
 	int pageSize();
 
 	int chunkSize();
+
+	boolean create();
+	boolean update();
+	boolean delete();
 
 }
