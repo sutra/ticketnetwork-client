@@ -473,6 +473,8 @@ public class RedissonCachedListingService
 	 * @return a map where the keys are listings and the values are cache informations.
 	 */
 	private Map<ListingInfo, CacheInfo> getCaches(CheckOptions options) {
+		log.debug("[getCaches] start.");
+
 		// Create a stop watch to measure the time taken to retrieve the caches.
 		StopWatch stopWatch = StopWatch.createStarted();
 
