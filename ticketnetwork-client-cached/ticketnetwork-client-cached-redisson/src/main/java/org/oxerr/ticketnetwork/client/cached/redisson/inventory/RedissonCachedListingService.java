@@ -361,7 +361,11 @@ public class RedissonCachedListingService
 		var deleteTasks = page.getResults().stream()
 			.filter(listing -> !ctx.getCaches().containsKey(new ListingInfo(listing)))
 			.map(listing -> this.<Void>callAsync(() -> {
-				this.inventoryService.deleteTicketGroup(listing.getTicketGroupId());
+				try {
+					this.inventoryService.deleteTicketGroup(listing.getTicketGroupId());
+				} catch (Exception e) {
+					log.warn("Delete listing failed, external ID: {}. message: {}.", listing::getTicketGroupId, e::getMessage);
+				}
 				return null;
 			})).collect(Collectors.toUnmodifiableList());
 		ctx.addTasks(deleteTasks);
