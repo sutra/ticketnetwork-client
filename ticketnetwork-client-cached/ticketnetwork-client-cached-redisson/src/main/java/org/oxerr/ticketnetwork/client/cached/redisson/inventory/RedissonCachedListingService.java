@@ -270,10 +270,6 @@ public class RedissonCachedListingService
 
 	@Override
 	public void check(CheckOptions options) {
-		doCheck(options);
-	}
-
-	private void doCheck(CheckOptions options) {
 		log.info("[check] begin.");
 
 		// Create a stop watch to measure the time taken to check the listings.
@@ -338,51 +334,6 @@ public class RedissonCachedListingService
 		// Log the time taken to check the listings.
 		stopWatch.stop();
 		log.info("[check] end, checked {} items in {}", firstPage::getTotalCount, () -> stopWatch);
-	}
-
-	/**
-	 * Creates a new check context.
-	 *
-	 * @param options the check options.
-	 * @return a new check context.
-	 */
-	private CheckContext newCheckContext(CheckOptions options) {
-		var caches = this.getCaches(options);
-		return new CheckContext(options, caches);
-	}
-
-	/**
-	 * Retrieves a mapping of listing info to their corresponding cache info.
-	 *
-	 * This method iterates over all available cache names, retrieves each cache, 
-	 * and then creates a map entry for each listing pointing to its cache info.
-	 *
-	 * @param options the check options.
-	 * @return a map where the keys are listings and the values are cache informations.
-	 */
-	private Map<ListingInfo, CacheInfo> getCaches(CheckOptions options) {
-		// Create a stop watch to measure the time taken to retrieve the caches.
-		StopWatch stopWatch = StopWatch.createStarted();
-
-		// Create a map to hold the listings to cache mapping
-		Map<ListingInfo, CacheInfo> caches =
-			getCacheNamesStream(options.chunkSize()) // Stream of cache names
-				.flatMap(cacheName ->
-					// Retrieve the cache and create a stream of ticketGroupId-to-ticketGroupInfo entries
-					getCache(cacheName)
-						.values()
-						.stream()
-						.map(c -> Map.entry(new ListingInfo(c), new CacheInfo(cacheName, c)))
-				)
-				// Collect the entries into a map
-				.collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
-
-		// Log the time taken to retrieve the listing to cache info mapping.
-		stopWatch.stop();
-		log.debug("[getCaches] end. Retrieved {} caches in {}", caches::size, () -> stopWatch);
-
-		// Return the map of listings to cache informations.
-		return caches;
 	}
 
 	private CompletableFuture<TicketGroupsV4GetModel> check(CheckContext ctx, TicketGroupQuery q) {
@@ -499,6 +450,51 @@ public class RedissonCachedListingService
 			deleteListing(event, ticketGroupInfo.getListingId(), cachedListing, priority);
 		}
 		return null;
+	}
+
+	/**
+	 * Creates a new check context.
+	 *
+	 * @param options the check options.
+	 * @return a new check context.
+	 */
+	private CheckContext newCheckContext(CheckOptions options) {
+		var caches = this.getCaches(options);
+		return new CheckContext(options, caches);
+	}
+
+	/**
+	 * Retrieves a mapping of listing info to their corresponding cache info.
+	 *
+	 * This method iterates over all available cache names, retrieves each cache,
+	 * and then creates a map entry for each listing pointing to its cache info.
+	 *
+	 * @param options the check options.
+	 * @return a map where the keys are listings and the values are cache informations.
+	 */
+	private Map<ListingInfo, CacheInfo> getCaches(CheckOptions options) {
+		// Create a stop watch to measure the time taken to retrieve the caches.
+		StopWatch stopWatch = StopWatch.createStarted();
+
+		// Create a map to hold the listings to cache mapping
+		Map<ListingInfo, CacheInfo> caches =
+			getCacheNamesStream(options.chunkSize()) // Stream of cache names
+				.flatMap(cacheName ->
+					// Retrieve the cache and create a stream of ticketGroupId-to-ticketGroupInfo entries
+					getCache(cacheName)
+						.values()
+						.stream()
+						.map(c -> Map.entry(new ListingInfo(c), new CacheInfo(cacheName, c)))
+				)
+				// Collect the entries into a map
+				.collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
+
+		// Log the time taken to retrieve the listing to cache info mapping.
+		stopWatch.stop();
+		log.debug("[getCaches] end. Retrieved {} caches in {}", caches::size, () -> stopWatch);
+
+		// Return the map of listings to cache informations.
+		return caches;
 	}
 
 	private boolean isSame(TicketGroup listing, TicketGroupV4PostModel request) {
