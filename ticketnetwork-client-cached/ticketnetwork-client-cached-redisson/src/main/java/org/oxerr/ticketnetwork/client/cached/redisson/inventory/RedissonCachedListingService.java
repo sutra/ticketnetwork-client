@@ -288,7 +288,7 @@ public class RedissonCachedListingService
 		log.info("[check] page count: {}.", () -> pageCount);
 
 		for (int i = 1; i < pageCount; i++) {
-			log.debug("[check] checking page: {}/{}", i, pageCount);
+			log.info("[check] checking page: {}/{}", i, pageCount);
 			ctx.addChecking(check(ctx, ctx.nextPage()));
 		}
 
