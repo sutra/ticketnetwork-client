@@ -448,8 +448,8 @@ public class RedissonCachedListingService
 						&& e.getValidationErrors().get("ticketGroupId").getReasons()
 							.contains("Ticket group already exists.");
 					if (isTicketGroupAlreadyExists) {
-						log.debug("Ticket group already exists, deleting {}.", target.getTicketGroupId());
-						inventoryService.deleteTicketGroup(target.getTicketGroupId());
+						log.debug("Ticket group already exists, deleting {}.", ticketGroupInfo.getListingId());
+						deleteListing(event, ticketGroupInfo.getListingId(), cachedListing, priority);
 					}
 				}
 			}
