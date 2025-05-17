@@ -245,8 +245,17 @@ public class RedissonCachedListingService
 		int priority
 	) throws IOException {
 		if (cachedListing.getTicketGroupId() != null) {
-			inventoryService.deleteTicketGroup(cachedListing.getTicketGroupId());
+			doDeleteListing(event, listingId, cachedListing, priority);
 		}
+	}
+
+	protected void doDeleteListing(
+		TicketNetworkEvent event,
+		String listingId,
+		TicketNetworkCachedListing cachedListing,
+		int priority
+	) {
+		inventoryService.deleteTicketGroup(cachedListing.getTicketGroupId());
 	}
 
 	@Override
