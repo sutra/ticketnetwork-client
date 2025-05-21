@@ -192,13 +192,18 @@ public class RedissonCachedListingService
 		}
 
 		// Update ticket group ID in cache
-		TicketNetworkCachedListing cached = getEventCache(event.getId()).get(listing.getId());
-		cached.setTicketGroupId(ticketGroup.getTicketGroupId());
-
-		getEventCache(event.getId()).put(listing.getId(), cached);
+		updateCache(event, listing, ticketGroup);
 	}
 
-	private TicketGroupsV4GetModel getTicketGroups(TicketNetworkListing listing) throws IOException {
+	@Override
+	public void updateCache(String eventId, String listingId, Integer ticketGroupId) {
+		TicketNetworkCachedListing cached = getEventCache(eventId).get(listingId);
+		cached.setTicketGroupId(ticketGroupId);
+
+		getEventCache(eventId).put(listingId, cached);
+	}
+
+	private TicketGroupsV4GetModel getTicketGroups(TicketNetworkListing listing) {
 		var filter = String.format(
 			"event/id eq %d and seats/section eq '%s' and seats/row eq '%s'",
 			listing.getRequest().getEventId(),
