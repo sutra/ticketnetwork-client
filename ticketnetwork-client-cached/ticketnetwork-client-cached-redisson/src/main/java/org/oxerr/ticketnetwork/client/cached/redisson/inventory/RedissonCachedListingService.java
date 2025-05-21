@@ -1,6 +1,5 @@
 package org.oxerr.ticketnetwork.client.cached.redisson.inventory;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -144,7 +143,7 @@ public class RedissonCachedListingService
 	}
 
 	@Override
-	protected void createListing(TicketNetworkEvent event, TicketNetworkListing listing) throws IOException {
+	protected void createListing(TicketNetworkEvent event, TicketNetworkListing listing) {
 		TicketGroup ticketGroup;
 
 		try {
@@ -237,7 +236,7 @@ public class RedissonCachedListingService
 		TicketNetworkListing target,
 		TicketNetworkListing source,
 		int priority
-	) throws IOException {
+	) {
 		log.debug("Updating listing. source: {}, target: {}", source, target);
 		inventoryService.updateTicketGroup(source.getTicketGroupId(), target.getRequest(), source.getRequest());
 	}
@@ -248,7 +247,7 @@ public class RedissonCachedListingService
 		String listingId,
 		TicketNetworkCachedListing cachedListing,
 		int priority
-	) throws IOException {
+	) {
 		if (cachedListing.getTicketGroupId() != null) {
 			deleteListing(cachedListing.getTicketGroupId());
 		}
@@ -259,7 +258,7 @@ public class RedissonCachedListingService
 	}
 
 	@Override
-	protected void deleteListing(TicketNetworkEvent event, String listingId) throws IOException {
+	protected void deleteListing(TicketNetworkEvent event, String listingId) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -401,8 +400,7 @@ public class RedissonCachedListingService
 		ctx.addTask(callAsync(() -> update(listing, ticketGroupInfo, cachedListing)));
 	}
 
-	private Void update(TicketGroup listing, CacheInfo ticketGroupInfo, TicketNetworkCachedListing cachedListing)
-			throws IOException {
+	private Void update(TicketGroup listing, CacheInfo ticketGroupInfo, TicketNetworkCachedListing cachedListing) {
 		log.trace("Updating {}", listing::getTicketGroupId);
 
 		var event = cachedListing.getEvent().toMarketplaceEvent();
@@ -479,8 +477,6 @@ public class RedissonCachedListingService
 					this.createListing(marketplaceEvent, marketplaceListing);
 				} catch (ValidationErrorsModel e) {
 					log.warn("Create listing failed, external ID: {}. validation errors: {}.", marketplaceListing.getId(), e.getValidationErrors());
-				} catch (IOException e) {
-					log.warn("Create listing failed, external ID: {}.", marketplaceListing.getId(), e);
 				}
 
 				return null;
