@@ -10,6 +10,13 @@ public class TicketGroupV4GetModel extends TicketGroup implements Serializable {
 
 	private static final long serialVersionUID = 2025022301L;
 
+	public TicketGroupV4GetModel() {
+	}
+
+	public TicketGroupV4GetModel(TicketGroupV4PostModel ticketGroupV4PostModel) {
+		super(ticketGroupV4PostModel);
+	}
+
 	@Override
 	public int hashCode() {
 		return HashCodeBuilder.reflectionHashCode(this);

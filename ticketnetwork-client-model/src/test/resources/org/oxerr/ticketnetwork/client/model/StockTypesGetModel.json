@@ -1,0 +1,24 @@
+{
+	"stockTypes": [
+		{
+			"id": 1,
+			"description": "Standard"
+		},
+		{
+			"id": 2,
+			"description": "e-Ticket"
+		},
+		{
+			"id": 3,
+			"description": "Commemorative"
+		},
+		{
+			"id": 4,
+			"description": "Paperless"
+		},
+		{
+			"id": 7,
+			"description": "Mobile"
+		}
+	]
+}

@@ -1,42 +1,56 @@
 package org.oxerr.ticketnetwork.client.inventory;
 
-import java.io.IOException;
+import java.util.List;
 
+import org.oxerr.ticketnetwork.client.model.BroadcastChannelsGetModel;
+import org.oxerr.ticketnetwork.client.model.NearTermShippingMethodGetModel;
 import org.oxerr.ticketnetwork.client.model.SeatingTypesGetModel;
+import org.oxerr.ticketnetwork.client.model.StockTypesGetModel;
+import org.oxerr.ticketnetwork.client.model.TicketGroup;
 import org.oxerr.ticketnetwork.client.model.TicketGroupTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
 
-import com.github.fge.jsonpatch.JsonPatchOperation;
+import com.github.fge.jsonpatch.JsonPatch;
 
 public interface InventoryService {
 
-	TicketGroupsV4GetModel getTicketGroups(
-		Boolean hasEticket,
-		Boolean pending,
-		Boolean returnTicketsData,
-		Integer perPage,
-		Integer page,
-		Integer skip,
-		String filter,
-		String orderby
-	) throws IOException;
+	TicketGroupsV4GetModel getTicketGroups(TicketGroupQuery q);
 
-	TicketGroupV4GetModel createTicketGroup(TicketGroupV4PostModel ticketGroup)
-		throws IOException;
+	TicketGroupV4GetModel createTicketGroup(TicketGroupV4PostModel ticketGroup);
 
-	TicketGroupV4GetModel getTicketGroup(Integer ticketGroupId) throws IOException;
+	TicketGroupV4GetModel getTicketGroup(Integer ticketGroupId);
 
-	void deleteTicketGroup(Integer ticketGroupId) throws IOException;
+	void deleteTicketGroup(Integer ticketGroupId);
 
 	TicketGroupV4GetModel updateTicketGroup(
 		Integer ticketGroupId,
-		JsonPatchOperation... patchOperations
-	) throws IOException;
+		JsonPatch patch
+	);
 
-	SeatingTypesGetModel getSeatingTypes() throws IOException;
+	TicketGroupV4GetModel updateTicketGroup(
+		Integer ticketGroupId,
+		TicketGroup target,
+		TicketGroup source
+	);
 
-	TicketGroupTypesGetModel getTypes() throws IOException;
+	TicketGroupV4GetModel updateTicketGroup(
+		Integer ticketGroupId,
+		TicketGroupV4PostModel target,
+		TicketGroupV4PostModel source
+	);
+
+	TicketGroupsV4GetModel getAllTicketGroups(AllTicketGroupQuery q);
+
+	BroadcastChannelsGetModel getBroadcastChannels();
+
+	List<NearTermShippingMethodGetModel> getNearTermShippingMethods();
+
+	SeatingTypesGetModel getSeatingTypes();
+
+	StockTypesGetModel getStockTypes();
+
+	TicketGroupTypesGetModel getTypes();
 
 }

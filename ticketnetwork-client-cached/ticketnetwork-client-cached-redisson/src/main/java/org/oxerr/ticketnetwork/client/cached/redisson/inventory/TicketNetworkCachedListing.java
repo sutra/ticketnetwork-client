@@ -43,6 +43,14 @@ public class TicketNetworkCachedListing extends CachedListing<TicketGroupV4PostM
 		this.ticketGroupId = ticketGroupId;
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public TicketNetworkCachedEvent getEvent() {
 		return event;
 	}
@@ -59,8 +67,8 @@ public class TicketNetworkCachedListing extends CachedListing<TicketGroupV4PostM
 		this.ticketGroupId = ticketGroupId;
 	}
 
-	public TicketNetworkListing toTicketNetworkTicketGroup() {
-		return new TicketNetworkListing(id, this.event.getTicketNetworkEventId(), this.getRequest(), ticketGroupId);
+	public TicketNetworkListing toMarketplaceListing() {
+		return new TicketNetworkListing(id, this.event.getMarketplaceEventId(), this.getRequest(), ticketGroupId);
 	}
 
 	@Override

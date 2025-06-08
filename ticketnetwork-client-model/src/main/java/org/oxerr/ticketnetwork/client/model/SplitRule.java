@@ -20,6 +20,13 @@ public class SplitRule implements Serializable {
 	 */
 	private String description;
 
+	public SplitRule() {
+	}
+
+	public SplitRule(Integer id) {
+		this.id = id;
+	}
+
 	public Integer getId() {
 		return id;
 	}

@@ -27,7 +27,7 @@ public class RedissonCachedTicketNetworkClient implements CachedTicketNetworkCli
 
 	public RedissonCachedTicketNetworkClient(
 		TicketNetworkClient ticketNetworkClient,
-		RedissonClient redissonClient,
+		RedissonClient redisson,
 		String keyPrefix,
 		Executor executor
 	) {
@@ -35,7 +35,7 @@ public class RedissonCachedTicketNetworkClient implements CachedTicketNetworkCli
 			ticketNetworkClient,
 			new RedissonCachedListingService(
 				ticketNetworkClient.getInventoryService(),
-				redissonClient,
+				redisson,
 				keyPrefix,
 				executor
 			)

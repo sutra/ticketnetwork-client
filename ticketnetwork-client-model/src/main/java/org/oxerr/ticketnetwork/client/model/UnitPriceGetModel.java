@@ -52,6 +52,18 @@ public class UnitPriceGetModel implements Serializable {
 	 */
 	private MoneyAmountModel msrp;
 
+	public UnitPriceGetModel() {
+	}
+
+	public UnitPriceGetModel(UnitPricePostModel unitPricePostModel) {
+		this.wholesalePrice = new MoneyAmountModel(unitPricePostModel.getWholesalePrice(), unitPricePostModel.getFacePrice().getCurrencyCode());
+		this.retailPrice = new MoneyAmountModel(unitPricePostModel.getRetailPrice(), unitPricePostModel.getFacePrice().getCurrencyCode());
+		this.facePrice = new MoneyAmountModel(unitPricePostModel.getFacePrice().getValue(), unitPricePostModel.getFacePrice().getCurrencyCode());
+		this.cost = new MoneyAmountModel(unitPricePostModel.getCost(), unitPricePostModel.getFacePrice().getCurrencyCode());
+		this.taxedCost = new MoneyAmountModel(unitPricePostModel.getTaxedCost(), unitPricePostModel.getFacePrice().getCurrencyCode());
+		this.msrp = new MoneyAmountModel(unitPricePostModel.getMsrp(), unitPricePostModel.getFacePrice().getCurrencyCode());
+	}
+
 	public MoneyAmountModel getWholesalePrice() {
 		return wholesalePrice;
 	}

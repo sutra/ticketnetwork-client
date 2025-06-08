@@ -1,5 +1,7 @@
 package org.oxerr.ticketnetwork.client.rescu.impl;
 
+import java.util.function.Supplier;
+
 import org.oxerr.rescu.ext.singleton.RestProxyFactorySingletonImpl;
 import org.oxerr.ticketnetwork.client.TicketNetworkClient;
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
@@ -17,6 +19,7 @@ import si.mazi.rescu.ClientConfig;
 import si.mazi.rescu.IRestProxyFactory;
 import si.mazi.rescu.Interceptor;
 import si.mazi.rescu.RestProxyFactoryImpl;
+import si.mazi.rescu.clients.HttpConnectionType;
 import si.mazi.rescu.serialization.jackson.DefaultJacksonObjectMapperFactory;
 import si.mazi.rescu.serialization.jackson.JacksonObjectMapperFactory;
 
@@ -32,10 +35,35 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 
 	public ResCUTicketNetworkClient(
 		Integer brokerId,
+		CharSequence accessToken,
+		Interceptor... interceptors
+	) {
+		this(brokerId, () -> accessToken, interceptors);
+	}
+
+	public ResCUTicketNetworkClient(
+		Integer brokerId,
 		String accessToken,
 		Interceptor... interceptors
 	) {
-		this(DEFAULT_BASE_URL, brokerId, accessToken, interceptors);
+		this(brokerId, (CharSequence) accessToken, interceptors);
+	}
+
+	public ResCUTicketNetworkClient(
+		Integer brokerId,
+		Supplier<CharSequence> accessTokenSupplier,
+		Interceptor... interceptors
+	) {
+		this(DEFAULT_BASE_URL, brokerId, accessTokenSupplier, interceptors);
+	}
+
+	public ResCUTicketNetworkClient(
+		String baseUrl,
+		Integer brokerId,
+		CharSequence accessToken,
+		Interceptor... interceptors
+	) {
+		this(baseUrl, brokerId, () -> accessToken, interceptors);
 	}
 
 	public ResCUTicketNetworkClient(
@@ -44,12 +72,22 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 		String accessToken,
 		Interceptor... interceptors
 	) {
+		this(baseUrl, brokerId, (CharSequence) accessToken, interceptors);
+	}
+
+	public ResCUTicketNetworkClient(
+		String baseUrl,
+		Integer brokerId,
+		Supplier<CharSequence> accessTokenSupplier,
+		Interceptor... interceptors
+	) {
 		this.baseUrl = baseUrl;
 		this.restProxyFactory = new RestProxyFactorySingletonImpl(new RestProxyFactoryImpl());
 
-		var clientConfig = createClientConfig(accessToken, brokerId);
+		var clientConfig = createClientConfig(accessTokenSupplier, brokerId);
+		var objectMapper = clientConfig.getJacksonObjectMapperFactory().createObjectMapper();
 		InventoryResource inventoryResource = restProxyFactory.createProxy(InventoryResource.class, baseUrl, clientConfig, interceptors);
-		this.inventoryService = new InventoryServiceImpl(inventoryResource);
+		this.inventoryService = new InventoryServiceImpl(objectMapper, inventoryResource);
 	}
 
 	@Override
@@ -61,10 +99,18 @@ public class ResCUTicketNetworkClient implements TicketNetworkClient {
 		return this.restProxyFactory.createProxy(restInterface, baseUrl, clientConfig, interceptors);
 	}
 
-	protected ClientConfig createClientConfig(String accessToken, Integer brokerId) {
+	protected ClientConfig createClientConfig(Supplier<CharSequence> accessTokenSupplier, Integer brokerId) {
 		var jacksonObjectMapperFactory = createJacksonObjectMapperFactory();
 		var clientConfig = new ClientConfig();
-		clientConfig.addDefaultParam(HeaderParam.class, "Authorization", "Bearer " + accessToken);
+		clientConfig.setConnectionType(HttpConnectionType.apache);
+		clientConfig.addDefaultParam(HeaderParam.class, "Authorization", new Object() {
+
+			@Override
+			public String toString() {
+				return "Bearer " + accessTokenSupplier.get();
+			}
+
+		});
 		clientConfig.addDefaultParam(HeaderParam.class, "X-Identity-Context", "broker-id=" + brokerId);
 		clientConfig.setJacksonObjectMapperFactory(jacksonObjectMapperFactory);
 		return clientConfig;

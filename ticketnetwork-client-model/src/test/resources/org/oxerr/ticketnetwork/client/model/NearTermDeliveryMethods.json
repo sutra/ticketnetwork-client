@@ -1,0 +1,42 @@
+[
+	{
+		"id": 0,
+		"description": "Near-Term Special Delivery"
+	},
+	{
+		"id": 1,
+		"description": "E-Ticket"
+	},
+	{
+		"id": 2,
+		"description": "Will Call"
+	},
+	{
+		"id": 3,
+		"description": "Local Pickup Near Venue"
+	},
+	{
+		"id": 10,
+		"description": "TN Digital Conversion"
+	},
+	{
+		"id": 11,
+		"description": "Paperless – Meet Customer"
+	},
+	{
+		"id": 12,
+		"description": "Paperless – Ship Gift Card"
+	},
+	{
+		"id": 13,
+		"description": "Direct Transfer"
+	},
+	{
+		"id": 14,
+		"description": "Upload QR Screenshot"
+	},
+	{
+		"id": 15,
+		"description": "AXS Mobile ID"
+	}
+]

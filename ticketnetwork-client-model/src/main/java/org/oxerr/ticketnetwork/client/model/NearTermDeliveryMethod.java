@@ -6,6 +6,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+/**
+ * Model for near term delivery method.
+ */
 public class NearTermDeliveryMethod implements Serializable {
 
 	private static final long serialVersionUID = 2025022201L;
@@ -21,6 +24,18 @@ public class NearTermDeliveryMethod implements Serializable {
 	 */
 	private String description;
 
+	public NearTermDeliveryMethod() {
+	}
+
+	public NearTermDeliveryMethod(Integer id) {
+		this.id = id;
+	}
+
+	/**
+	 * Returns the ID.
+	 *
+	 * @return the ID.
+	 */
 	public Integer getId() {
 		return id;
 	}
@@ -29,6 +44,11 @@ public class NearTermDeliveryMethod implements Serializable {
 		this.id = id;
 	}
 
+	/**
+	 * Returns the description.
+	 *
+	 * @return the description.
+	 */
 	public String getDescription() {
 		return description;
 	}

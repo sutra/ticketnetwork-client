@@ -50,7 +50,9 @@ public class ValidationErrorsModel extends RuntimeException implements Serializa
 
 	@Override
 	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this);
+		return new HashCodeBuilder(17, 37)
+			.append(validationErrors)
+			.toHashCode();
 	}
 
 	@Override
@@ -67,7 +69,9 @@ public class ValidationErrorsModel extends RuntimeException implements Serializa
 
 	@Override
 	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
+		return new ToStringBuilder(this)
+			.append("validationErrors", validationErrors)
+			.toString();
 	}
 
 }

@@ -2,15 +2,15 @@ package org.oxerr.ticketnetwork.client.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * Class to represent a price value and its currency.
  */
-public class MoneyAmountModel implements Serializable {
+public class MoneyAmountModel implements Comparable<MoneyAmountModel>, Serializable {
 
 	private static final long serialVersionUID = 2025022201L;
 
@@ -53,6 +53,16 @@ public class MoneyAmountModel implements Serializable {
 	}
 
 	@Override
+	public int compareTo(MoneyAmountModel o) {
+		Objects.requireNonNull(o);
+		int compare = getCurrencyCode().compareTo(o.getCurrencyCode());
+		if (compare == 0) {
+			compare = this.value.compareTo(o.value);
+		}
+		return compare;
+	}
+
+	@Override
 	public int hashCode() {
 		return HashCodeBuilder.reflectionHashCode(this);
 	}
@@ -71,7 +81,7 @@ public class MoneyAmountModel implements Serializable {
 
 	@Override
 	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
+		return String.format("%s %s", getCurrencyCode(), getValue().toPlainString());
 	}
 
 }

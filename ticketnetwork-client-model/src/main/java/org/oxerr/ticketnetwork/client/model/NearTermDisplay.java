@@ -21,6 +21,13 @@ public class NearTermDisplay implements Serializable {
 	 */
 	private String description;
 
+	public NearTermDisplay() {
+	}
+
+	public NearTermDisplay(Integer id) {
+		this.id = id;
+	}
+
 	public Integer getId() {
 		return id;
 	}

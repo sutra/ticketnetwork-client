@@ -17,7 +17,7 @@ public class TicketNetworkListing extends Listing<String, TicketGroupV4PostModel
 	 *
 	 * @see Event#getId()
 	 */
-	private Integer ticketNetworkEventId;
+	private Integer marketplaceEventId;
 
 	/**
 	 * The reference (external) ticket group ID.
@@ -36,23 +36,23 @@ public class TicketNetworkListing extends Listing<String, TicketGroupV4PostModel
 	public TicketNetworkListing() {
 	}
 
-	public TicketNetworkListing(String id, Integer ticketNetworkEventId, TicketGroupV4PostModel request) {
-		this(id, ticketNetworkEventId, request, null);
+	public TicketNetworkListing(String id, Integer marketplaceEventId, TicketGroupV4PostModel request) {
+		this(id, marketplaceEventId, request, null);
 	}
 
-	public TicketNetworkListing(String id, Integer ticketNetworkEventId, TicketGroupV4PostModel request, Integer ticketGroupId) {
+	public TicketNetworkListing(String id, Integer marketplaceEventId, TicketGroupV4PostModel request, Integer ticketGroupId) {
 		super(id, request);
-		this.ticketNetworkEventId = ticketNetworkEventId;
+		this.marketplaceEventId = marketplaceEventId;
 		this.referenceTicketGroupId = request.getReferenceTicketGroupId();
 		this.ticketGroupId = ticketGroupId;
 	}
 
-	public Integer getTicketNetworkEventId() {
-		return ticketNetworkEventId;
+	public Integer getMarketplaceEventId() {
+		return marketplaceEventId;
 	}
 
-	public void setTicketNetworkEventId(Integer ticketNetworkEventId) {
-		this.ticketNetworkEventId = ticketNetworkEventId;
+	public void setMarketplaceEventId(Integer marketplaceEventId) {
+		this.marketplaceEventId = marketplaceEventId;
 	}
 
 	public Integer getReferenceTicketGroupId() {

@@ -19,7 +19,7 @@
 		TicketNetwork Client - TicketNetwork API Client Library for Java.
 	</description>
 	<packaging>pom</packaging>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 	<url>https://www.oxerr.org/ticketnetwork-client</url>
 	<inceptionYear>2025</inceptionYear>
 	<properties>
@@ -27,12 +27,13 @@
 		<maven.compiler.target>11</maven.compiler.target>
 		<log4j.version>2.20.0</log4j.version>
 		<rescu-ext.version>[1.1.0,)</rescu-ext.version>
-		<ticket-inventory-support.version>[5.6.0,)</ticket-inventory-support.version>
+		<ticket-inventory-support.version>[6.0.0,)</ticket-inventory-support.version>
 	</properties>
 	<modules>
 		<module>ticketnetwork-client-model</module>
 		<module>ticketnetwork-client-core</module>
 		<module>ticketnetwork-client-cached</module>
+		<module>ticketnetwork-client-cxf</module>
 		<module>ticketnetwork-client-rescu</module>
 		<module>ticketnetwork-client-coverage</module>
 	</modules>
@@ -77,9 +78,19 @@
 				<version>3.1.0</version>
 			</dependency>
 			<dependency>
+				<groupId>javax.money</groupId>
+				<artifactId>money-api</artifactId>
+				<version>1.1</version>
+			</dependency>
+			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
 				<version>3.17.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.5.14</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
@@ -93,27 +104,32 @@
 			</dependency>
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-jul</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-slf4j2-impl</artifactId>
 				<version>${log4j.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.reflections</groupId>
-				<artifactId>reflections</artifactId>
-				<version>0.10.2</version>
+				<groupId>org.javamoney.moneta</groupId>
+				<artifactId>moneta-core</artifactId>
+				<version>1.4.5</version>
 			</dependency>
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-api</artifactId>
-				<version>5.12.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.oxerr.rescu.ext</groupId>
-				<artifactId>rescu-ext-singleton</artifactId>
-				<version>${rescu-ext.version}</version>
+				<version>5.13.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.oxerr.rescu.ext</groupId>
 				<artifactId>rescu-ext-rate-limiter-core</artifactId>
+				<version>${rescu-ext.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.oxerr.rescu.ext</groupId>
+				<artifactId>rescu-ext-singleton</artifactId>
 				<version>${rescu-ext.version}</version>
 			</dependency>
 			<dependency>
@@ -129,7 +145,12 @@
 			<dependency>
 				<groupId>org.redisson</groupId>
 				<artifactId>redisson</artifactId>
-				<version>3.45.0</version>
+				<version>3.49.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.reflections</groupId>
+				<artifactId>reflections</artifactId>
+				<version>0.10.2</version>
 			</dependency>
 			<dependency>
 				<groupId>com.evanlennick</groupId>
@@ -162,7 +183,7 @@
 			<dependency>
 				<groupId>com.github.mmazi</groupId>
 				<artifactId>rescu</artifactId>
-				<version>3.0</version>
+				<version>3.1</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.code.findbugs</groupId>
@@ -172,7 +193,7 @@
 			<dependency>
 				<groupId>nl.jqno.equalsverifier</groupId>
 				<artifactId>equalsverifier</artifactId>
-				<version>3.19.1</version>
+				<version>3.19.3</version>
 			</dependency>
 
 		</dependencies>
@@ -193,6 +214,26 @@
 		</site>
 	</distributionManagement>
 	<profiles>
+		<profile>
+			<id>cxf</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<dependencyManagement>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.cxf</groupId>
+						<artifactId>cxf-rt-rs-client</artifactId>
+						<version>4.0.7</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.cxf</groupId>
+						<artifactId>cxf-rt-features-logging</artifactId>
+						<version>4.0.7</version>
+					</dependency>
+				</dependencies>
+			</dependencyManagement>
+		</profile>
 		<profile>
 			<id>test</id>
 			<activation>

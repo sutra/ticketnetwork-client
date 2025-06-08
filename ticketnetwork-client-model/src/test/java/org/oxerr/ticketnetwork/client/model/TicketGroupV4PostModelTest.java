@@ -29,7 +29,7 @@ class TicketGroupV4PostModelTest {
 			assertEquals(1, model.getSeatingTypeId().intValue());
 			assertEquals("BALCON TABLE 11", model.getSection());
 			assertEquals("11", model.getRow());
-			assertEquals("1", model.getLowSeat());
+			assertEquals(1, model.getLowSeat());
 
 			UnitPricePostModel unitPrice = model.getUnitPrice();
 			assertEquals(new BigDecimal("51.75"), unitPrice.getWholesalePrice());

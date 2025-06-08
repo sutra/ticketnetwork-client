@@ -20,6 +20,13 @@ public class StockType implements Serializable {
 	 */
 	private String description;
 
+	public StockType() {
+	}
+
+	public StockType(Integer id) {
+		this.id = id;
+	}
+
 	public Integer getId() {
 		return id;
 	}

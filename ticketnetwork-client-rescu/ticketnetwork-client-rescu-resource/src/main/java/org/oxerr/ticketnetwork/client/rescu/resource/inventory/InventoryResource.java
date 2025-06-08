@@ -1,15 +1,18 @@
 package org.oxerr.ticketnetwork.client.rescu.resource.inventory;
 
-import java.io.IOException;
+import java.util.List;
 
+import org.oxerr.ticketnetwork.client.model.BroadcastChannelsGetModel;
+import org.oxerr.ticketnetwork.client.model.NearTermShippingMethodGetModel;
 import org.oxerr.ticketnetwork.client.model.SeatingTypesGetModel;
+import org.oxerr.ticketnetwork.client.model.StockTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupTypesGetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.oxerr.ticketnetwork.client.model.TicketGroupsV4GetModel;
 import org.oxerr.ticketnetwork.client.rescu.resource.TicketNetworkException;
 
-import com.github.fge.jsonpatch.JsonPatchOperation;
+import com.github.fge.jsonpatch.JsonPatch;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -103,7 +106,6 @@ public interface InventoryResource {
 	 * @param orderby The OData sorting string. This parameter cannot currently
 	 * be used with Swagger's "Try it out!".
 	 * @return the ticket groups.
-	 * @throws IOException if an I/O error occurs.
 	 * @throws TicketNetworkException if a business exception occurs.
 	 */
 	@GET
@@ -118,7 +120,7 @@ public interface InventoryResource {
 		@QueryParam("skip") Integer skip,
 		@QueryParam("$filter") String filter,
 		@QueryParam("$orderby") String orderby
-	) throws IOException, TicketNetworkException;
+	) throws TicketNetworkException;
 
 	/**
 	 * Create a ticket group.
@@ -132,7 +134,6 @@ public interface InventoryResource {
 	 * @param ticketGroupV4PostModel Object containing details of the ticket
 	 * group to create.
 	 * @return the created ticket group.
-	 * @throws IOException if an I/O error occurs.
 	 * @throws TicketNetworkException if a business exception occurs.
 	 */
 	@POST
@@ -140,7 +141,7 @@ public interface InventoryResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	TicketGroupV4GetModel createTicketGroup(TicketGroupV4PostModel ticketGroupV4PostModel)
-		throws IOException, TicketNetworkException;
+		throws TicketNetworkException;
 
 	/**
 	 * Gets a single ticket group by ID.
@@ -152,14 +153,13 @@ public interface InventoryResource {
 	 *
 	 * @param ticketGroupId The ticket group ID.
 	 * @return the ticket group.
-	 * @throws IOException if an I/O error occurs.
 	 * @throws TicketNetworkException if a business exception occurs.
 	 */
 	@GET
 	@Path("/ticketgroups/{ticketGroupId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	TicketGroupV4GetModel getTicketGroup(@PathParam("ticketGroupId") Integer ticketGroupId)
-		throws IOException, TicketNetworkException;
+		throws TicketNetworkException;
 
 	/**
 	 * Deletes a single ticket group by ID.
@@ -171,14 +171,13 @@ public interface InventoryResource {
 	 * </p>
 	 *
 	 * @param ticketGroupId The ticket group ID.
-	 * @throws IOException if an I/O error occurs.
 	 * @throws TicketNetworkException if a business exception occurs.
 	 */
 	@DELETE
 	@Path("/ticketgroups/{ticketGroupId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	void deleteTicketGroup(@PathParam("ticketGroupId") Integer ticketGroupId)
-		throws IOException, TicketNetworkException;
+		throws TicketNetworkException;
 
 	/**
 	 * Updates an ticket group according to a list of PATCH operations.
@@ -245,7 +244,6 @@ public interface InventoryResource {
 	 * group in the order in which they should be applied.
 	 *
 	 * @return OK
-	 * @throws IOException if an I/O error occurs.
 	 * @throws TicketNetworkException if a business exception occurs.
 	 * The model provided in the body is invalid, one or more of the operations
 	 * is not supported, or performing one or more of the operations would put
@@ -257,17 +255,133 @@ public interface InventoryResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	TicketGroupV4GetModel updateTicketGroup(
 		@PathParam("ticketGroupId") Integer ticketGroupId,
-		JsonPatchOperation... patchOperations
-	) throws IOException, TicketNetworkException;
+		JsonPatch patchOperations
+	) throws TicketNetworkException;
 
+	/**
+	 * Search for ticket groups by filter.
+	 *
+	 * <p>
+	 * Search for ticket groups by filter. Multiple parameters are treated as AND. For ticket-level properties, if any ticket in the ticket group matches, the entire ticket group is included. Refer to the OData standard for more information on [$filter](http://docs.oasis-open.org/odata/odata/v4.0/errata02/os/complete/part2-url-conventions/odata-v4.0-errata02-os-part2-url-conventions-complete.html#_Toc406398094) and [$orderby](http://docs.oasis-open.org/odata/odata/v4.0/errata02/os/complete/part2-url-conventions/odata-v4.0-errata02-os-part2-url-conventions-complete.html#_Toc406398164). The supported operations for $filter are: 'eq', 'ne', 'gt', 'ge', 'lt', 'le', 'and', 'in', '[contains](http://docs.oasis-open.org/odata/odata/v4.0/errata02/os/complete/part2-url-conventions/odata-v4.0-errata02-os-part2-url-conventions-complete.html#_Toc406398117)', '[startswith](http://docs.oasis-open.org/odata/odata/v4.0/errata02/os/complete/part2-url-conventions/odata-v4.0-errata02-os-part2-url-conventions-complete.html#_Toc406398119)'. The syntax for 'in' is in(path,[val1,val2,...]).
+	 * </p>
+	 * <p>
+	 * If successful, the HTTP response code will indicate a 200 (OK) response, and a representation of the ticket groups will be included in the response.
+	 * </p>
+	 * <h3>Filterable Properties</h3>
+	 * ticketGroupId, exchangeTicketGroupId, created, updated, onHandDate, notes, broadcastChannelId, isInstant, referenceTicketGroupId, isMercury, isTNPrime, isShort, hasBarcodes, hasPurchaseOrder, purchaseOrderIds, hasQrScreenshots, isNatbBroker, pricingBadgeLevel, event/id, event/date, event/time, event/venueConfigurationId, event/venue/id, event/categories/id, event/categories/description, seats/section, seats/row, seats/standardSection, seats/canonicalSection, unitPrice/wholesalePrice/value, unitPrice/retailPrice/value, unitPrice/facePrice/value, unitPrice/cost/value, unitPrice/taxedCost/value, unitPrice/msrp/value, stockType/id, ticketGroupType/description, splitRule/id, splitRule/description, quantity/total, quantity/available, quantity/purchasable, tickets/seat, tickets/status, tickets/ticketRequestId, tickets/mercuryTransactionId, nearTerm/nearTermDeliveryMethod/id, nearTerm/nearTermDisplay/id, lastUpdatedBy/userId, tags/tag, thirdPartyExchangeListings/thirdPartyExchangeId, thirdPartyExchangeListings/thirdPartyExchangeListingId, thirdPartyExchangeListings/thirdPartyExchangeListingStatus, thirdPartyExchangeListings/checkedAtDateTime, autopricer/isActive
+	 * <h3>Sortable Properties</h3>
+	 * mine, ticketGroupId, created, updated, onHandDate, isInstant, referenceTicketGroupId, isShort, purchaseOrderIds, hasQrScreenshots, isNatbBroker, pricingBadgeLevel, event/id, event/name, event/date, event/time, event/categories/id, event/categories/description, seats/section, seats/row, seats/lowSeat, unitPrice/wholesalePrice/value, unitPrice/retailPrice/value, unitPrice/facePrice/value, unitPrice/cost/value, unitPrice/taxedCost/value, unitPrice/msrp/value, stockType/id, stockType/description, ticketGroupType/description, splitRule/description, quantity/total, quantity/available, thirdPartyExchangeListings/thirdPartyExchangeListingId, thirdPartyExchangeListings/thirdPartyExchangeListingStatus, thirdPartyExchangeListings/checkedAtDateTime
+	 *
+	 * @param hasEticket When true, only ticket groups with eTickets attached to all tickets will be included, otherwise no restriction. Defaults to false.
+	 * @param pending When true, only ticket groups with pending = true will be included, otherwise those ticket groups will be excluded. Defaults to false.
+	 * @param includeTicketNetworkInventory if set to true include inventory that is owned by other brokers and listed on the TN exchange.
+	 * @param returnTicketsData if set to true include data for individual tickets, otherwise only return ticket group-level data.
+	 * @param perPage The number of results per page.
+	 * @param page The page number.
+	 * @param skip The number of results to skip before returning records. If specified, overrides the page parameter.
+	 * @param filter The OData filter string. This parameter cannot currently be used with Swagger's "Try it out!".
+	 * @param orderby The OData sorting string. This parameter cannot currently be used with Swagger's "Try it out!".
+	 * @return the ticket groups.
+	 * @throws TicketNetworkException if a business exception occurs.
+	 */
+	@GET
+	@Path("/ticketgroups/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	TicketGroupsV4GetModel getAllTicketGroups(
+		@QueryParam("hasEticket") Boolean hasEticket,
+		@QueryParam("pending") Boolean pending,
+		@QueryParam("includeTicketNetworkInventory") Boolean includeTicketNetworkInventory,
+		@QueryParam("returnTicketsData") Integer returnTicketsData,
+		@QueryParam("perPage") Integer perPage,
+		@QueryParam("page") Integer page,
+		@QueryParam("skip") Integer skip,
+		@QueryParam("$filter") String filter,
+		@QueryParam("$orderby") String orderby
+	) throws TicketNetworkException;
+
+	/**
+	 * Gets a listing of all of the broadcast channels.
+	 *
+	 * If successful, the HTTP response code will indicate a 200 (OK) response,
+	 * and a representation of the requested data
+	 * will be included in the response.
+	 * Note that this is infrequently modified reference data,
+	 * and caching this response is recommended.
+	 *
+	 * @return the broadcast channels.
+	 * @throws TicketNetworkException if a business exception occurs.
+	 */
+	@GET
+	@Path("/ticketgroups/broadcastchannels")
+	@Produces(MediaType.APPLICATION_JSON)
+	BroadcastChannelsGetModel getBroadcastChannels()
+		throws TicketNetworkException;
+
+	/**
+	 * Gets all of the near-term shipping methods.
+	 *
+	 * If successful, the HTTP response code will indicate a 200 (OK) response,
+	 * and a representation of all the possible near-term shipping methods
+	 * will be included in the response.
+	 * Note that this is infrequently modified reference data,
+	 * and caching this response is recommended.
+	 *
+	 * @return the near-term shipping methods.
+	 * @throws TicketNetworkException if a business exception occurs.
+	 */
+	@GET
+	@Path("/ticketgroups/neartermdeliverymethods")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<NearTermShippingMethodGetModel> getNearTermShippingMethods()
+		throws TicketNetworkException;
+
+	/**
+	 * Gets a listing of all possible ticket group seating types.
+	 *
+	 * If successful, the HTTP response code will indicate a 200 (OK) response,
+	 * and a representation of all the possible ticket group seating types
+	 * will be included in the response.
+	 * Note that this is infrequently modified reference data,
+	 * and caching this response is recommended.
+	 *
+	 * @return the seating types.
+	 * @throws TicketNetworkException if a business exception occurs.
+	 */
 	@GET
 	@Path("/ticketgroups/seatingtypes")
 	@Produces(MediaType.APPLICATION_JSON)
-	SeatingTypesGetModel getSeatingTypes() throws IOException, TicketNetworkException;
+	SeatingTypesGetModel getSeatingTypes() throws TicketNetworkException;
 
+	/**
+	 * Gets a listing of all possible ticket group stock types.
+	 *
+	 * If successful, the HTTP response code will indicate a 200 (OK) response,
+	 * and a representation of all the possible ticket group stock types
+	 * will be included in the response.
+	 * Note that this is infrequently modified reference data,
+	 * and caching this response is recommended.
+	 * @return the stock types.
+	 * @throws TicketNetworkException if a business exception occurs.
+	 */
+	@GET
+	@Path("/ticketgroups/stocktypes")
+	@Produces(MediaType.APPLICATION_JSON)
+	StockTypesGetModel getStockTypes() throws TicketNetworkException;
+
+	/**
+	 * Gets a listing of all possible ticket group types.
+	 *
+	 * If successful, the HTTP response code will indicate a 200 (OK) response,
+	 * and a representation of all the possible ticket group types
+	 * will be included in the response.
+	 * Note that this is infrequently modified reference data,
+	 * and caching this response is recommended.
+	 * @return the ticket group types.
+	 * @throws TicketNetworkException if a business exception occurs.
+	 */
 	@GET
 	@Path("/ticketgroups/types")
 	@Produces(MediaType.APPLICATION_JSON)
-	TicketGroupTypesGetModel getTypes() throws IOException, TicketNetworkException;
+	TicketGroupTypesGetModel getTypes() throws TicketNetworkException;
 
 }
