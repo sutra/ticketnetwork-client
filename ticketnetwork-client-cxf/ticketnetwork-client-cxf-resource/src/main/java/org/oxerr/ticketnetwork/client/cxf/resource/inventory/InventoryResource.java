@@ -37,7 +37,7 @@ public interface InventoryResource {
 	 * appropriate validation message(s).
 	 * </p>
 	 *
-	 * <h3>Patchable Properties</h3>
+	 * <b>Patchable Properties</b>
 	 * <p>
 	 * <b>Add</b>:
 	 * event/id, seats/section, seats/row, seats/standardSection,
