@@ -2,6 +2,7 @@ package org.oxerr.ticketnetwork.client.rescu.resource.inventory;
 
 import java.util.List;
 
+import org.oxerr.ticketnetwork.client.model.AdditionalNoteClassesGetModel;
 import org.oxerr.ticketnetwork.client.model.AdditionalNoteDescriptionsGetModel;
 import org.oxerr.ticketnetwork.client.model.BroadcastChannelsGetModel;
 import org.oxerr.ticketnetwork.client.model.NearTermShippingMethodGetModel;
@@ -301,6 +302,24 @@ public interface InventoryResource {
 	) throws TicketNetworkException;
 
 	/**
+	 * Gets a listing of all possible ticket group additional note classes.
+	 *
+	 * If successful, the HTTP response code will indicate a 200 (OK) response,
+	 * and a representation of all the possible ticket group additional note
+	 * classes will be included in the response.
+	 * Note that this is infrequently modified reference data,
+	 * and caching this response is recommended.
+	 *
+	 * @return Additional note classes retrieved.
+	 * @throws TicketNetworkException if a business exception occurs.
+	 */
+	@GET
+	@Path("/ticketgroups/additionalnoteclasses")
+	@Produces(MediaType.APPLICATION_JSON)
+	AdditionalNoteClassesGetModel getAdditionalNoteClasses()
+		throws TicketNetworkException;
+
+	/**
 	 * Gets a listing of all possible ticket group additional note descriptions.
 	 *
 	 * If successful, the HTTP response code will indicate a 200 (OK) response,
@@ -308,6 +327,7 @@ public interface InventoryResource {
 	 * descriptions will be included in the response.
 	 * Note that this is infrequently modified reference data,
 	 * and caching this response is recommended.
+	 *
 	 * @return Additional note descriptions retrieved.
 	 * @throws TicketNetworkException if a business exception occurs.
 	 */

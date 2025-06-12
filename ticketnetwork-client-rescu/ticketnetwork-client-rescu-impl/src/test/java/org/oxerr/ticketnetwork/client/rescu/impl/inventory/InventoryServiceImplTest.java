@@ -199,6 +199,14 @@ class InventoryServiceImplTest {
 		assertEquals(0, ticketGroups.getCount().intValue());
 	}
 
+	@Disabled("Call API")
+	@Test
+	void testGetAdditionalNoteClasses() {
+		var noteClasses = inventoryService.getAdditionalNoteClasses();
+		assertNotNull(noteClasses);
+	}
+
+	@Disabled("Call API")
 	@Test
 	void testGetAdditionalNotes() {
 		var notes = inventoryService.getAdditionalNotes();
