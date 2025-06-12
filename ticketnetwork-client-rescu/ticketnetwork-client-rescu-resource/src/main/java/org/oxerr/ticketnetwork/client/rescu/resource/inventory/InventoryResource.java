@@ -2,6 +2,7 @@ package org.oxerr.ticketnetwork.client.rescu.resource.inventory;
 
 import java.util.List;
 
+import org.oxerr.ticketnetwork.client.model.AdditionalNoteDescriptionsGetModel;
 import org.oxerr.ticketnetwork.client.model.BroadcastChannelsGetModel;
 import org.oxerr.ticketnetwork.client.model.NearTermShippingMethodGetModel;
 import org.oxerr.ticketnetwork.client.model.SeatingTypesGetModel;
@@ -298,6 +299,23 @@ public interface InventoryResource {
 		@QueryParam("$filter") String filter,
 		@QueryParam("$orderby") String orderby
 	) throws TicketNetworkException;
+
+	/**
+	 * Gets a listing of all possible ticket group additional note descriptions.
+	 *
+	 * If successful, the HTTP response code will indicate a 200 (OK) response,
+	 * and a representation of all the possible ticket group additional note
+	 * descriptions will be included in the response.
+	 * Note that this is infrequently modified reference data,
+	 * and caching this response is recommended.
+	 * @return Additional note descriptions retrieved.
+	 * @throws TicketNetworkException if a business exception occurs.
+	 */
+	@GET
+	@Path("/ticketgroups/additionalnotes")
+	@Produces(MediaType.APPLICATION_JSON)
+	AdditionalNoteDescriptionsGetModel getAdditionalNotes()
+		throws TicketNetworkException;
 
 	/**
 	 * Gets a listing of all of the broadcast channels.

@@ -1,6 +1,7 @@
 package org.oxerr.ticketnetwork.client.rescu.impl.inventory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -41,7 +42,7 @@ import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchOperation;
 import com.github.fge.jsonpatch.ReplaceOperation;
 
-@Disabled("This test requires the access_token.")
+/// @Disabled("This test requires the access_token.")
 class InventoryServiceImplTest {
 
 	private final Logger log = LogManager.getLogger();
@@ -196,6 +197,12 @@ class InventoryServiceImplTest {
 		ticketGroups.getResults().forEach(tg -> log.info("ticket group: {} {}", tg.getTicketGroupId(), tg.getReferenceTicketGroupId()));
 		log.info("ticket groups total count: {}", ticketGroups.getTotalCount());
 		assertEquals(0, ticketGroups.getCount().intValue());
+	}
+
+	@Test
+	void testGetAdditionalNotes() {
+		var notes = inventoryService.getAdditionalNotes();
+		assertNotNull(notes);
 	}
 
 	@Disabled("Call API")
