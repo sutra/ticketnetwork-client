@@ -26,6 +26,20 @@ public class Note implements Serializable {
 	 */
 	private List<Variable> variables;
 
+	public Note() {
+	}
+
+	public Note(Integer id, String description) {
+		this.id = id;
+		this.description = description;
+	}
+
+	public Note(Integer id, String description, List<Variable> variables) {
+		this.id = id;
+		this.description = description;
+		this.variables = variables;
+	}
+
 	public Integer getId() {
 		return id;
 	}
