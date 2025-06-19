@@ -26,6 +26,17 @@ public class AdditionalNotePostModel implements Serializable {
 	public AdditionalNotePostModel() {
 	}
 
+	public AdditionalNotePostModel(Integer noteId) {
+		this.noteId = noteId;
+	}
+
+	public AdditionalNotePostModel(Integer noteId,
+			List<AdditionalNoteVariablePostModel> variables) {
+		this.noteId = noteId;
+		this.variables = Optional.ofNullable(variables)
+			.orElseGet(Collections::emptyList);
+	}
+
 	public AdditionalNotePostModel(Note note) {
 		this.noteId = note.getId();
 		this.variables = Optional.ofNullable(note.getVariables())
