@@ -35,7 +35,11 @@ class EqualsHashCodeVerifierTest {
 				&& !clazz.isMemberClass()
 				&& !clazz.getName().endsWith("Test")
 				&& clazz != ObjectMappers.class
-				&& clazz != org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel.class
+				&& clazz != org.oxerr.ticketnetwork.client.model.AdditionalNoteClassGetModel.class
+				&& clazz != org.oxerr.ticketnetwork.client.model.AdditionalNoteDescGetModel.class
+				&& clazz != org.oxerr.ticketnetwork.client.model.AdditionalNoteGetModel.class
+				&& clazz != org.oxerr.ticketnetwork.client.model.AdditionalNoteVariablePostModel.class
+				&& clazz != org.oxerr.ticketnetwork.client.model.NotesGetModel.class
 			) {
 				try {
 					Method equalsMethod = clazz.getMethod("equals", Object.class);

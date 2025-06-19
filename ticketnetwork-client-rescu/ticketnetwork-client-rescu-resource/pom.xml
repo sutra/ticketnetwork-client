@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>org.oxerr.ticketnetwork.client.rescu</groupId>
 		<artifactId>ticketnetwork-client-rescu</artifactId>
-		<version>0.0.2</version>
+		<version>0.0.3</version>
 	</parent>
 	<artifactId>ticketnetwork-client-rescu-resource</artifactId>
 	<name>TicketNetwork Client - ResCU - Resource</name>

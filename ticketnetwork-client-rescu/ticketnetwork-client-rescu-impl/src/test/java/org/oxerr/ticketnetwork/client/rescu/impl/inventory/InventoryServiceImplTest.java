@@ -1,6 +1,7 @@
 package org.oxerr.ticketnetwork.client.rescu.impl.inventory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -196,6 +197,20 @@ class InventoryServiceImplTest {
 		ticketGroups.getResults().forEach(tg -> log.info("ticket group: {} {}", tg.getTicketGroupId(), tg.getReferenceTicketGroupId()));
 		log.info("ticket groups total count: {}", ticketGroups.getTotalCount());
 		assertEquals(0, ticketGroups.getCount().intValue());
+	}
+
+	@Disabled("Call API")
+	@Test
+	void testGetAdditionalNoteClasses() {
+		var noteClasses = inventoryService.getAdditionalNoteClasses();
+		assertNotNull(noteClasses);
+	}
+
+	@Disabled("Call API")
+	@Test
+	void testGetAdditionalNotes() {
+		var notes = inventoryService.getAdditionalNotes();
+		assertNotNull(notes);
 	}
 
 	@Disabled("Call API")

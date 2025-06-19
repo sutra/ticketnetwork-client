@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.oxerr.ticketnetwork.client.inventory.AllTicketGroupQuery;
 import org.oxerr.ticketnetwork.client.inventory.InventoryService;
 import org.oxerr.ticketnetwork.client.inventory.TicketGroupQuery;
+import org.oxerr.ticketnetwork.client.model.AdditionalNoteClassesGetModel;
+import org.oxerr.ticketnetwork.client.model.AdditionalNoteDescriptionsGetModel;
 import org.oxerr.ticketnetwork.client.model.BroadcastChannelsGetModel;
 import org.oxerr.ticketnetwork.client.model.NearTermShippingMethodGetModel;
 import org.oxerr.ticketnetwork.client.model.SeatingTypesGetModel;
@@ -104,6 +106,16 @@ public class InventoryServiceImpl implements InventoryService {
 			q.getFilter(),
 			q.getOrderby()
 		);
+	}
+
+	@Override
+	public AdditionalNoteClassesGetModel getAdditionalNoteClasses() {
+		return inventoryResource.getAdditionalNoteClasses();
+	}
+
+	@Override
+	public AdditionalNoteDescriptionsGetModel getAdditionalNotes() {
+		return inventoryResource.getAdditionalNotes();
 	}
 
 	@Override

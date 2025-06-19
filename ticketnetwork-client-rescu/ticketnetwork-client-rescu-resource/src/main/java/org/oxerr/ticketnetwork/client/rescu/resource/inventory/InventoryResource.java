@@ -2,6 +2,8 @@ package org.oxerr.ticketnetwork.client.rescu.resource.inventory;
 
 import java.util.List;
 
+import org.oxerr.ticketnetwork.client.model.AdditionalNoteClassesGetModel;
+import org.oxerr.ticketnetwork.client.model.AdditionalNoteDescriptionsGetModel;
 import org.oxerr.ticketnetwork.client.model.BroadcastChannelsGetModel;
 import org.oxerr.ticketnetwork.client.model.NearTermShippingMethodGetModel;
 import org.oxerr.ticketnetwork.client.model.SeatingTypesGetModel;
@@ -54,7 +56,7 @@ public interface InventoryResource {
 	 * and a representation of the ticket groups will be included in the response.
 	 * </p>
 	 *
-	 * <h3>Filterable Properties</h3>
+	 * <b>Filterable Properties</b>
 	 *
 	 * ticketGroupId, exchangeTicketGroupId, created, updated, onHandDate,
 	 * notes, broadcastChannelId, isInstant, referenceTicketGroupId, isMercury,
@@ -76,7 +78,7 @@ public interface InventoryResource {
 	 * thirdPartyExchangeListings/thirdPartyExchangeListingStatus,
 	 * thirdPartyExchangeListings/checkedAtDateTime, autopricer/isActive
 	 *
-	 * <h3>Sortable Properties</h3>
+	 * <b>Sortable Properties</b>
 	 *
 	 * ticketGroupId, created, updated, onHandDate, isInstant,
 	 * referenceTicketGroupId, isShort, purchaseOrderIds, hasQrScreenshots,
@@ -197,7 +199,7 @@ public interface InventoryResource {
 	 * appropriate validation message(s).
 	 * </p>
 	 *
-	 * <h3>Patchable Properties</h3>
+	 * <b>Patchable Properties</b>
 	 * <p>
 	 * <b>Add</b>:
 	 * event/id, seats/section, seats/row, seats/standardSection,
@@ -267,9 +269,9 @@ public interface InventoryResource {
 	 * <p>
 	 * If successful, the HTTP response code will indicate a 200 (OK) response, and a representation of the ticket groups will be included in the response.
 	 * </p>
-	 * <h3>Filterable Properties</h3>
+	 * <b>Filterable Properties</b>
 	 * ticketGroupId, exchangeTicketGroupId, created, updated, onHandDate, notes, broadcastChannelId, isInstant, referenceTicketGroupId, isMercury, isTNPrime, isShort, hasBarcodes, hasPurchaseOrder, purchaseOrderIds, hasQrScreenshots, isNatbBroker, pricingBadgeLevel, event/id, event/date, event/time, event/venueConfigurationId, event/venue/id, event/categories/id, event/categories/description, seats/section, seats/row, seats/standardSection, seats/canonicalSection, unitPrice/wholesalePrice/value, unitPrice/retailPrice/value, unitPrice/facePrice/value, unitPrice/cost/value, unitPrice/taxedCost/value, unitPrice/msrp/value, stockType/id, ticketGroupType/description, splitRule/id, splitRule/description, quantity/total, quantity/available, quantity/purchasable, tickets/seat, tickets/status, tickets/ticketRequestId, tickets/mercuryTransactionId, nearTerm/nearTermDeliveryMethod/id, nearTerm/nearTermDisplay/id, lastUpdatedBy/userId, tags/tag, thirdPartyExchangeListings/thirdPartyExchangeId, thirdPartyExchangeListings/thirdPartyExchangeListingId, thirdPartyExchangeListings/thirdPartyExchangeListingStatus, thirdPartyExchangeListings/checkedAtDateTime, autopricer/isActive
-	 * <h3>Sortable Properties</h3>
+	 * <b>Sortable Properties</b>
 	 * mine, ticketGroupId, created, updated, onHandDate, isInstant, referenceTicketGroupId, isShort, purchaseOrderIds, hasQrScreenshots, isNatbBroker, pricingBadgeLevel, event/id, event/name, event/date, event/time, event/categories/id, event/categories/description, seats/section, seats/row, seats/lowSeat, unitPrice/wholesalePrice/value, unitPrice/retailPrice/value, unitPrice/facePrice/value, unitPrice/cost/value, unitPrice/taxedCost/value, unitPrice/msrp/value, stockType/id, stockType/description, ticketGroupType/description, splitRule/description, quantity/total, quantity/available, thirdPartyExchangeListings/thirdPartyExchangeListingId, thirdPartyExchangeListings/thirdPartyExchangeListingStatus, thirdPartyExchangeListings/checkedAtDateTime
 	 *
 	 * @param hasEticket When true, only ticket groups with eTickets attached to all tickets will be included, otherwise no restriction. Defaults to false.
@@ -298,6 +300,42 @@ public interface InventoryResource {
 		@QueryParam("$filter") String filter,
 		@QueryParam("$orderby") String orderby
 	) throws TicketNetworkException;
+
+	/**
+	 * Gets a listing of all possible ticket group additional note classes.
+	 *
+	 * If successful, the HTTP response code will indicate a 200 (OK) response,
+	 * and a representation of all the possible ticket group additional note
+	 * classes will be included in the response.
+	 * Note that this is infrequently modified reference data,
+	 * and caching this response is recommended.
+	 *
+	 * @return Additional note classes retrieved.
+	 * @throws TicketNetworkException if a business exception occurs.
+	 */
+	@GET
+	@Path("/ticketgroups/additionalnoteclasses")
+	@Produces(MediaType.APPLICATION_JSON)
+	AdditionalNoteClassesGetModel getAdditionalNoteClasses()
+		throws TicketNetworkException;
+
+	/**
+	 * Gets a listing of all possible ticket group additional note descriptions.
+	 *
+	 * If successful, the HTTP response code will indicate a 200 (OK) response,
+	 * and a representation of all the possible ticket group additional note
+	 * descriptions will be included in the response.
+	 * Note that this is infrequently modified reference data,
+	 * and caching this response is recommended.
+	 *
+	 * @return Additional note descriptions retrieved.
+	 * @throws TicketNetworkException if a business exception occurs.
+	 */
+	@GET
+	@Path("/ticketgroups/additionalnotes")
+	@Produces(MediaType.APPLICATION_JSON)
+	AdditionalNoteDescriptionsGetModel getAdditionalNotes()
+		throws TicketNetworkException;
 
 	/**
 	 * Gets a listing of all of the broadcast channels.

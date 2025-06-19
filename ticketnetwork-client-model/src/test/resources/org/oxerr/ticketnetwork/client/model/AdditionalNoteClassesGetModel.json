@@ -1,0 +1,40 @@
+{
+	"additionalNoteClasses": [
+		{
+			"id": 1,
+			"description": "Seat Location"
+		},
+		{
+			"id": 2,
+			"description": "Seat Amenities/Restrictions"
+		},
+		{
+			"id": 3,
+			"description": "Event-Wide Info"
+		},
+		{
+			"id": 4,
+			"description": "Entrance Info/Requirements"
+		},
+		{
+			"id": 5,
+			"description": "Food/Beverage/Merchandise"
+		},
+		{
+			"id": 6,
+			"description": "Parking/Party Inclusions"
+		},
+		{
+			"id": 7,
+			"description": "Section/Club Detail"
+		},
+		{
+			"id": 8,
+			"description": "Ticket Splits"
+		},
+		{
+			"id": 9,
+			"description": "Viewing Obstructions"
+		}
+	]
+}

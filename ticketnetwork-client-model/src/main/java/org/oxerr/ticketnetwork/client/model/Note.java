@@ -2,6 +2,8 @@ package org.oxerr.ticketnetwork.client.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -25,6 +27,29 @@ public class Note implements Serializable {
 	 * Collection of additonal note variable objects.
 	 */
 	private List<Variable> variables;
+
+	public Note() {
+	}
+
+	public Note(Integer id, String description) {
+		this.id = id;
+		this.description = description;
+	}
+
+	public Note(Integer id, String description, List<Variable> variables) {
+		this.id = id;
+		this.description = description;
+		this.variables = variables;
+	}
+
+	public Note(AdditionalNotePostModel model) {
+		this.id = model.getNoteId();
+		this.variables = Optional.ofNullable(model.getVariables())
+			.orElseGet(List::of)
+			.stream()
+			.map(Variable::new)
+			.collect(Collectors.toList());
+	}
 
 	public Integer getId() {
 		return id;

@@ -1,6 +1,7 @@
 package org.oxerr.ticketnetwork.client.model;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -8,40 +9,40 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class Notes implements Serializable {
+/**
+ * Model for notes for POST requests.
+ */
+public class NotesPostModel implements Serializable {
 
-	private static final long serialVersionUID = 2025022201L;
+	private static final long serialVersionUID = 2025061901;
 
 	/**
 	 * External/custom ticket group notes. Max length is 2,000 characters.
-	 * PATCH operations: add, remove, replace, test.
 	 */
 	private String external;
 
 	/**
 	 * The broker's internal ticket group notes. Max length is 2,000 characters.
-	 * PATCH operations: add, remove, replace, test.
 	 */
 	private String internal;
 
 	/**
-	 * Collection of additional notes objects. PATCH operations: add, remove,
-	 * replace, test.
+	 * Collection of additional note objects.
 	 */
-	private List<Note> additional;
+	private List<AdditionalNotePostModel> additional;
 
-	public Notes() {
+	public NotesPostModel() {
 	}
 
-	public Notes(NotesPostModel model) {
-		this.external = model.getExternal();
-		this.internal = model.getInternal();
-		this.additional = Optional.ofNullable(model.getAdditional())
-			.orElseGet(List::of)
+	public NotesPostModel(Notes notes) {
+		this.external = notes.getExternal();
+		this.internal = notes.getInternal();
+
+		this.additional = Optional.ofNullable(notes.getAdditional())
+			.orElseGet(Collections::emptyList)
 			.stream()
-			.map(Note::new)
+			.map(AdditionalNotePostModel::new)
 			.collect(Collectors.toList());
 	}
 
@@ -61,11 +62,11 @@ public class Notes implements Serializable {
 		this.internal = internal;
 	}
 
-	public List<Note> getAdditional() {
+	public List<AdditionalNotePostModel> getAdditional() {
 		return additional;
 	}
 
-	public void setAdditional(List<Note> additional) {
+	public void setAdditional(List<AdditionalNotePostModel> additional) {
 		this.additional = additional;
 	}
 
@@ -79,16 +80,16 @@ public class Notes implements Serializable {
 		if (this == obj) {
 			return true;
 		}
-		if (!(obj instanceof Notes)) {
+		if (!(obj instanceof NotesPostModel)) {
 			return false;
 		}
-		Notes rhs = (Notes) obj;
+		NotesPostModel rhs = (NotesPostModel) obj;
 		return EqualsBuilder.reflectionEquals(this, rhs);
 	}
 
 	@Override
 	public String toString() {
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

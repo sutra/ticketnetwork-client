@@ -20,6 +20,19 @@ public class Variable implements Serializable {
 	 */
 	private Integer value;
 
+	public Variable() {
+	}
+
+	public Variable(String variable, Integer value) {
+		this.variable = variable;
+		this.value = value;
+	}
+
+	public Variable(AdditionalNoteVariablePostModel m) {
+		this.variable = m.getVariable();
+		this.value = m.getValue();
+	}
+
 	public String getVariable() {
 		return variable;
 	}

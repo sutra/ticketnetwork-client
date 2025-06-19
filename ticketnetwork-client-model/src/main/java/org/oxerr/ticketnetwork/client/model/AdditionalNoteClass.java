@@ -6,21 +6,17 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-/**
- * Model for near-term shipping methods for GET requests.
- */
-public class NearTermShippingMethodGetModel implements Serializable {
+public class AdditionalNoteClass implements Serializable {
 
-	private static final long serialVersionUID = 2025042901L;
+	private static final long serialVersionUID = 2025061201L;
 
 	/**
-	 * The near term shipping method or set of near term shipping methods that
-	 * should be available to customers. PATCH operations: add, replace, test.
+	 * The additional note class ID.
 	 */
 	private Integer id;
 
 	/**
-	 * Description of the near-term shipping method.
+	 * The class description.
 	 */
 	private String description;
 
@@ -50,10 +46,10 @@ public class NearTermShippingMethodGetModel implements Serializable {
 		if (this == obj) {
 			return true;
 		}
-		if (!(obj instanceof NearTermShippingMethodGetModel)) {
+		if (!(obj instanceof AdditionalNoteClass)) {
 			return false;
 		}
-		NearTermShippingMethodGetModel rhs = (NearTermShippingMethodGetModel) obj;
+		AdditionalNoteClass rhs = (AdditionalNoteClass) obj;
 		return EqualsBuilder.reflectionEquals(this, rhs);
 	}
 

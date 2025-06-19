@@ -2,6 +2,8 @@ package org.oxerr.ticketnetwork.client.inventory;
 
 import java.util.List;
 
+import org.oxerr.ticketnetwork.client.model.AdditionalNoteClassesGetModel;
+import org.oxerr.ticketnetwork.client.model.AdditionalNoteDescriptionsGetModel;
 import org.oxerr.ticketnetwork.client.model.BroadcastChannelsGetModel;
 import org.oxerr.ticketnetwork.client.model.NearTermShippingMethodGetModel;
 import org.oxerr.ticketnetwork.client.model.SeatingTypesGetModel;
@@ -42,6 +44,10 @@ public interface InventoryService {
 	);
 
 	TicketGroupsV4GetModel getAllTicketGroups(AllTicketGroupQuery q);
+
+	AdditionalNoteClassesGetModel getAdditionalNoteClasses();
+
+	AdditionalNoteDescriptionsGetModel getAdditionalNotes();
 
 	BroadcastChannelsGetModel getBroadcastChannels();
 

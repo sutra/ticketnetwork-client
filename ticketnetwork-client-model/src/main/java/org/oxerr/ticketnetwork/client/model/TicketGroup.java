@@ -240,18 +240,18 @@ public class TicketGroup implements Serializable {
 		this.ticketGroupType = new TicketGroupType(ticketGroupV4PostModel.getTicketGroupTypeId());
 		this.splitRule = new SplitRule(ticketGroupV4PostModel.getSplitRuleId());
 
-		Quantity quantity = new Quantity();
-		quantity.setTotal(ticketGroupV4PostModel.getQuantity());
-		this.quantity = quantity;
+		Quantity qty = new Quantity();
+		qty.setTotal(ticketGroupV4PostModel.getQuantity());
+		this.quantity = qty;
 
 		this.broadcastChannelIds = ticketGroupV4PostModel.getBroadcastChannelIds();
-		this.notes = ticketGroupV4PostModel.getNotes();
+		this.notes = new Notes(ticketGroupV4PostModel.getNotes());
 
-		NearTerm nearTerm = new NearTerm();
-		nearTerm.setNearTermDeliveryMethod(new NearTermDeliveryMethod(ticketGroupV4PostModel.getNearTermDeliveryMethodId()));
-		nearTerm.setNearTermDisplay(new NearTermDisplay(ticketGroupV4PostModel.getNearTermDisplayId()));
+		NearTerm nt = new NearTerm();
+		nt.setNearTermDeliveryMethod(new NearTermDeliveryMethod(ticketGroupV4PostModel.getNearTermDeliveryMethodId()));
+		nt.setNearTermDisplay(new NearTermDisplay(ticketGroupV4PostModel.getNearTermDisplayId()));
 
-		this.nearTerm = nearTerm;
+		this.nearTerm = nt;
 		this.hideSeats = ticketGroupV4PostModel.getHideSeats();
 		this.pending = ticketGroupV4PostModel.getPending();
 		this.isShort = ticketGroupV4PostModel.getIsShort();

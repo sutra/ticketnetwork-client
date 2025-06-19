@@ -1,17 +1,23 @@
 package org.oxerr.ticketnetwork.client.cached.redisson.inventory;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.oxerr.ticketnetwork.client.model.AdditionalNotePostModel;
+import org.oxerr.ticketnetwork.client.model.AdditionalNoteVariablePostModel;
 import org.oxerr.ticketnetwork.client.model.MoneyAmountModel;
+import org.oxerr.ticketnetwork.client.model.Note;
 import org.oxerr.ticketnetwork.client.model.Quantity;
 import org.oxerr.ticketnetwork.client.model.Seats;
 import org.oxerr.ticketnetwork.client.model.TicketGroup;
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4PostModel;
 import org.oxerr.ticketnetwork.client.model.UnitPriceGetModel;
 import org.oxerr.ticketnetwork.client.model.UnitPricePostModel;
+import org.oxerr.ticketnetwork.client.model.Variable;
 
 class ListingsTest {
 
@@ -66,6 +72,42 @@ class ListingsTest {
 		b.setUnitPrice(unitPricePostModel);
 
 		assertTrue(Listings.isSame(a, b));
+	}
+
+	@Test
+	void testIsSameAdditionalNotes() {
+		Note note = new Note();
+		AdditionalNotePostModel m = new AdditionalNotePostModel();
+		assertTrue(Listings.isSameAdditionalNotes(List.of(note), List.of(m)));
+		assertFalse(Listings.isSameAdditionalNotes(List.of(note), List.of(m, m)));
+	}
+
+	@Test
+	void testIsSameAdditionalNote() {
+		Note note = new Note();
+		AdditionalNotePostModel m = new AdditionalNotePostModel();
+		assertTrue(Listings.isSameAdditionalNote(note, m));
+	}
+
+	@Test
+	void testIsSameVariables() {
+		Variable v1 = new Variable("v1", 1);
+		Variable v2 = new Variable("v2", 2);
+		AdditionalNoteVariablePostModel m1 = new AdditionalNoteVariablePostModel("v1", 1);
+		AdditionalNoteVariablePostModel m2 = new AdditionalNoteVariablePostModel("v2", 2);
+		assertTrue(Listings.isSameVariables(List.of(v1), List.of(m1)));
+		assertTrue(Listings.isSameVariables(List.of(v1,v2), List.of(m2, m1)));
+		assertFalse(Listings.isSameVariables(List.of(v1), List.of(m1, m2)));
+	}
+
+	@Test
+	void testIsSameVariable() {
+		Variable v = new Variable();
+		AdditionalNoteVariablePostModel m = new AdditionalNoteVariablePostModel();
+		assertTrue(Listings.isSameVariable(v, m));
+
+		m.setValue(1);
+		assertFalse(Listings.isSameVariable(v, m));
 	}
 
 }

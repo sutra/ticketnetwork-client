@@ -102,7 +102,7 @@ public class TicketGroupV4PostModel implements Serializable {
 	/**
 	 * Notes object.
 	 */
-	private Notes notes;
+	private NotesPostModel notes;
 
 	/**
 	 * The near term delivery method or set of near term delivery methods that
@@ -174,7 +174,7 @@ public class TicketGroupV4PostModel implements Serializable {
 		this.stockTypeId = ticketGroup.getStockType().getId();
 		this.ticketGroupTypeId = ticketGroup.getTicketGroupType().getId();
 		this.broadcastChannelIds = ticketGroup.getBroadcastChannelIds();
-		this.notes = ticketGroup.getNotes();
+		this.notes = new NotesPostModel(ticketGroup.getNotes());
 		this.nearTermDeliveryMethodId = ticketGroup.getNearTerm().getNearTermDeliveryMethod().getId();
 		this.nearTermDisplayId = ticketGroup.getNearTerm().getNearTermDisplay().getId();
 		this.splitRuleId = ticketGroup.getSplitRule().getId();
@@ -306,11 +306,11 @@ public class TicketGroupV4PostModel implements Serializable {
 		this.broadcastChannelIds = broadcastChannelIds;
 	}
 
-	public Notes getNotes() {
+	public NotesPostModel getNotes() {
 		return notes;
 	}
 
-	public void setNotes(Notes notes) {
+	public void setNotes(NotesPostModel notes) {
 		this.notes = notes;
 	}
 

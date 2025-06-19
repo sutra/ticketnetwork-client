@@ -1,7 +1,5 @@
 package org.oxerr.ticketnetwork.client.cxf.resource.inventory;
 
-import java.io.IOException;
-
 import org.oxerr.ticketnetwork.client.model.TicketGroupV4GetModel;
 
 import com.github.fge.jsonpatch.JsonPatch;
@@ -37,7 +35,7 @@ public interface InventoryResource {
 	 * appropriate validation message(s).
 	 * </p>
 	 *
-	 * <h3>Patchable Properties</h3>
+	 * <b>Patchable Properties</b>
 	 * <p>
 	 * <b>Add</b>:
 	 * event/id, seats/section, seats/row, seats/standardSection,
@@ -84,7 +82,6 @@ public interface InventoryResource {
 	 * group in the order in which they should be applied.
 	 *
 	 * @return OK
-	 * @throws IOException if an I/O error occurs.
 	 */
 	@PATCH
 	@Path("/ticketgroups/{ticketGroupId}")
@@ -93,6 +90,6 @@ public interface InventoryResource {
 	TicketGroupV4GetModel updateTicketGroup(
 		@PathParam("ticketGroupId") Integer ticketGroupId,
 		JsonPatch patchOperations
-	) throws IOException;
+	);
 
 }
