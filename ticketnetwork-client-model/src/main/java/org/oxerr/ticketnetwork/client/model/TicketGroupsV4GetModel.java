@@ -16,7 +16,7 @@ public class TicketGroupsV4GetModel implements Serializable {
 	/**
 	 * Collection of TicketGroup objects.
 	 */
-	private List<TicketGroup> results;
+	private List<TicketGroupV4GetModel> results;
 
 	/**
 	 * The total number of results. May be larger than the page size.
@@ -41,11 +41,11 @@ public class TicketGroupsV4GetModel implements Serializable {
 	@JsonProperty("_links")
 	private List<Link> links;
 
-	public List<TicketGroup> getResults() {
+	public List<TicketGroupV4GetModel> getResults() {
 		return results;
 	}
 
-	public void setResults(List<TicketGroup> results) {
+	public void setResults(List<TicketGroupV4GetModel> results) {
 		this.results = results;
 	}
 

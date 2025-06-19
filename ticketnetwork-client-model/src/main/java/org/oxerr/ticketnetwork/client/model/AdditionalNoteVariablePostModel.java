@@ -11,6 +11,10 @@ public class AdditionalNoteVariablePostModel extends Variable {
 		super();
 	}
 
+	public AdditionalNoteVariablePostModel(String variable, Integer value) {
+		super(variable, value);
+	}
+
 	public AdditionalNoteVariablePostModel(Variable variable) {
 		super(variable.getVariable(), variable.getValue());
 	}
