@@ -35,6 +35,8 @@ class EqualsHashCodeVerifierTest {
 				&& !clazz.isMemberClass()
 				&& !clazz.getName().endsWith("Test")
 				&& clazz != ObjectMappers.class
+				&& clazz != org.oxerr.ticketnetwork.client.model.AdditionalNoteClassGetModel.class
+				&& clazz != org.oxerr.ticketnetwork.client.model.AdditionalNoteDescGetModel.class
 				&& clazz != org.oxerr.ticketnetwork.client.model.AdditionalNoteGetModel.class
 				&& clazz != org.oxerr.ticketnetwork.client.model.AdditionalNoteVariablePostModel.class
 				&& clazz != org.oxerr.ticketnetwork.client.model.NotesGetModel.class
