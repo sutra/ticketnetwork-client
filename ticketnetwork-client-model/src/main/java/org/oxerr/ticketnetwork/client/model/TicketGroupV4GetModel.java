@@ -10,11 +10,22 @@ public class TicketGroupV4GetModel extends TicketGroup implements Serializable {
 
 	private static final long serialVersionUID = 2025022301L;
 
+	private NotesGetModel notes;
+
 	public TicketGroupV4GetModel() {
 	}
 
 	public TicketGroupV4GetModel(TicketGroupV4PostModel ticketGroupV4PostModel) {
 		super(ticketGroupV4PostModel);
+	}
+
+	@Override
+	public NotesGetModel getNotes() {
+		return notes;
+	}
+
+	public void setNotes(NotesGetModel notes) {
+		this.notes = notes;
 	}
 
 	@Override
