@@ -13,6 +13,7 @@ import org.oxerr.ticketnetwork.client.model.MoneyAmountModel;
 import org.oxerr.ticketnetwork.client.model.NearTerm;
 import org.oxerr.ticketnetwork.client.model.NearTermDeliveryMethod;
 import org.oxerr.ticketnetwork.client.model.Notes;
+import org.oxerr.ticketnetwork.client.model.NotesPostModel;
 import org.oxerr.ticketnetwork.client.model.Quantity;
 import org.oxerr.ticketnetwork.client.model.SeatingType;
 import org.oxerr.ticketnetwork.client.model.Seats;
@@ -134,6 +135,12 @@ final class Listings {
 		return new ToStringBuilder(notes, ToStringStyle.SHORT_PREFIX_STYLE)
 			.append("external", notes.getExternal())
 			.toString();
+	}
+
+	public static String toString(NotesPostModel notes) {
+		return new ToStringBuilder(notes, ToStringStyle.SHORT_PREFIX_STYLE)
+				.append("external", notes.getExternal())
+				.toString();
 	}
 
 	@Override

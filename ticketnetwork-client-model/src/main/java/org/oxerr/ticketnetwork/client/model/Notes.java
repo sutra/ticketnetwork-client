@@ -2,6 +2,8 @@ package org.oxerr.ticketnetwork.client.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -29,6 +31,19 @@ public class Notes implements Serializable {
 	 * replace, test.
 	 */
 	private List<Note> additional;
+
+	public Notes() {
+	}
+
+	public Notes(NotesPostModel model) {
+		this.external = model.getExternal();
+		this.internal = model.getInternal();
+		this.additional = Optional.ofNullable(model.getAdditional())
+			.orElseGet(List::of)
+			.stream()
+			.map(Note::new)
+			.collect(Collectors.toList());
+	}
 
 	public String getExternal() {
 		return external;
