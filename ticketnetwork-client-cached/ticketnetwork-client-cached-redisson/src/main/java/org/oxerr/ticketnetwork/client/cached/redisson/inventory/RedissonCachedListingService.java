@@ -326,7 +326,7 @@ public class RedissonCachedListingService
 				Optional.ofNullable(p).ifPresent(t -> checkPage(ctx, t));
 				return p;
 			} catch (Exception e) {
-				log.warn("Check failed, skip: {}, message: {}.", q::getSkip, e::getMessage);
+				log.warn("Check failed, skip: {}, message: {}.", q.getSkip(), e.getMessage(), e);
 				return null;
 			}
 		}, this.executor);
