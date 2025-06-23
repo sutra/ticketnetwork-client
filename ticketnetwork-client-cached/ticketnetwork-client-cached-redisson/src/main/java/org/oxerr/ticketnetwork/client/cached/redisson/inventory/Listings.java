@@ -37,23 +37,38 @@ final class Listings {
 
 	public static boolean isSame(TicketGroup a, TicketGroupV4PostModel b) {
 		return Stream.of(
+			// section
 			Objects.equals(a.getSeats().getSection(), b.getSection()),
+			// row
 			Objects.equals(a.getSeats().getRow(), b.getRow()),
+			// low seat
 			Objects.equals(a.getSeats().getLowSeat(), b.getLowSeat()),
+			// quantity
 			Objects.equals(a.getQuantity().getAvailable(), b.getQuantity()),
+			// unit price
 			isSameUnitPrice(Optional.ofNullable(a.getUnitPrice()), Optional.ofNullable(b.getUnitPrice())),
+			// seating type
 			Objects.equals(
 				Optional.ofNullable(a.getSeats()).map(Seats::getSeatingType).map(SeatingType::getId).orElse(null),
 				b.getSeatingTypeId()
 			),
+			// stock type
 			Objects.equals(
 				Optional.ofNullable(a.getStockType()).map(StockType::getId).orElse(null),
 				b.getStockTypeId()
 			),
+			// near term delivery method
 			Objects.equals(
 				Optional.ofNullable(a.getNearTerm()).map(NearTerm::getNearTermDeliveryMethod).map(NearTermDeliveryMethod::getId).orElse(null),
 				b.getNearTermDeliveryMethodId()
 			),
+			// broadcast channel IDs
+			Objects.equals(a.getBroadcastChannelIds(), b.getBroadcastChannelIds()),
+			// is on hand
+			Objects.equals(a.getIsOnHand(), b.getIsOnHand()),
+			// on hand date
+			Objects.equals(a.getOnHandDate(), b.getOnHandDate()),
+			// notes
 			isSameNotes(Optional.ofNullable(a.getNotes()), Optional.ofNullable(b.getNotes()))
 		).allMatch(Boolean::booleanValue);
 	}
